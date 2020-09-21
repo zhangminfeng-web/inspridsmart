@@ -1,0 +1,121 @@
+{
+  "id": "2039583",
+  "name": "可视对讲机系统",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "167181",
+      "name": "对讲监控",
+      "font_class": "duijiangjiankong",
+      "unicode": "e65d",
+      "unicode_decimal": 58973
+    },
+    {
+      "icon_id": "824975",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "894309",
+      "name": "房屋面积",
+      "font_class": "fangwumianji",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "1256557",
+      "name": "属性",
+      "font_class": "shuxing",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "1319971",
+      "name": "视频监控",
+      "font_class": "shipinjiankong",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "2406061",
+      "name": "添加",
+      "font_class": "tianjia",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "2439664",
+      "name": "家",
+      "font_class": "fl-jia",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "6537205",
+      "name": "报警",
+      "font_class": "baojing",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "7550214",
+      "name": "左箭头",
+      "font_class": "zuojiantou",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "7677938",
+      "name": "设备",
+      "font_class": "shebei",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "8629256",
+      "name": "人员",
+      "font_class": "renyuan",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "10423164",
+      "name": "日期",
+      "font_class": "riqi",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "10676766",
+      "name": "楼面 floor",
+      "font_class": "loumian",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "11125634",
+      "name": "门店",
+      "font_class": "8",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "14421735",
+      "name": "放大镜",
+      "font_class": "fangdajing_huaban1",
+      "unicode": "e682",
+      "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "16141219",
+      "name": "鼎控_楼栋",
+      "font_class": "icon_loudong_dingkong-01",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    }
+  ]
+}

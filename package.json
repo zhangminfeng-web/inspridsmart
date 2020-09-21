@@ -1,0 +1,43 @@
+{
+  "name": "inspridsmart",
+  "version": "1.0.0",
+  "description": "思悦公司开发的智能社区、智能设备集成化管理系统",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    }
+  },
+  "keywords": [
+    "insprid",
+    "smart",
+    "community",
+    "things",
+    "iot"
+  ],
+  "author": "Insprid",
+  "license": "Copyright",
+  "devDependencies": {
+    "electron": "^9.2.0",
+    "electron-builder": "^22.8.0",
+    "electron-rebuild": "^1.11.0"
+  },
+  "dependencies": {
+    "Base64": "^1.1.0",
+    "art-template": "^4.13.2",
+    "axios": "^0.20.0",
+    "blob": "^0.1.0",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^3.3.7",
+    "express": "^4.17.1",
+    "express-art-template": "^1.0.1",
+    "jquery": "^3.5.1",
+    "layui-src": "^2.5.5",
+    "mysql": "^2.18.1"
+  }
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>思悦智能社区管理系统</title>
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./public/font/iconfont.css">
+    <link rel="icon" href="./public/img/icon.png">
+    <link rel="stylesheet" href="./node_modules/layui-src/dist/css/layui.css">
+    <link rel="stylesheet" href="./public/css/main.css">
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">
+                        <img src="./public/img/logo.png" width="150" height="24" alt="">
+                    </a>
+                    <span class="header_title">&emsp;|&emsp;可视对讲机系统</span>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right"></ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li class="active" @click="toggleComponent" value="1"><a><i class="iconfont icon-loumian"></i>住户管理</a></li>
+                        <li @click="toggleComponent" value="2"><a><i class="iconfont icon-shipinjiankong"></i>视频监控</a></li>
+                        <li @click="toggleComponent" value="3"><a><i class="iconfont icon-duijiangjiankong"></i>可视对讲</a></li>
+                        <li @click="toggleComponent" value="4"><a><i class="iconfont icon-baojing"></i>报警查询</a></li>
+                        <li @click="toggleComponent" value="5"><a><i class="iconfont icon-shebei"></i>在线设备</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <index-component v-if="showComponentValue==1"></index-component>
+                    <watch-component v-if="showComponentValue==2"></watch-component>
+                    <intercom-component v-if="showComponentValue==3"></intercom-component>
+                    <call-police-component v-if="showComponentValue==4"></call-police-component>
+                    <all-online-component v-if="showComponentValue==5"></all-online-component>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>window.$ = window.jQuery = require('./public/js/jquery.js');</script>
+    <script src="./public/js/vue.js"></script>
+    <script src="./public/js/http-vue-loader.js"></script>
+    <script src="./node_modules/axios/dist/axios.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="./node_modules/layui-src/dist/layui.js"></script>
+    <script src="./renderer.js"></script>
+    <script>
+        layui.use(['layer', 'form'], function () {
+            let layer = layui.layer;
+
+            Vue.use(httpVueLoader);
+
+            new Vue({
+                el:"#app",
+                components:{
+                    'index-component':'url:./view/index-component.vue',
+                    'watch-component':'url:./view/watch-component.vue',
+                    'intercom-component':'url:./view/videoIntercom-component.vue',
+                    'call-police-component':'url:./view/call-police-component.vue',
+                    'all-online-component':'url:./view/online-component.vue',
+                },
+                data:{
+                    showComponentValue:1,
+                },
+                methods:{
+                    toggleComponent(event){
+                        let El = $(event.currentTarget);
+                        El.parent().find(".active").removeClass('active');
+                        El.addClass('active');
+                        this.showComponentValue = El.attr("value");
+                    }
+                }
+            })
+        });
+    </script>
+</body>
+</html>

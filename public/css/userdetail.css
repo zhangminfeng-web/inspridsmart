@@ -1,0 +1,73 @@
+.headerBgColor{
+    line-height:60px;
+    height: 60px;
+    background: #FFFFFF;
+}
+
+.zuojianIcon{
+    font-size:24px;
+    color:#8E8E8E;
+}
+
+.user_munber{
+    font-size: 18px;
+    font-family: MicrosoftYaHei;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.layout_block_box{
+    background:#F5F5F5;
+    padding:20px 25px;
+    border-radius:5px;
+}
+
+.base_info_title{
+    font-size:22px;
+    font-weight:500;
+    margin-bottom:30px;
+}
+
+.mb-20{
+    margin-bottom:20px;
+}
+
+.label_style{
+    color:#333;
+    font-size:18px;
+    font-family: MicrosoftYaHei;
+}
+
+.value_style{
+    font-size: 18px;
+    font-family: MicrosoftYaHei;
+    color: #666;
+}
+
+.title-base-info{
+    padding:0 30px 0 15px;
+}
+
+.mt-30{
+    margin-top:30px;
+}
+
+.text-center>th{
+    text-align: center;
+}
+
+.modal-dialog{
+    margin: 130px auto;
+}
+
+.layui-form-radio{
+    margin:0;
+}
+
+.layui-form-radio>i{
+    margin-right:0;
+}
+
+.modal-title{
+    font-weight:600;
+    font-size:20px;
+}
