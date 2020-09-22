@@ -29,6 +29,8 @@ app.listen(global.LOCALHOST_PORT, function(){
     localSendMsg.localhostUdpServer();
     //启动net中socket服务
     require("./socket/net_server");
+    //启动可视对讲服务器
+    require("./udp/intercomServer");
 
     console.log("running....");
 });

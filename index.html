@@ -42,11 +42,11 @@
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <index-component v-if="showComponentValue==1"></index-component>
-                    <watch-component v-if="showComponentValue==2"></watch-component>
-                    <intercom-component v-if="showComponentValue==3"></intercom-component>
-                    <call-police-component v-if="showComponentValue==4"></call-police-component>
-                    <all-online-component v-if="showComponentValue==5"></all-online-component>
+                    <index-component v-show="showComponentValue==1"></index-component>
+                    <watch-component v-show="showComponentValue==2"></watch-component>
+                    <intercom-component v-show="showComponentValue==3"></intercom-component>
+                    <call-police-component v-show="showComponentValue==4"></call-police-component>
+                    <all-online-component v-show="showComponentValue==5"></all-online-component>
                 </div>
             </div>
         </div>
@@ -58,7 +58,6 @@
     <script src="./node_modules/axios/dist/axios.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/layui-src/dist/layui.js"></script>
-    <script src="./renderer.js"></script>
     <script>
         layui.use(['layer', 'form'], function () {
             let layer = layui.layer;
@@ -88,5 +87,6 @@
             })
         });
     </script>
+    <script src="./renderer.js"></script>
 </body>
 </html>

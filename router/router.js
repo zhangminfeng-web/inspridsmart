@@ -3,7 +3,6 @@ const middle = require("../middleware/middle");
 const global = require("../global/globalFile");
 //加载net客户端模块
 let net_server = require("../socket/net_server");
-let intercom_intercom = require("../udp/intercomClient");
 /*let intercom_server = require("../socket/intercom_server");*/
 
 /*1.创建路由容器*/
@@ -137,17 +136,6 @@ Router.get("/videoIntercom",function(req,res){
     res.json({
         code:0,
         indoorList:global.VIDEO_EQUIPMENT_INDOOR_LIST
-    });
-});
-
-//发送Answer信息
-Router.get("/sendAnswer",function (req,res) {
-    let obj = {type:req.query.type,sdp:req.query.sdp};
-    intercom_intercom.sendIntercomInfo(req.query.ip,obj,function(data){
-        res.json({
-           code:0,
-           msg:data
-        });
     });
 });
 

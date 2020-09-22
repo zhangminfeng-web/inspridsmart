@@ -4,8 +4,7 @@ module.exports = {
     CLOUD_PORT:"42836",
     CLOUD_IP:"",
     VIDEO_PORT:"42839",
-    //INTERCOM_PORT:"58888",
-    INTERCOM_PORT:"50000", //测试端口
+    INTERCOM_PORT:"58888",
     LOCALHOST_IP:"localhost",
     /*门口机设备信息数组*/
     VIDEO_EQUIPMENT_DOORWAY_LIST:[],

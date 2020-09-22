@@ -1,7 +1,5 @@
 const dgram = require("dgram");
 const global = require("../global/globalFile");
-const $ = require('jquery');
-
 const server = dgram.createSocket("udp4");
 
 server.on("error", function (err) {
@@ -11,44 +9,40 @@ server.on("error", function (err) {
 
 server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
-    if(obj.type == "answer"){
-        console.log("收到客户端发送来的answer请求");
-        console.log(msg.toString());
-    }else if(obj.type == "offer"){
-        console.log("收到客户端发送来的offer请求");
-        console.log(msg.toString());
-    }else{
-        /*走视频监控模块*/
-        obj.ip = rinfo.address;
-        obj.port = rinfo.port;
-        /*如果收到自己发送的消息,则立即退出程序*/
-        if(rinfo.address == global.SELF_IP){
-            console.log(global.SELF_IP);
-            return false;
-        }
-        /*如果是后上线的设备,则通知设备本机设备也在线上*/
-        if(obj.type == 1 && rinfo.address != global.SELF_IP){
-            //1.返回新上线设备信息
-            let SendBuff = global.getJsonMsg({senderName:"中心管理机设备",msg:"消息",type:2,code:"123456"});
-            //2.保存新上线设备信息
-            global.addEquipmentInfo(obj);
-            //3.发送回复设备信息，给新上线的客户端
-            server.send(SendBuff,0,SendBuff.length,42836,rinfo.address, function(err, bytes) {
-                if(err != null){
-                    console.log(err);
-                }
-            });
-        }
-        /*将之前已经上线的设备信息，保存起来*/
-        else if(obj.type ==2){
-            global.addEquipmentInfo(obj);
-        }
-        /*除开门口机和门铃机之外的室内设备*/
-        else{
-            global.addEquipmentInfo(obj);
-        }
+    /*走视频监控模块*/
+    obj.ip = rinfo.address;
+    obj.port = rinfo.port;
+    /*如果收到自己发送的消息,则立即退出程序*/
+    if(rinfo.address == global.SELF_IP){
+        console.log(global.SELF_IP);
+        return false;
+    }
+    /*如果是后上线的设备,则通知设备本机设备也在线上*/
+    if(obj.type == 1 && rinfo.address != global.SELF_IP){
+        //1.返回新上线设备信息
+        let SendBuff = global.getJsonMsg({senderName:"中心管理机设备",msg:"消息",type:2,code:"123456"});
+        //2.保存新上线设备信息
+        global.addEquipmentInfo(obj);
+        //3.发送回复设备信息，给新上线的客户端
+        server.send(SendBuff,0,SendBuff.length,42836,rinfo.address, function(err, bytes) {
+            if(err != null){
+                console.log(err);
+            }
+        });
+    }
+    /*将之前已经上线的设备信息，保存起来*/
+    else if(obj.type ==2){
+        global.addEquipmentInfo(obj);
+    }
+    /*除开门口机和门铃机之外的室内设备*/
+    else{
+        global.addEquipmentInfo(obj);
     }
 
+});
+
+server.on("close",function(){
+    console.log("客户端与服务端断开连接");
 });
 
 server.on("listening", function () {

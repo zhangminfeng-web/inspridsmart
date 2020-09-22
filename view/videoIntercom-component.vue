@@ -8,9 +8,23 @@
                         <i class="iconfont icon-fl-jia"></i>
                         <span class="title_index">在线室内设备</span>
                     </div>
-                    <ul class="clearfix list_all_item" id="house_list">
+                    <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--弹框-->
+        <div class="intercom_model_bg" style="display:none;">
+            <div class="model_content">
+                <div class="model_header">
+                    <span class="model_title" id="model_title">与{{intercomTitle}}的对讲</span>
+                    <span class="model_close" @click="closeWatchVideo">&times;</span>
+                </div>
+                <div class="model_mains">
+                    <video id="local" class="video1" autoplay></video>
+                    <video id="remote" class="video2" autoplay></video>
                 </div>
             </div>
         </div>
@@ -23,6 +37,7 @@
             return {
                 indoorList:[],   //可视对讲设备数组集合
                 baseURLS:"http://localhost:43839", //全局网址
+                intercomTitle:"",    //弹框标题
             }
         },
         created(){
@@ -31,29 +46,16 @@
             this._jqThis.on('receiver_offer',this.endOffer);
         },
         methods:{
-            //返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
-            getPeerConnector(){
-                return new RTCPeerConnection();
-            },
-            endOffer(e,data){
-                console.log(data);
-                console.log("需要发送offer啦");
-            },
             async endAnswerInfo(event){  //发送answer
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
-                //1.调用连接对象，返回一个RTCPeerConnection实例
-                let peerConnection = this.getPeerConnector();
+                this.intercomTitle = El.text();
+                $(".intercom_model_bg").show();
+                //发送answer
+                El.trigger("sendAnswer",[ip]);
+            },
+            closeWatchVideo(){
 
-                this._jqThis.trigger('receiver_offer',"你好吗？");
-
-                //2.创建一个offer
-                let answer = await peerConnection.createOffer();
-                answer.type = "answer";
-                console.log(answer);
-                axios.get(this.baseURLS+"/sendAnswer?ip="+ip+"&type=answer&sdp="+answer.sdp).then(res => {
-                    console.log(res);
-                });
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {
@@ -137,5 +139,77 @@
     .scroll_ul>li:hover>a{
         color:#E41612;
         text-decoration:none;
+    }
+
+    .intercom_model_bg{
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.5);
+        position:fixed;
+        z-index: 10000;
+        top:0;
+        left:0;
+    }
+
+    .model_content{
+        width:800px;
+        height:500px;
+        border:1px solid #ddd;
+        border-radius:5px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-400px;
+        margin-top:-250px;
+        background:#fff;
+    }
+
+    .model_header{
+        width:100%;
+        height:40px;
+        padding:0 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom:1px solid #ddd;
+    }
+
+    .model_title{
+        font-size: 18px;
+        font-family: MicrosoftYaHei;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    .model_close{
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1;
+        color: #333;
+        text-shadow: 0 1px 0 #fff;
+        cursor: pointer;
+    }
+
+    .model_close:hover{
+        opacity: .6;
+    }
+
+    .model_mains{
+        display: flex;
+        align-items: center;
+        overflow:hidden;
+        width:100%;
+        height:440px;
+    }
+
+    .model_mains>.video1{
+        max-height:100%;
+        max-width:49%;
+        float:left;
+    }
+
+    .model_mains>.video2{
+        max-height:100%;
+        max-width:49%;
+        float:right;
     }
 </style>
