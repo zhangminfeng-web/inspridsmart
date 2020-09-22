@@ -6,12 +6,30 @@ module.exports = {
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
     LOCALHOST_IP:"localhost",
+    SHAREDATA: new Map(),   //全局共享的数据
+    KEY_OFFER_PEER_CONNECTION:"offerPc",
+    KEY_ANSWER_PEER_CONNECTION:"answerPc",
     /*门口机设备信息数组*/
     VIDEO_EQUIPMENT_DOORWAY_LIST:[],
     /*门铃机设备信息数组*/
     VIDEO_EQUIPMENT_DOORBELL_LIST:[],
     /*室内设备数组*/
     VIDEO_EQUIPMENT_INDOOR_LIST:[],
+    /**
+     * 设置全局数据
+     * @param k  键
+     * @param v  值
+     */
+    setData(k,v){
+        this.SHAREDATA.set(k,v);
+    },
+    /**
+     * 获取全局共享数据
+     * @param k  键
+     */
+    getData(k){
+        return this.SHAREDATA.get(k);
+    },
     /**
      * 获取需要发送消息的JSON字符串
      * @param options  设备信息

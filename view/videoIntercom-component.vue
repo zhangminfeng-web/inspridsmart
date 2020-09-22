@@ -41,17 +41,15 @@
             }
         },
         created(){
-            this._jqThis = $(this);
             this.init();
-            this._jqThis.on('receiver_offer',this.endOffer);
         },
         methods:{
-            async endAnswerInfo(event){  //发送answer
+            endAnswerInfo(event){  //发送offer
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
                 this.intercomTitle = El.text();
                 $(".intercom_model_bg").show();
-                //发送answer
+                //发送offer
                 El.trigger("sendAnswer",[ip]);
             },
             closeWatchVideo(){

@@ -12,8 +12,8 @@ server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
     switch(obj.type) {
         case "answer":
-            let answer = msg.toString();
-            server.send(answer,0,answer.length, rinfo.port, rinfo.address, function(err, bytes) {
+            let offer = msg.toString();
+            server.send(offer,0,offer.length, rinfo.port, rinfo.address, function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }
@@ -21,7 +21,12 @@ server.on("message", function (msg, rinfo){
             break;
         case "offer":
             console.log("收到客户端发送来的offer请求");
-            console.log(msg.toString());
+            let answer = msg.toString();
+            server.send(answer,0,answer.length, rinfo.port, rinfo.address, function(err, bytes) {
+                if(err != null){
+                    console.log(err);
+                }
+            });
             break;
         case "candidate":
             let candidate = msg.toString();
