@@ -9,6 +9,7 @@ module.exports = {
     SHAREDATA: new Map(),   //全局共享的数据
     KEY_OFFER_PEER_CONNECTION:"offerPc",
     KEY_ANSWER_PEER_CONNECTION:"answerPc",
+    KEY_DATACHANNEL:"dataChannel",
     /*门口机设备信息数组*/
     VIDEO_EQUIPMENT_DOORWAY_LIST:[],
     /*门铃机设备信息数组*/

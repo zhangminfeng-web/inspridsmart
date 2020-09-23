@@ -6,6 +6,8 @@ const selfIp = require('../global/getIpAdress');
 let clientMsg = {
     "answerMsg": null,
     "offerMsg": null,
+    "offerIce":null,
+    "answerIce":null,
 };
 
 //客户端关闭触发
@@ -33,8 +35,15 @@ client.on('message',(msg,rinfo)=>{
             clientMsg.offerMsg = obj;
             break;
         case "candidate":
-            /*console.log("客户端收到了candidate消息");
-            console.log(obj);*/
+            console.log("客户端收到了candidate消息");
+            if(obj.offer_ice){
+                clientMsg.offerIce = obj;
+            }
+
+            if(obj.answer_ice){
+                clientMsg.answerIce = obj;
+            }
+
             break;
         default:
 
@@ -63,14 +72,6 @@ exports.sendOfferIntercomInfo = async function(ip,options,callback){
         }
     });
 
-    //再去发送candidate
-    let candidate = JSON.stringify({"type":"candidate","label":0,"id":"audio","candidate":""});
-    await client.send(candidate,0,candidate.length,global.INTERCOM_PORT,selfIp.getIPAdress(),function(err){
-        if(err != null){
-            console.log(err);
-        }
-    });
-
 };
 
 exports.sendAnswerIntercomInfo = async function(ip,options,callback){
@@ -93,11 +94,58 @@ exports.sendAnswerIntercomInfo = async function(ip,options,callback){
         }
     });
 
+
+}
+
+//向服务端发送offer_ice信息
+exports.sendOffer_ice = async function(ip,options,callback){
     //再去发送candidate
-    let candidate = JSON.stringify({"type":"candidate","label":0,"id":"audio","candidate":""});
-    await client.send(candidate,0,candidate.length,global.INTERCOM_PORT,ip,function(err){
+    if(options.toJSON){
+        delete  options.toJSON;
+    }
+    let offerCandidate = JSON.stringify(options);
+    await client.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_PORT,ip,function(err){
         if(err != null){
             console.log(err);
         }
     });
+
+    //接收到服务器端发送offer_ice信息
+    Object.defineProperty(clientMsg,'offerIce',{
+        get:(value) => {
+            callback(value);
+        },
+        set:(value) => {
+            callback(value);
+        }
+    });
+
+
+}
+
+exports.sendAnswer_ice = async function(ip,options,callback){
+
+    //发送answer_ice的candidate消息
+    if(options.toJSON){
+        delete  options.toJSON;
+    }
+
+    let answerCandidate = JSON.stringify(options);
+
+    await client.send(answerCandidate,0,answerCandidate.length,global.INTERCOM_PORT,ip,function(err){
+        if(err != null){
+           console.log(err);
+        }
+    });
+
+    //接收到服务器端发送offer_ice信息
+    Object.defineProperty(clientMsg,'answerIce',{
+        get:(value) => {
+            callback(value);
+        },
+        set:(value) => {
+            callback(value);
+        }
+    });
+
 }

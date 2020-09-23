@@ -20,7 +20,6 @@ server.on("message", function (msg, rinfo){
             });
             break;
         case "offer":
-            console.log("收到客户端发送来的offer请求");
             let answer = msg.toString();
             server.send(answer,0,answer.length, rinfo.port, rinfo.address, function(err, bytes) {
                 if(err != null){
