@@ -18,7 +18,7 @@ server.on("message", function (msg, rinfo){
     console.log(obj);
     switch(obj.type) {
         case "answer":
-            let objects = {ip:rinfo.address,offer:msg};
+            let objects = {ip:rinfo.address,offer:msg.toString()};
             console.log(objects);
             let offer = objects.toString();
             console.log(3);
