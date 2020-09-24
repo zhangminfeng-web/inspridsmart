@@ -27,8 +27,8 @@ $(document).ready(function(){
         //打开数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
-        //监听dataChannel数据打开事件
-        /*dataChannel.onopen = function(e){
+        /*//监听dataChannel数据打开事件
+        dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
         };*/
 
@@ -57,18 +57,18 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = remoteStream;
 
         //监听接收answerPc端发送过来的媒体流数据
-        /*peerConnection.ontrack = e => {
+        peerConnection.ontrack = e => {
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        }*/
+        }
 
 
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        /*localStream.getTracks().forEach(t => {
+        localStream.getTracks().forEach(t => {
             peerConnection.addTrack(t);
-        });*/
+        });
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();
@@ -80,11 +80,11 @@ $(document).ready(function(){
         //7.发送answer
         intercom_intercom.sendOfferIntercomInfo(ip,offer,function(data){
             //接收answerPc端返回的消息
-            /*if(data.type == "answer"){
+            if(data.type == "answer"){
                 let ip = data.ip;
                 delete data.ip;
                 handleReceivedOffer.receivedOffer(data,documentEl,ip);
-            }*/
+            }
         });
     });
 

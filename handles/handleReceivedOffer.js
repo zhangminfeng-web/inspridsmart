@@ -1,8 +1,11 @@
 let global = require("../global/globalFile");
 
 module.exports.receivedOffer = async function(data,documentEl,ip){
+    console.log("answerPc端接收offerPc端的信息");
+    console.log(data);
+    console.log(ip);
 
-    //创建answerPc连接对象
+    /*//创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
     //给answerPc添加视频流
@@ -34,15 +37,6 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         }
     }
 
-    /*//answerPc添加一个打开的dataChannel的事件监听
-    //用于接收offerPc端通过dataChannel通道发送过来的数据
-    answerPc.ondatachannel = function(e){
-        let dataChannel = e.channel;
-        dataChannel.onmessage = ev => {
-            console.log(ev);
-        }
-    }*/
-
     //将type还原成offer
     data.type = "offer";
 
@@ -59,7 +53,7 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     answer.type = "offer";
 
     //通过事件派发机制，发送answer信息
-    $(documentEl).trigger("sendAnswerInfo",[answer,ip]);
+    $(documentEl).trigger("sendAnswerInfo",[answer,ip]);*/
 
 
 

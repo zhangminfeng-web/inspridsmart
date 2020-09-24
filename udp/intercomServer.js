@@ -15,13 +15,10 @@ server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
     console.log("服务端收到信息");
     console.log(rinfo);
-    console.log(obj);
     switch(obj.type) {
         case "answer":
-            let objects = {ip:rinfo.address,offer:msg.toString()};
-            let offer = JSON.stringify(objects);
-            console.log(3);
-            console.log(offer);
+            obj.ip= rinfo.address;
+            let offer = JSON.stringify(obj);
             server.send(offer,0,offer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);

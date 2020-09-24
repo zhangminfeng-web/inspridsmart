@@ -22,14 +22,13 @@ client.on('error',(err)=>{
 
 //监听服务端返回的消息
 client.on('message',(msg,rinfo)=>{
-    console.log(msg.toString());
+    console.log(msg);
     console.log("---*******");
     let obj = JSON.parse(msg.toString());
     switch(obj.type) {
         case "answer":
             console.log("收到服务端发送来的answer消息");
-            //clientMsg.answerMsg = obj;
-            console.log(obj);
+            clientMsg.answerMsg = obj;
             break;
         case "offer":
             console.log("收到服务端发送来的offer请求");
@@ -64,8 +63,8 @@ exports.sendOfferIntercomInfo = async function(ip,options,callback){
     //先去发送answer  参数1.发送的数据  2.端口号   3.ip地址(暂时没有写)
     let offer = JSON.stringify(options);
     console.log(offer);
-    //selfIp.getIPAdress()
-    await client.send(offer,0,offer.length,global.INTERCOM_PORT,ip,function(err){
+
+    await client.send(offer,0,offer.length,global.INTERCOM_PORT,selfIp.getIPAdress(),function(err){
         if(err != null){
             console.log(err);
         }
