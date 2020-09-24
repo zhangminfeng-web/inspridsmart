@@ -20,7 +20,9 @@ server.on("message", function (msg, rinfo){
         case "answer":
             msg.ip = rinfo.address;
             let offer = msg.toString();
-            server.send(offer,0,offer.length, rinfo.port,selfIp.getIPAdress(), function(err, bytes) {
+            console.log(3);
+            console.log(msg.ip);
+            server.send(offer,0,offer.length,global.INTERCOM_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }
