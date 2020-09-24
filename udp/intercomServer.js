@@ -1,5 +1,6 @@
 const dgram = require("dgram");
 const global = require("../global/globalFile");
+const selfIp = require('../global/getIpAdress');
 const server = dgram.createSocket("udp4");
 server.bind(global.INTERCOM_PORT,function(){
     console.log("intercomClient服务启动了...");
@@ -15,10 +16,11 @@ server.on("message", function (msg, rinfo){
     console.log("服务端收到信息");
     console.log(rinfo);
     console.log(obj);
-   /* switch(obj.type) {
+    switch(obj.type) {
         case "answer":
+            msg.ip = rinfo.address;
             let offer = msg.toString();
-            server.send(offer,0,offer.length, rinfo.port, rinfo.address, function(err, bytes) {
+            server.send(offer,0,offer.length, rinfo.port,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }
@@ -26,7 +28,7 @@ server.on("message", function (msg, rinfo){
             break;
         case "offer":
             let answer = msg.toString();
-            server.send(answer,0,answer.length, rinfo.port, rinfo.address, function(err, bytes) {
+            server.send(answer,0,answer.length, rinfo.port,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }
@@ -41,7 +43,7 @@ server.on("message", function (msg, rinfo){
             });
             break;
         default:
-    }*/
+    }
 });
 
 

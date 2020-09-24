@@ -26,8 +26,8 @@ client.on('message',(msg,rinfo)=>{
     switch(obj.type) {
         case "answer":
             console.log("收到服务端发送来的answer消息");
-            obj.ip = rinfo.address;
-            clientMsg.answerMsg = obj;
+            //clientMsg.answerMsg = obj;
+            console.log(obj);
             break;
         case "offer":
             console.log("收到服务端发送来的offer请求");
