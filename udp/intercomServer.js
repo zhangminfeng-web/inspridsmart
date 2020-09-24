@@ -13,8 +13,6 @@ server.on("error", function (err) {
 
 server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
-    console.log("服务端收到信息");
-    console.log(rinfo);
     switch(obj.type) {
         case "answer":
             obj.ip= rinfo.address;
