@@ -93,15 +93,17 @@ $(document).ready(function(){
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",function(e,data,ip){
         //发送answer信息：data为answer信息
+        console.log("收到answer端发送过来的信息");
+        console.log(data);
         console.log(ip);
-        intercom_intercom.sendAnswerIntercomInfo(ip,data,function(data){
+        /*intercom_intercom.sendAnswerIntercomInfo(ip,data,function(data){
             if(data.type == "offer") {
                 let ip = data.ip;
                 delete data.ip;
                 //本地接收answer信息
                 handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
             }
-        });
+        });*/
     })
 
     //发送offer_ice消息

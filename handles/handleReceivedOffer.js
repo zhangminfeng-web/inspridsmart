@@ -1,11 +1,8 @@
 let global = require("../global/globalFile");
 
 module.exports.receivedOffer = async function(data,documentEl,ip){
-    console.log("answerPc端接收offerPc端的信息");
-    console.log(data);
-    console.log(ip);
 
-    /*//创建answerPc连接对象
+    //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
     //给answerPc添加视频流
@@ -24,18 +21,18 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
     //接收offerPc端发送过来的媒体流数据
-    answerPc.ontrack = e => {
+    /*answerPc.ontrack = e => {
         //将offerPc的媒体流通道，添加到远程媒体流中
         remoteStream.addTrack(e.track);
-    }
+    }*/
 
     //将数据通道打开之后，监听网路信息的事件
-    answerPc.onicecandidate = e => {
+    /*answerPc.onicecandidate = e => {
         //获取offer_ice信息，并通过网络服务端转发给offerPc
         if(e.candidate){
             $(documentEl).trigger("answer_ice",[e.candidate]);
         }
-    }
+    }*/
 
     //将type还原成offer
     data.type = "offer";
@@ -53,7 +50,7 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     answer.type = "offer";
 
     //通过事件派发机制，发送answer信息
-    $(documentEl).trigger("sendAnswerInfo",[answer,ip]);*/
+    $(documentEl).trigger("sendAnswerInfo",[answer,ip]);
 
 
 
