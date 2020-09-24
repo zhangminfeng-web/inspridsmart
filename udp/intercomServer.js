@@ -22,7 +22,7 @@ server.on("message", function (msg, rinfo){
             let offer = msg.toString();
             console.log(3);
             console.log(msg.ip);
-            server.send(offer,0,offer.length,global.INTERCOM_PORT,selfIp.getIPAdress(), function(err, bytes) {
+            server.send(offer,0,offer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }

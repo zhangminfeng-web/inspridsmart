@@ -5,6 +5,7 @@ module.exports = {
     CLOUD_IP:"",
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
+    INTERCOM_CLIENT_PORT:"58866",
     LOCALHOST_IP:"localhost",
     SHAREDATA: new Map(),   //全局共享的数据
     KEY_OFFER_PEER_CONNECTION:"offerPc",

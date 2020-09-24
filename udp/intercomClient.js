@@ -54,6 +54,9 @@ client.on('message',(msg,rinfo)=>{
     //client.close();
 });
 
+//开启客户端服务
+client.bind(global.INTERCOM_CLIENT_PORT);
+
 //发送offer
 exports.sendOfferIntercomInfo = async function(ip,options,callback){
     console.log(2);
