@@ -10,6 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
+                        <li @click="endAnswerInfo" port="58888" ip="">曹工</li>
                     </ul>
                 </div>
             </div>

@@ -99,6 +99,7 @@
                     this.listTung = obj.data.listTung;
                     this.listUnit = obj.data.listUnit;
                     this.listSearchUnit = obj.data.listUnit;
+                    console.log(this.listSearchUnit);
                     this.listHouse = obj.data.listHouse;
                     this.searchObj.currentId = this.listTung[0].id;
                     this.searchObj.currentUnit = this.listSearchUnit[0].id;
