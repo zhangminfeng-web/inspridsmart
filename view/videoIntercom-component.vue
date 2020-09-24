@@ -10,7 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
-                        <li @click="endAnswerInfo" port="58888" ip="">曹工</li>
+                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.123">曹工</li>
                     </ul>
                 </div>
             </div>
@@ -50,6 +50,8 @@
                 let ip = El.attr("ip");
                 this.intercomTitle = El.text();
                 $(".intercom_model_bg").show();
+                console.log(1);
+                console.log(ip);
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
             },

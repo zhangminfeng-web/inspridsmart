@@ -1,7 +1,9 @@
 const dgram = require("dgram");
 const global = require("../global/globalFile");
 const server = dgram.createSocket("udp4");
-server.bind(global.INTERCOM_PORT);
+server.bind(global.INTERCOM_PORT,function(){
+    console.log("intercomClient服务启动了...");
+});
 
 server.on("error", function (err) {
     console.log("upd服务器端报错:\n" + err.stack);
@@ -10,7 +12,10 @@ server.on("error", function (err) {
 
 server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
-    switch(obj.type) {
+    console.log("服务端收到信息");
+    console.log(rinfo);
+    console.log(obj);
+   /* switch(obj.type) {
         case "answer":
             let offer = msg.toString();
             server.send(offer,0,offer.length, rinfo.port, rinfo.address, function(err, bytes) {
@@ -36,7 +41,7 @@ server.on("message", function (msg, rinfo){
             });
             break;
         default:
-    }
+    }*/
 });
 
 

@@ -18,11 +18,11 @@ $(document).ready(function(){
         global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
 
         //将数据通道打开之后，监听网路信息的事件
-        peerConnection.onicecandidate = e => {
+        /*peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };
+        };*/
 
         //打开数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
@@ -57,18 +57,18 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = remoteStream;
 
         //监听接收answerPc端发送过来的媒体流数据
-        peerConnection.ontrack = e => {
+        /*peerConnection.ontrack = e => {
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        }
+        }*/
 
 
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        localStream.getTracks().forEach(t => {
+        /*localStream.getTracks().forEach(t => {
             peerConnection.addTrack(t);
-        });
+        });*/
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();
@@ -80,17 +80,18 @@ $(document).ready(function(){
         //7.发送answer
         intercom_intercom.sendOfferIntercomInfo(ip,offer,function(data){
             //接收answerPc端返回的消息
-            if(data.type == "answer"){
+            /*if(data.type == "answer"){
                 let ip = data.ip;
                 delete data.ip;
                 handleReceivedOffer.receivedOffer(data,documentEl,ip);
-            }
+            }*/
         });
     });
 
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",function(e,data,ip){
         //发送answer信息：data为answer信息
+        console.log(ip);
         intercom_intercom.sendAnswerIntercomInfo(ip,data,function(data){
             if(data.type == "offer") {
                 let ip = data.ip;
