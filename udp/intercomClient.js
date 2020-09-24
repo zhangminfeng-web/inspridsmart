@@ -22,8 +22,6 @@ client.on('error',(err)=>{
 
 //监听服务端返回的消息
 client.on('message',(msg,rinfo)=>{
-    console.log(msg);
-    console.log("---*******");
     let obj = JSON.parse(msg.toString());
     switch(obj.type) {
         case "answer":

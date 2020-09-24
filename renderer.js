@@ -79,6 +79,8 @@ $(document).ready(function(){
 
         //7.发送answer
         intercom_intercom.sendOfferIntercomInfo(ip,offer,function(data){
+            console.log(data);
+            console.log("啦啦啦啊");
             //接收answerPc端返回的消息
             if(data.type == "answer"){
                 let ip = data.ip;
