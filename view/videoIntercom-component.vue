@@ -23,8 +23,8 @@
                     <span class="model_close" @click="closeWatchVideo">&times;</span>
                 </div>
                 <div class="model_mains">
-                    <video id="local" class="video1" autoplay></video>
-                    <video id="remote" class="video2" autoplay></video>
+                    <video controls id="local" class="video1" autoplay></video>
+                    <video controls id="remote" class="video2" autoplay></video>
                 </div>
             </div>
         </div>
@@ -192,22 +192,25 @@
     }
 
     .model_mains{
-        display: flex;
-        align-items: center;
         overflow:hidden;
         width:100%;
         height:440px;
+        padding:10px 10px;
     }
 
     .model_mains>.video1{
-        max-height:100%;
-        max-width:49%;
+        height:180px;
+        width:30%;
         float:left;
+        border:1px solid #ddd;
+        object-fit: fill;
     }
 
     .model_mains>.video2{
-        max-height:100%;
-        max-width:49%;
+        height:380px;
+        width:68%;
         float:right;
+        border:1px solid #ddd;
+        object-fit: fill;
     }
 </style>

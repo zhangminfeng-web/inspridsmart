@@ -4,6 +4,16 @@ const bodyParser = require('body-parser');
 const global = require("./global/globalFile");
 const getLocalhostIp = require("./global/getIpAdress");
 const localSendMsg = require("./udp/localhostUdpServer");
+/*const path = require('path');
+const fs = require('fs');
+const https = require('https');
+const privateKey = fs.readFileSync(path.join(__dirname,"ssl","www.insprid.cn.key"), 'utf8')
+const certificate = fs.readFileSync(path.join(__dirname,"ssl","www.insprid.cn.crt"), 'utf8')
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+}*/
+
 const app = express();
 
 /*app.engine('html', require('express-art-template'));*/
@@ -19,6 +29,8 @@ app.use(router);
 app.use((err,req,res,next)=>{
     console.log(err);
 });
+
+/*const httpsServer = https.createServer(credentials,app);*/
 
 app.listen(global.LOCALHOST_PORT, function(){
     //获取本机IP地址

@@ -10,6 +10,8 @@ module.exports = {
     KEY_OFFER_PEER_CONNECTION:"offerPc",
     KEY_ANSWER_PEER_CONNECTION:"answerPc",
     KEY_DATACHANNEL:"dataChannel",
+    KEY_LOCAL_MEDIA_STREAM:"localMediaStream",
+    KEY_REMOTE_MEDIA_STREAM:"remoteMediaStream",
     /*门口机设备信息数组*/
     VIDEO_EQUIPMENT_DOORWAY_LIST:[],
     /*门铃机设备信息数组*/

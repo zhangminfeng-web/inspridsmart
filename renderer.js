@@ -22,27 +22,53 @@ $(document).ready(function(){
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        }
+        };
 
         //打开数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
         //监听dataChannel数据打开事件
-        dataChannel.onopen = function(e){
+        /*dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
-        };
+        };*/
 
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //3.获取本地数据流
-        const stream = await navigator.mediaDevices.getUserMedia({
+        const localStream = await navigator.mediaDevices.getUserMedia({
             video:true,
-            //false:true
+            audio:true
         });
 
+        //将本地媒体流数据保存成共享数据
+        global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
+
         //4.将本地流信息展示在video中
-        document.getElementById('local').srcObject = stream;
+        document.getElementById('local').srcObject = localStream;
+
+        //创建一个远程的remoteStream对象
+        let remoteStream = new MediaStream();
+
+        //将远程remoteStream添加到全局共享数据中
+        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+
+        //4.将本地流信息展示在video中
+        document.getElementById('remote').srcObject = remoteStream;
+
+        //监听接收answerPc端发送过来的媒体流数据
+        peerConnection.ontrack = e => {
+            //将offerPc的媒体流通道，添加到远程媒体流中
+            remoteStream.addTrack(e.track);
+        }
+
+
+
+        //通过getTracks()方法获取到媒体流设备轨道
+        //再通过addTrack()将每一个轨道添加到peerConnection中
+        localStream.getTracks().forEach(t => {
+            peerConnection.addTrack(t);
+        });
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();
@@ -53,6 +79,7 @@ $(document).ready(function(){
 
         //7.发送answer
         intercom_intercom.sendOfferIntercomInfo(ip,offer,function(data){
+            //接收answerPc端返回的消息
             if(data.type == "answer"){
                 let ip = data.ip;
                 delete data.ip;
