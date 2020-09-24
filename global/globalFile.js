@@ -6,6 +6,8 @@ module.exports = {
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
     INTERCOM_CLIENT_PORT:"58866",
+    receivedIp:"",
+    localhostIp:"",
     clientMsg:{
         "answerMsg": null,
         "offerMsg": null,

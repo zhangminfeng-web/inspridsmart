@@ -15,7 +15,8 @@ server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
     switch(obj.type) {
         case "answer":
-            obj.ip= rinfo.address;
+            //将本地的ip保存为共享数据
+            global.localhostIp = rinfo.address;
             let offer = JSON.stringify(obj);
             server.send(offer,0,offer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
@@ -24,8 +25,8 @@ server.on("message", function (msg, rinfo){
             });
             break;
         case "offer":
-            let answer = msg.toString();
-            server.send(answer,0,answer.length, rinfo.port,selfIp.getIPAdress(), function(err, bytes) {
+            let answer = JSON.stringify(obj);
+            server.send(answer,0,answer.length,global.INTERCOM_CLIENT_PORT,global.localhostIp, function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }

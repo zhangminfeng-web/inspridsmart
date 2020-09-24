@@ -50,21 +50,6 @@ $(document).ready(function(){
         //4.将本地流信息展示在video中
         document.getElementById('local').srcObject = localStream;
 
-        //创建一个远程的remoteStream对象
-        let remoteStream = new MediaStream();
-
-        //将远程remoteStream添加到全局共享数据中
-        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
-
-        //4.将本地流信息展示在video中
-        document.getElementById('remote').srcObject = remoteStream;
-
-        //监听接收answerPc端发送过来的媒体流数据
-        peerConnection.ontrack = e => {
-            //将offerPc的媒体流通道，添加到远程媒体流中
-            remoteStream.addTrack(e.track);
-        };
-
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
@@ -85,25 +70,30 @@ $(document).ready(function(){
 
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
-        let ip = data.ip;
-        delete data.ip;
-        handleReceivedOffer.receivedOffer(data,documentEl,ip);
+        handleReceivedOffer.receivedOffer(data,documentEl,global.receivedIp);
     });
+
+    //
+    //4.将本地流信息展示在video中
+    //document.getElementById('remote').srcObject = remoteStream;
+    //监听接收answerPc端发送过来的媒体流数据
+    // peerConnection.ontrack = e => {
+    //     //将offerPc的媒体流通道，添加到远程媒体流中
+    //     remoteStream.addTrack(e.track);
+    // };
 
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",function(e,data,ip){
         //发送answer信息：data为answer信息
-        console.log("收到answer端发送过来的信息");
-        console.log(data);
-        console.log(ip);
-        /*intercom_intercom.sendAnswerIntercomInfo(ip,data,function(data){
-            if(data.type == "offer") {
-                let ip = data.ip;
-                delete data.ip;
-                //本地接收answer信息
-                handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
-            }
-        });*/
+        intercom_intercom.sendAnswerIntercomInfo(ip,data);
+    });
+
+    //offer端接收answer信息
+    $(documentEl).on("localAnswer",function(e,data){
+        let ip = data.ip;
+        delete data.ip;
+        //本地接收answer信息
+        handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
     })
 
     //发送offer_ice消息
