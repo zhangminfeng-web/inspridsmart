@@ -10,6 +10,8 @@ let clientMsg = {
     "answerIce":null,
 };
 
+let documentEl;
+
 //客户端关闭触发
 client.on('close',()=>{
     console.log('socket已关闭');
@@ -25,8 +27,7 @@ client.on('message',(msg,rinfo)=>{
     let obj = JSON.parse(msg.toString());
     switch(obj.type) {
         case "answer":
-            console.log("收到服务端发送来的answer消息");
-            clientMsg.answerMsg = obj;
+            $(documentEl).trigger("receivedOffer",[obj]);
             break;
         case "offer":
             console.log("收到服务端发送来的offer请求");
@@ -55,26 +56,14 @@ client.on('message',(msg,rinfo)=>{
 client.bind(global.INTERCOM_CLIENT_PORT);
 
 //发送offer
-exports.sendOfferIntercomInfo = async function(ip,options,callback){
+exports.sendOfferIntercomInfo = async function(ip,options){
     //先去发送answer  参数1.发送的数据  2.端口号   3.ip地址(暂时没有写)
     let offer = JSON.stringify(options);
-    //selfIp.getIPAdress()
-    await client.send(offer,0,offer.length,global.INTERCOM_PORT,ip,function(err){
+    await client.send(offer,0,offer.length,global.INTERCOM_PORT,selfIp.getIPAdress(),function(err){
         if(err != null){
             console.log(err);
         }
     });
-
-    //向浏览器端返回answer信息
-    Object.defineProperty(clientMsg,'answerMsg',{
-        get:(value) => {
-            callback(value);
-        },
-        set:(value) => {
-            callback(value);
-        }
-    });
-
 };
 
 exports.sendAnswerIntercomInfo = async function(ip,options,callback){
@@ -151,4 +140,9 @@ exports.sendAnswer_ice = async function(ip,options,callback){
         }
     });
 
+}
+
+//接收jquery全局对象
+exports.sendJqObj = function(Jobj){
+    documentEl = Jobj;
 }

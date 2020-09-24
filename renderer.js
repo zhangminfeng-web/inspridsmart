@@ -8,6 +8,9 @@ let global = require("./global/globalFile");
 $(document).ready(function(){
     let documentEl = $(this);
 
+    //将jquery全局事件对象传给客户端
+    intercom_intercom.sendJqObj(documentEl);
+
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip){
         console.log("发送answer");
@@ -60,9 +63,7 @@ $(document).ready(function(){
         peerConnection.ontrack = e => {
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        }
-
-
+        };
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
@@ -78,16 +79,15 @@ $(document).ready(function(){
         offer.type = "answer";
 
         //7.发送answer
-        intercom_intercom.sendOfferIntercomInfo(ip,offer,function(data){
-            console.log(data);
-            console.log("啦啦啦啊");
-            //接收answerPc端返回的消息
-            if(data.type == "answer"){
-                let ip = data.ip;
-                delete data.ip;
-                handleReceivedOffer.receivedOffer(data,documentEl,ip);
-            }
-        });
+        await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
+
+    });
+
+    //answerPc端收到offerPc端的信息了
+    $(documentEl).on("receivedOffer",function(e,data){
+        let ip = data.ip;
+        delete data.ip;
+        handleReceivedOffer.receivedOffer(data,documentEl,ip);
     });
 
     //发送answer事件

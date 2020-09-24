@@ -6,6 +6,12 @@ module.exports = {
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
     INTERCOM_CLIENT_PORT:"58866",
+    clientMsg:{
+        "answerMsg": null,
+        "offerMsg": null,
+        "offerIce":null,
+        "answerIce":null,
+    },
     LOCALHOST_IP:"localhost",
     SHAREDATA: new Map(),   //全局共享的数据
     KEY_OFFER_PEER_CONNECTION:"offerPc",
