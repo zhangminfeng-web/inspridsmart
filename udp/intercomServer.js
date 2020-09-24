@@ -18,10 +18,11 @@ server.on("message", function (msg, rinfo){
     console.log(obj);
     switch(obj.type) {
         case "answer":
-            msg.ip = rinfo.address;
-            let offer = msg.toString();
+            var offer = msg;
+            offer.ip = rinfo.address;
+            var offer = offer.toString();
             console.log(3);
-            console.log(msg.ip);
+            console.log(offer);
             server.send(offer,0,offer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);

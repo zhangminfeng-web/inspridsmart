@@ -28,7 +28,7 @@ client.on('message',(msg,rinfo)=>{
     switch(obj.type) {
         case "answer":
             console.log("收到服务端发送来的answer消息");
-            //clientMsg.answerMsg = obj;
+            clientMsg.answerMsg = obj;
             console.log(obj);
             break;
         case "offer":
