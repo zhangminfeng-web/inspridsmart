@@ -19,8 +19,7 @@ server.on("message", function (msg, rinfo){
     switch(obj.type) {
         case "answer":
             let objects = {ip:rinfo.address,offer:msg.toString()};
-            console.log(objects);
-            let offer = objects.toString();
+            let offer = JSON.stringify(objects);
             console.log(3);
             console.log(offer);
             server.send(offer,0,offer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
