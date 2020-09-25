@@ -16,6 +16,12 @@ $(document).ready(function(){
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
+        //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
+        let peerConnection = new RTCPeerConnection();
+
+        //2.将peerConnection保存为全局共享数据
+        global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
+
         //创建一个数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
@@ -32,11 +38,8 @@ $(document).ready(function(){
 
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip){
-        //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
-        let peerConnection = new RTCPeerConnection();
 
-        //2.将peerConnection保存为全局共享数据
-        global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
+        let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
