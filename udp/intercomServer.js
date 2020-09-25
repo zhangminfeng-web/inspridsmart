@@ -26,7 +26,7 @@ server.on("message", function (msg, rinfo){
             break;
         case "offer":
             let answer = JSON.stringify(obj);
-            server.send(answer,0,answer.length,global.INTERCOM_CLIENT_PORT,global.localhostIp, function(err, bytes) {
+            server.send(answer,0,answer.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(), function(err, bytes) {
                 if(err != null){
                     console.log(err);
                 }

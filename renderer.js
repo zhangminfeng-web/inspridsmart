@@ -28,20 +28,20 @@ $(document).ready(function(){
         };*/
 
         //打开数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+        //let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
-        /*//监听dataChannel数据打开事件
-        dataChannel.onopen = function(e){
+        //监听dataChannel数据打开事件
+        /*dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
         };*/
 
         //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);
+        //global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //3.获取本地数据流
         const localStream = await navigator.mediaDevices.getUserMedia({
             video:true,
-            audio:true
+            audio:false
         });
 
         //将本地媒体流数据保存成共享数据
@@ -52,9 +52,9 @@ $(document).ready(function(){
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        localStream.getTracks().forEach(t => {
+        /*localStream.getTracks().forEach(t => {
             peerConnection.addTrack(t);
-        });
+        });*/
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();

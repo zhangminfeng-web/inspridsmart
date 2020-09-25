@@ -75,7 +75,7 @@ exports.sendOfferIntercomInfo = async function(ip,options){
 exports.sendAnswerIntercomInfo = async function(ip,options){
     let answer = JSON.stringify(options);
     //向服务器发送answer信息
-    await client.send(answer,0,answer.length,global.INTERCOM_PORT,selfIp.getIPAdress(),function(err){
+    await client.send(answer,0,answer.length,global.INTERCOM_CLIENT_PORT,global.localhostIp,function(err){
         if(err != null){
             console.log(err);
         }
