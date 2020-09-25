@@ -55,7 +55,7 @@ exports.sendOfferIntercomInfo = async function(ip,options){
     //将远程的ip保存为共享数据
     global.receivedIp = ip;
     //selfIp.getIPAdress()
-    await client.send(offer,0,offer.length,global.INTERCOM_PORT,selfIp.getIPAdress(),function(err){
+    await client.send(offer,0,offer.length,global.INTERCOM_PORT,ip,function(err){
         if(err != null){
             console.log(err);
         }
@@ -72,17 +72,6 @@ exports.sendAnswerIntercomInfo = async function(ip,options){
         }
     });
 
-    //向浏览器端返回answer信息
-    /*Object.defineProperty(clientMsg,'offerMsg',{
-        get:(value) => {
-            callback(value);
-        },
-        set:(value) => {
-            callback(value);
-        }
-    });*/
-
-
 }
 
 //向服务端发送offer_ice信息给answerPc端
@@ -93,7 +82,7 @@ exports.sendOffer_ice = async function(options){
     }
     let offerCandidate = JSON.stringify(options);
     //global.receivedIp
-    client.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_CLIENT_PORT,selfIp.getIPAdress(),function(err){
+    client.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_CLIENT_PORT,global.receivedIp,function(err){
         if(err != null){
             console.log(err);
         }

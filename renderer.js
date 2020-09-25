@@ -4,10 +4,9 @@ let handleReceivedAnswer = require("./handles/HandlerReceivedAnswer");
 let handleReceivedOfferICE = require("./handles/handleReceivedOfferICE");
 let HandlerReceivedAnswerICE = require("./handles/HandlerReceivedAnswerICE");
 let global = require("./global/globalFile");
-let documentEl;
 
 $(document).ready(function(){
-    documentEl = $(this);
+    let documentEl = $(this);
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -148,10 +147,10 @@ $(document).ready(function(){
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
-    /*//answerPc端收到消息的时候，开打弹框
+    //answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
         console.log($(".intercom_model_bg"));
-
-    })*/
+        $(".intercom_model_bg").show();
+    })
 
 });

@@ -5,6 +5,9 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
+    //answerPc端接收到offer信息，就打开本地弹框
+    $(documentEl).trigger("openPopup");
+
     //获取本地视频流
     let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
