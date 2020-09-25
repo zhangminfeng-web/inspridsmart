@@ -53,9 +53,9 @@ $(document).ready(function(){
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        /*localStream.getTracks().forEach(t => {
+        localStream.getTracks().forEach(t => {
             peerConnection.addTrack(t);
-        });*/
+        });
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();

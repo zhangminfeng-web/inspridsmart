@@ -8,12 +8,12 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
-
-    //获取远程数据流
-   /* let remoteStream = await navigator.mediaDevices.getUserMedia({
-        video:true,
-        audio:true,
-    });*/
+    //接收offerPc端发送过来的媒体流数据
+    answerPc.ontrack = e => {
+        //将offerPc的媒体流通道，添加到远程媒体流中
+        /*remoteStream.addTrack(e.track);*/
+        console.log(e);
+    }
 
     //将远程remoteStream添加到全局共享数据中
     //global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
@@ -34,15 +34,6 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
             $(documentEl).trigger("answer_ice",[e.candidate]);
         }
     }
-
-
-    //接收offerPc端发送过来的媒体流数据
-    /*answerPc.ontrack = e => {
-        //将offerPc的媒体流通道，添加到远程媒体流中
-        remoteStream.addTrack(e.track);
-    }*/
-
-
 
     //当offerPc端通过数据通道(datachannel)发送过来信息时,在answerPc端用来接收消息的方法
     /*answerPc.ondatachannel = function(e){
