@@ -10,4 +10,4 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
     }
     console.log("offerPc端和answerPc端交换ice信息完成了");
 
-}
+};
