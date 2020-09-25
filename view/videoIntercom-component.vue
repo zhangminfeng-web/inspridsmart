@@ -50,8 +50,6 @@
                 let ip = El.attr("ip");
                 this.intercomTitle = El.text();
                 $(".intercom_model_bg").show();
-                console.log(1);
-                console.log(ip);
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
             },

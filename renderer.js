@@ -131,6 +131,12 @@ $(document).ready(function(){
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
+    //获取远程媒体流对象，并展示在页面中
+    $(documentEl).on("remoteMedia",function(e,data){
+        console.log("远程媒体流对象");
+        console.log(data);
+    })
+
 
     //
     //4.将本地流信息展示在video中

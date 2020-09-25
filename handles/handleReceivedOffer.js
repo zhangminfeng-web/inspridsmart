@@ -18,8 +18,8 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //接收offerPc端发送过来的媒体流数据
     answerPc.ontrack = e => {
         //将offerPc的媒体流通道，添加到远程媒体流中
-        console.log(1);
         remoteStream.addTrack(e.track);
+        $(documentEl).trigger("remoteMedia",[remoteStream]);
     }
 
     //在本地页面中预览远程的媒体流对象(remoteStream)
