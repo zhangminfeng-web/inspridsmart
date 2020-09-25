@@ -11,6 +11,12 @@ $(document).ready(function(){
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
 
+    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream) {
+        console.log("媒体流被添加了");
+        global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
+        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+    });
+
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip){
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
@@ -40,16 +46,16 @@ $(document).ready(function(){
         };*/
 
         //3.获取本地数据流
-        const localStream = await navigator.mediaDevices.getUserMedia({
-            video:true,
-            audio:false
-        });
-
-        //将本地媒体流数据保存成共享数据
-        global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
+        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //4.在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
+
+        //获取到远程媒体流对象
+        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+        //4.在本地预览本地媒体流对象(localStream)
+        document.getElementById('remote').srcObject = remoteStream;
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
@@ -130,22 +136,5 @@ $(document).ready(function(){
         //offerPc端处理,由answerPc端发送过来的ice信息
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
-
-    //获取远程媒体流对象，并展示在页面中
-    $(documentEl).on("remoteMedia",function(e,data){
-        console.log("远程媒体流对象");
-        console.log(data);
-        document.getElementById('remote').srcObject = data;
-    })
-
-
-    //
-    //4.将本地流信息展示在video中
-    //document.getElementById('remote').srcObject = remoteStream;
-    //监听接收answerPc端发送过来的媒体流数据
-    // peerConnection.ontrack = e => {
-    //     //将offerPc的媒体流通道，添加到远程媒体流中
-    //     remoteStream.addTrack(e.track);
-    // };
 
 });
