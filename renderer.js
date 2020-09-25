@@ -81,6 +81,7 @@ $(document).ready(function(){
 
     //offer端接收answer信息
     $(documentEl).on("localAnswer",function(e,data){
+        console.log("+++++++++");
         //本地接收answer信息
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });

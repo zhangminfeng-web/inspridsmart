@@ -2,6 +2,7 @@ const global = require("../global/globalFile");
 
 module.exports.receivedAnswer = async function(data,documentEl){
 
+    console.log("---------");
     //将type还原成offer
     data.type = "answer";
 
