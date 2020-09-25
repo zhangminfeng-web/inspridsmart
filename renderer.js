@@ -81,10 +81,8 @@ $(document).ready(function(){
 
     //offer端接收answer信息
     $(documentEl).on("localAnswer",function(e,data){
-        console.log("offer端接收answer信息");
-        console.log(data);
         //本地接收answer信息
-        //handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
+        handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
     //
