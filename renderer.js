@@ -89,6 +89,7 @@ $(document).ready(function(){
     $(documentEl).on("sendAnswerInfo",function(e,data,ip){
         //发送answer信息：data为answer信息
         intercom_intercom.sendAnswerIntercomInfo(ip,data);
+        console.log(1);
         $(".intercom_model_bg").show();
     });
 
