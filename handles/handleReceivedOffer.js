@@ -5,6 +5,15 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
+    //获取本地视频流
+    let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+
+    //通过getTracks()方法获取到媒体流设备轨道
+    //再通过addTrack()将每一个轨道添加到answerPc中
+    localStream.getTracks().forEach(t => {
+        answerPc.addTrack(t);
+    });
+
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
@@ -17,14 +26,6 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         //将offerPc的媒体流通道，添加到远程媒体流中
         remoteStream.addTrack(e.track);
     };
-
-    //通过getTracks()方法获取到媒体流设备轨道
-    //再通过addTrack()将每一个轨道添加到answerPc中
-   /* remoteStream.getTracks().forEach(t => {
-        answerPc.addTrack(t);
-    });*/
-
-
 
 
     //监听网路信息事件,获取网路信息

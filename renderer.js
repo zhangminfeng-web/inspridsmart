@@ -15,6 +15,13 @@ $(document).ready(function(){
         console.log("媒体流被添加了");
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+
+        //4.在本地预览本地媒体流对象(localStream)
+        document.getElementById('local').srcObject = localStream;
+
+        //4.将远程媒体流对象(localStream)，在本地预览
+        document.getElementById('remote').srcObject = remoteStream;
+
     });
 
     //发送offer事件
@@ -33,6 +40,15 @@ $(document).ready(function(){
             }
         };
 
+        //获取到远程媒体流对象
+        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+        //接收answerPc端发送过来的媒体流数据
+        peerConnection.ontrack = e => {
+            //将offerPc的媒体流通道，添加到远程媒体流中
+            remoteStream.addTrack(e.track);
+        };
+
         //创建一个数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
@@ -47,15 +63,6 @@ $(document).ready(function(){
 
         //3.获取本地数据流
         const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
-
-        //4.在本地预览本地媒体流对象(localStream)
-        document.getElementById('local').srcObject = localStream;
-
-        //获取到远程媒体流对象
-        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
-
-        //4.在本地预览本地媒体流对象(localStream)
-        document.getElementById('remote').srcObject = remoteStream;
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
