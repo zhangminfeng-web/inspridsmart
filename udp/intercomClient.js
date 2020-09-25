@@ -90,8 +90,6 @@ exports.sendAnswerIntercomInfo = async function(ip,options){
 
 //向服务端发送offer_ice信息
 exports.sendOffer_ice = async function(options){
-    console.log(2);
-    console.log(global.receivedIp);
     //再去发送candidate
     if(options.toJSON){
         delete  options.toJSON;

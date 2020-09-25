@@ -118,7 +118,6 @@ $(document).ready(function(){
             }
         }
 
-        console.log(1);
         intercom_intercom.sendOffer_ice(obj);
 
         //向服务器发送offer_ice信息
