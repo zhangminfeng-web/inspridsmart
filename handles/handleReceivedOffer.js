@@ -14,10 +14,6 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         answerPc.addTrack(t);
     });
 
-    //
-    console.log(1);
-    $(documentJq).find(".intercom_model_bg").show();
-
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 

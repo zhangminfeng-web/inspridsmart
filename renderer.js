@@ -4,9 +4,10 @@ let handleReceivedAnswer = require("./handles/HandlerReceivedAnswer");
 let handleReceivedOfferICE = require("./handles/handleReceivedOfferICE");
 let HandlerReceivedAnswerICE = require("./handles/HandlerReceivedAnswerICE");
 let global = require("./global/globalFile");
+let documentEl;
 
 $(document).ready(function(){
-    let documentEl = $(this);
+    documentEl = $(this);
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
