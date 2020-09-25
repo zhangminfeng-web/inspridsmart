@@ -3,13 +3,6 @@ const client = dgram.createSocket('udp4');
 const global = require('../global/globalFile');
 const selfIp = require('../global/getIpAdress');
 
-let clientMsg = {
-    "answerMsg": null,
-    "offerMsg": null,
-    "offerIce":null,
-    "answerIce":null,
-};
-
 let documentEl;
 
 //客户端关闭触发

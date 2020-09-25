@@ -19,12 +19,6 @@ $(document).ready(function(){
         //2.将peerConnection保存为全局共享数据
         global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
 
-        //创建一个数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel");
-
-        //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);
-
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
         peerConnection.onicecandidate = e => {
@@ -32,6 +26,12 @@ $(document).ready(function(){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
         };
+
+        //创建一个数据通道，用于传输数据
+        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+
+        //将dataChannel设置为全局共享数据
+        global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
         //主要用来向answerPc端，发送消息
