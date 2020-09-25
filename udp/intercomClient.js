@@ -30,6 +30,7 @@ client.on('message',(msg,rinfo)=>{
             $(documentEl).trigger("receivedOffer",[obj]);
             break;
         case "offer":
+            console.log("&&&&&&&&");
             $(documentEl).trigger("localAnswer",[obj]);
             break;
         case "candidate":
