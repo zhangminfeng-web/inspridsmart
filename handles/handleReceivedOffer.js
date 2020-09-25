@@ -5,6 +5,12 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
+    console.log(1);
+
+    //将answerPc保存为全局共享数据
+    global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
+
+
     //获取远程数据流
    /* let remoteStream = await navigator.mediaDevices.getUserMedia({
         video:true,
@@ -20,8 +26,16 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         answerPc.addTrack(t);
     });*/
 
-    //将answerPc保存为全局共享数据
-    global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
+
+
+
+    //监听网路信息事件,获取网路信息
+    //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
+    answerPc.onicecandidate = e => {
+        if(e.candidate){
+            $(documentEl).trigger("answer_ice",[e.candidate]);
+        }
+    }
 
 
     //接收offerPc端发送过来的媒体流数据
@@ -30,13 +44,7 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         remoteStream.addTrack(e.track);
     }*/
 
-    //将数据通道打开之后，监听网路信息的事件
-    /*answerPc.onicecandidate = e => {
-        //获取offer_ice信息，并通过网络服务端转发给offerPc
-        if(e.candidate){
-            $(documentEl).trigger("answer_ice",[e.candidate]);
-        }
-    }*/
+
 
     //answerPc添加一个打开的dataChannel的事件监听
     //用于接收offerPc端通过dataChannel通道发送过来的数据

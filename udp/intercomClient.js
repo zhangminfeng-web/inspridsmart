@@ -33,13 +33,17 @@ client.on('message',(msg,rinfo)=>{
             $(documentEl).trigger("localAnswer",[obj]);
             break;
         case "candidate":
-            console.log("客户端收到了candidate消息");
+
+            //answerPc客户端接收到了offerPc端发送过来的ice信息
             if(obj.offer_ice){
                 $(documentEl).trigger("offerPc_ice",[obj]);
             }
+
+            //offerPc客户端接收到了answerPc端发送过来的ice信息
             if(obj.answer_ice){
-                clientMsg.answerIce = obj;
+                $(documentEl).trigger("answerPc_ice",[obj]);
             }
+
             break;
         default:
 
@@ -88,7 +92,7 @@ exports.sendAnswerIntercomInfo = async function(ip,options){
 
 }
 
-//向服务端发送offer_ice信息
+//向服务端发送offer_ice信息给answerPc端
 exports.sendOffer_ice = async function(options){
     //再去发送candidate
     if(options.toJSON){
@@ -101,42 +105,18 @@ exports.sendOffer_ice = async function(options){
             console.log(err);
         }
     });
-
-    //接收到服务器端发送offer_ice信息
-    /*Object.defineProperty(clientMsg,'offerIce',{
-        get:(value) => {
-            callback(value);
-        },
-        set:(value) => {
-            callback(value);
-        }
-    });*/
-
-
 }
 
-exports.sendAnswer_ice = async function(ip,options,callback){
-
+//向服务器发送answer_ice信息给offerPc端
+exports.sendAnswer_ice = async function(options){
     //发送answer_ice的candidate消息
     if(options.toJSON){
         delete  options.toJSON;
     }
-
     let answerCandidate = JSON.stringify(options);
-
-    await client.send(answerCandidate,0,answerCandidate.length,global.INTERCOM_PORT,ip,function(err){
+    await client.send(answerCandidate,0,answerCandidate.length,global.INTERCOM_CLIENT_PORT,global.localhostIp,function(err){
         if(err != null){
            console.log(err);
-        }
-    });
-
-    //接收到服务器端发送offer_ice信息
-    Object.defineProperty(clientMsg,'answerIce',{
-        get:(value) => {
-            callback(value);
-        },
-        set:(value) => {
-            callback(value);
         }
     });
 

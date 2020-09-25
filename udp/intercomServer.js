@@ -33,24 +33,24 @@ server.on("message", function (msg, rinfo){
             });
             break;
         case "candidate":
+            //接收offerPc端向answerPc端发送的ice信息,并转发给自己的客户端
             if(obj.offer_ice){
-                let candidate = msg.toString();
-                server.send(candidate,0,candidate.length,global.INTERCOM_CLIENT_PORT,global.receivedIp, function(err, bytes) {
+                let offerCandidate = msg.toString();
+                server.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_CLIENT_PORT,global.receivedIp, function(err, bytes) {
                     if(err != null){
                         console.log(err);
                     }
                 });
             }
-
-            /*if(obj.answer_ice){
-                let candidate = msg.toString();
-                server.send(candidate,0,candidate.length,global.INTERCOM_CLIENT_PORT, rinfo.address, function(err, bytes) {
+            //接收answerPc端向offerPc端发送的ice信息,并转发给自己的客户端
+            if(obj.answer_ice){
+                let answerCandidate = msg.toString();
+                server.send(answerCandidate,0,answerCandidate.length,global.INTERCOM_CLIENT_PORT,global.localhostIp,function(err, bytes) {
                     if(err != null){
                         console.log(err);
                     }
                 });
-            }*/
-
+            }
             break;
         default:
     }

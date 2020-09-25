@@ -88,24 +88,6 @@ $(document).ready(function(){
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
-    //answerPc端接收到了offerPc端的ice消息
-    $(documentEl).on("offerPc_ice",function(e,data){
-        console.log("answerPc端接收到了Ice信息");
-        console.log(data);
-        //handleReceivedOfferICE.receivedOfferICE(data,documentEl,data.address);
-    })
-
-    //
-    //4.将本地流信息展示在video中
-    //document.getElementById('remote').srcObject = remoteStream;
-    //监听接收answerPc端发送过来的媒体流数据
-    // peerConnection.ontrack = e => {
-    //     //将offerPc的媒体流通道，添加到远程媒体流中
-    //     remoteStream.addTrack(e.track);
-    // };
-
-
-
     //发送offer_ice消息
     $(documentEl).on("offer_ice",function(e,data){
         let obj = {};
@@ -120,16 +102,15 @@ $(document).ready(function(){
 
         intercom_intercom.sendOffer_ice(obj);
 
-        //向服务器发送offer_ice信息
-        /*intercom_intercom.sendOffer_ice(obj.address,obj,function(data){
-            //answer端接受到服务器返回的offer_ice
-            //answer端处理offerICE
-
-        })*/
-
     });
 
-    //发送answer_ice
+    //answerPc端接收到了offerPc端的ice消息
+    $(documentEl).on("offerPc_ice",function(e,data){
+        //在answerPc端处理ice信息
+        handleReceivedOfferICE.receivedOfferICE(data,documentEl);
+    });
+
+    //answerPc端发送answer_ice信息给offerPc端
     $(documentEl).on("answer_ice",function(e,data){
         let obj = {};
         for(let key in data){
@@ -141,15 +122,30 @@ $(document).ready(function(){
             }
         }
 
+        intercom_intercom.sendAnswer_ice(obj)
+
         //向服务器发送answer_ice信息
-        intercom_intercom.sendAnswer_ice(obj.address,obj,function(data){
+        /*intercom_intercom.sendAnswer_ice(obj.address,obj,function(data){
             //offerPc端接受到服务器返回的answer_ice
             //offerPc端处理answer_ice消息
-            HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl,data.address);
-        })
-
-
+            //HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl,data.address);
+        })*/
     })
 
+    //offerPc客户端接收到了answerPc端发送过来的ice信息
+    $(documentEl).on("answerPc_ice",function(e,data){
+        console.log("offerPc客户端接收到了answerPc端发送过来的ice信息");
+        console.log(data);
+    });
+
+
+    //
+    //4.将本地流信息展示在video中
+    //document.getElementById('remote').srcObject = remoteStream;
+    //监听接收answerPc端发送过来的媒体流数据
+    // peerConnection.ontrack = e => {
+    //     //将offerPc的媒体流通道，添加到远程媒体流中
+    //     remoteStream.addTrack(e.track);
+    // };
 
 });
