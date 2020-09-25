@@ -89,6 +89,7 @@ $(document).ready(function(){
     $(documentEl).on("sendAnswerInfo",function(e,data,ip){
         //发送answer信息：data为answer信息
         intercom_intercom.sendAnswerIntercomInfo(ip,data);
+        $(".intercom_model_bg").show();
     });
 
     //answerPc端收到offerPc端的信息了
@@ -147,10 +148,10 @@ $(document).ready(function(){
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
-    //answerPc端收到消息的时候，开打弹框
+    /*//answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
         console.log($(".intercom_model_bg"));
-        $(".intercom_model_bg").show();
-    })
+
+    })*/
 
 });
