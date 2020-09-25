@@ -33,12 +33,11 @@ $(document).ready(function(){
             }
         };
 
-        //监听dataChannel数据打开事件
-        /*dataChannel.onopen = function(e){
+        //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
+        //主要用来向answerPc端，发送消息
+        dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
-        };*/
-
-
+        };
 
         //3.获取本地数据流
         const localStream = await navigator.mediaDevices.getUserMedia({

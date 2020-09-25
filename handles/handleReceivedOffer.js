@@ -44,14 +44,14 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
 
 
 
-    //answerPc添加一个打开的dataChannel的事件监听
-    //用于接收offerPc端通过dataChannel通道发送过来的数据
-    // answerPc.ondatachannel = function(e){
-    //     let dataChannel = e.channel;
-    //     dataChannel.onmessage = ev => {
-    //         console.log(ev);
-    //     }
-    // }
+    //当offerPc端通过数据通道(datachannel)发送过来信息时,在answerPc端用来接收消息的方法
+    answerPc.ondatachannel = function(e){
+        let dataChannel = e.channel;
+        dataChannel.onmessage = ev => {
+            console.log("answerPc端接收到了信息");
+            console.log(ev);
+        }
+    }
 
     //将type还原成offer
     data.type = "offer";
