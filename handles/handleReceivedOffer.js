@@ -9,7 +9,9 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
     //获取远程媒体流对象(remoteStream)
-    let remoteStream = global.get(global.KEY_REMOTE_MEDIA_STREAM);
+    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+    console.log(remoteStream);
 
     //接收offerPc端发送过来的媒体流数据
     answerPc.ontrack = e => {
