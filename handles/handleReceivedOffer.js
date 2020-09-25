@@ -8,16 +8,22 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
-    //获取远程媒体流对象(remoteStream)
-    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
-    console.log(remoteStream);
+    //创建一个远程的媒体流对象
+    let remoteStream = new MediaStream();
+
+    //将它远程的媒体流对象(remoteStream)保存为全局共享数据
+    global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
     //接收offerPc端发送过来的媒体流数据
     answerPc.ontrack = e => {
         //将offerPc的媒体流通道，添加到远程媒体流中
+        console.log(1);
         remoteStream.addTrack(e.track);
     }
+
+    //在本地页面中预览远程的媒体流对象(remoteStream)
+    // document.getElementById('remote').srcObject = remoteStream;
 
     //将远程remoteStream添加到全局共享数据中
     //global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);

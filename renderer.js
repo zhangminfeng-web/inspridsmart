@@ -51,15 +51,6 @@ $(document).ready(function(){
         //4.在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
 
-        //创建一个远程的媒体流对象
-        let remoteStream = new MediaStream();
-
-        //将它远程的媒体流对象(remoteStream)保存为全局共享数据
-        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
-
-        //在本地页面中预览远程的媒体流对象(remoteStream)
-        document.getElementById('remote').srcObject = remoteStream;
-
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
