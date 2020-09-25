@@ -20,10 +20,7 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
         //将offerPc的媒体流通道，添加到远程媒体流中
         remoteStream.addTrack(e.track);
         $(documentEl).trigger("remoteMedia",[remoteStream]);
-    }
-
-    //在本地页面中预览远程的媒体流对象(remoteStream)
-    // document.getElementById('remote').srcObject = remoteStream;
+    };
 
     //将远程remoteStream添加到全局共享数据中
     //global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);

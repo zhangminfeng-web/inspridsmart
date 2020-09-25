@@ -135,6 +135,7 @@ $(document).ready(function(){
     $(documentEl).on("remoteMedia",function(e,data){
         console.log("远程媒体流对象");
         console.log(data);
+        document.getElementById('remote').srcObject = data;
     })
 
 
