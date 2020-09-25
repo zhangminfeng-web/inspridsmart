@@ -147,4 +147,9 @@ $(document).ready(function(){
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
+    //answerPc端收到消息的时候，开打弹框
+    $(documentEl).on("openPopup",function(e){
+        $(".intercom_model_bg").show();
+    })
+
 });
