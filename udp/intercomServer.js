@@ -13,6 +13,8 @@ server.on("error", function (err) {
 
 server.on("message", function (msg, rinfo){
     let obj = JSON.parse(msg.toString());
+    console.log(obj);
+    console.log("-----");
     switch(obj.type) {
         case "answer":
             //将本地的ip保存为共享数据
@@ -33,12 +35,26 @@ server.on("message", function (msg, rinfo){
             });
             break;
         case "candidate":
-            let candidate = msg.toString();
-            server.send(candidate,0,candidate.length, rinfo.port, rinfo.address, function(err, bytes) {
-                if(err != null){
-                    console.log(err);
-                }
-            });
+            console.log("服务端");
+            console.log(obj);
+            if(obj.offer_ice){
+                let candidate = msg.toString();
+                server.send(candidate,0,candidate.length,global.INTERCOM_CLIENT_PORT,global.receivedIp, function(err, bytes) {
+                    if(err != null){
+                        console.log(err);
+                    }
+                });
+            }
+
+            /*if(obj.answer_ice){
+                let candidate = msg.toString();
+                server.send(candidate,0,candidate.length,global.INTERCOM_CLIENT_PORT, rinfo.address, function(err, bytes) {
+                    if(err != null){
+                        console.log(err);
+                    }
+                });
+            }*/
+
             break;
         default:
     }

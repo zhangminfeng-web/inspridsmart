@@ -30,13 +30,12 @@ client.on('message',(msg,rinfo)=>{
             $(documentEl).trigger("receivedOffer",[obj]);
             break;
         case "offer":
-            console.log("&&&&&&&&");
             $(documentEl).trigger("localAnswer",[obj]);
             break;
         case "candidate":
             console.log("客户端收到了candidate消息");
             if(obj.offer_ice){
-                clientMsg.offerIce = obj;
+                $(documentEl).trigger("offerPc_ice",[obj]);
             }
             if(obj.answer_ice){
                 clientMsg.answerIce = obj;
@@ -90,27 +89,30 @@ exports.sendAnswerIntercomInfo = async function(ip,options){
 }
 
 //向服务端发送offer_ice信息
-exports.sendOffer_ice = async function(ip,options,callback){
+exports.sendOffer_ice = async function(options){
+    console.log(2);
+    console.log(global.receivedIp);
     //再去发送candidate
     if(options.toJSON){
         delete  options.toJSON;
     }
     let offerCandidate = JSON.stringify(options);
-    await client.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_PORT,ip,function(err){
+    //selfIp.getIPAdress()
+    client.send(offerCandidate,0,offerCandidate.length,global.INTERCOM_CLIENT_PORT,global.receivedIp,function(err){
         if(err != null){
             console.log(err);
         }
     });
 
     //接收到服务器端发送offer_ice信息
-    Object.defineProperty(clientMsg,'offerIce',{
+    /*Object.defineProperty(clientMsg,'offerIce',{
         get:(value) => {
             callback(value);
         },
         set:(value) => {
             callback(value);
         }
-    });
+    });*/
 
 
 }

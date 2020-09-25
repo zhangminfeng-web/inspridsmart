@@ -20,28 +20,31 @@ $(document).ready(function(){
         //2.将peerConnection保存为全局共享数据
         global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
 
-        //将数据通道打开之后，监听网路信息的事件
-        /*peerConnection.onicecandidate = e => {
+        //创建一个数据通道，用于传输数据
+        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+
+        //将dataChannel设置为全局共享数据
+        global.setData(global.KEY_DATACHANNEL,dataChannel);
+
+        //当dataChannel通道打开后,监听网路信息事件,获取网路信息
+        //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
+        peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };*/
-
-        //打开数据通道，用于传输数据
-        //let dataChannel = peerConnection.createDataChannel("MessageChannel");
+        };
 
         //监听dataChannel数据打开事件
         /*dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
         };*/
 
-        //将dataChannel设置为全局共享数据
-        //global.setData(global.KEY_DATACHANNEL,dataChannel);
+
 
         //3.获取本地数据流
         const localStream = await navigator.mediaDevices.getUserMedia({
             video:true,
-            audio:false
+            audio:true
         });
 
         //将本地媒体流数据保存成共享数据
@@ -81,10 +84,16 @@ $(document).ready(function(){
 
     //offer端接收answer信息
     $(documentEl).on("localAnswer",function(e,data){
-        console.log("+++++++++");
         //本地接收answer信息
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
+
+    //answerPc端接收到了offerPc端的ice消息
+    $(documentEl).on("offerPc_ice",function(e,data){
+        console.log("answerPc端接收到了Ice信息");
+        console.log(data);
+        //handleReceivedOfferICE.receivedOfferICE(data,documentEl,data.address);
+    })
 
     //
     //4.将本地流信息展示在video中
@@ -109,12 +118,15 @@ $(document).ready(function(){
             }
         }
 
+        console.log(1);
+        intercom_intercom.sendOffer_ice(obj);
+
         //向服务器发送offer_ice信息
-        intercom_intercom.sendOffer_ice(obj.address,obj,function(data){
+        /*intercom_intercom.sendOffer_ice(obj.address,obj,function(data){
             //answer端接受到服务器返回的offer_ice
             //answer端处理offerICE
-            handleReceivedOfferICE.receivedOfferICE(data,documentEl,data.address);
-        })
+
+        })*/
 
     });
 
