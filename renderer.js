@@ -13,7 +13,6 @@ $(document).ready(function(){
 
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip){
-        console.log("发送answer");
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
         let peerConnection = new RTCPeerConnection();
 
@@ -122,20 +121,15 @@ $(document).ready(function(){
             }
         }
 
+        //向服务器发送answer_ice信息
         intercom_intercom.sendAnswer_ice(obj)
 
-        //向服务器发送answer_ice信息
-        /*intercom_intercom.sendAnswer_ice(obj.address,obj,function(data){
-            //offerPc端接受到服务器返回的answer_ice
-            //offerPc端处理answer_ice消息
-            //HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl,data.address);
-        })*/
     })
 
     //offerPc客户端接收到了answerPc端发送过来的ice信息
     $(documentEl).on("answerPc_ice",function(e,data){
-        console.log("offerPc客户端接收到了answerPc端发送过来的ice信息");
-        console.log(data);
+        //offerPc端处理,由answerPc端发送过来的ice信息
+        HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
 

@@ -5,8 +5,6 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
     //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
-    console.log(1);
-
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
