@@ -63,14 +63,28 @@ $(document).ready(function(){
         await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
         offer.type = "answer";
 
-        //7.发送answer
+        //7.发送offer
         await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
 
+    });
+
+    //发送answer事件
+    $(documentEl).on("sendAnswerInfo",function(e,data,ip){
+        //发送answer信息：data为answer信息
+        intercom_intercom.sendAnswerIntercomInfo(ip,data);
     });
 
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
         handleReceivedOffer.receivedOffer(data,documentEl,global.receivedIp);
+    });
+
+    //offer端接收answer信息
+    $(documentEl).on("localAnswer",function(e,data){
+        console.log("offer端接收answer信息");
+        console.log(data);
+        //本地接收answer信息
+        //handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
     });
 
     //
@@ -82,19 +96,7 @@ $(document).ready(function(){
     //     remoteStream.addTrack(e.track);
     // };
 
-    //发送answer事件
-    $(documentEl).on("sendAnswerInfo",function(e,data,ip){
-        //发送answer信息：data为answer信息
-        intercom_intercom.sendAnswerIntercomInfo(ip,data);
-    });
 
-    //offer端接收answer信息
-    $(documentEl).on("localAnswer",function(e,data){
-        let ip = data.ip;
-        delete data.ip;
-        //本地接收answer信息
-        handleReceivedAnswer.receivedAnswer(data,documentEl,ip);
-    })
 
     //发送offer_ice消息
     $(documentEl).on("offer_ice",function(e,data){

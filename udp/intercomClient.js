@@ -30,22 +30,16 @@ client.on('message',(msg,rinfo)=>{
             $(documentEl).trigger("receivedOffer",[obj]);
             break;
         case "offer":
-            console.log("收到服务端发送来的offer请求");
-            /*obj.ip = rinfo.address;
-            clientMsg.offerMsg = obj;*/
-            console.log(obj);
-
+            $(documentEl).trigger("localAnswer",[obj]);
             break;
         case "candidate":
             console.log("客户端收到了candidate消息");
             if(obj.offer_ice){
                 clientMsg.offerIce = obj;
             }
-
             if(obj.answer_ice){
                 clientMsg.answerIce = obj;
             }
-
             break;
         default:
 
