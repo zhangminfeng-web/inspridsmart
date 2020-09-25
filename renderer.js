@@ -16,6 +16,12 @@ $(document).ready(function(){
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
+        //创建一个数据通道，用于传输数据
+        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+
+        //将dataChannel设置为全局共享数据
+        global.setData(global.KEY_DATACHANNEL,dataChannel);
+
         //4.在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
 
@@ -48,12 +54,6 @@ $(document).ready(function(){
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
         };
-
-        //创建一个数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel");
-
-        //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
         //主要用来向answerPc端，发送消息
