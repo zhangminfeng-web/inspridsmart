@@ -149,6 +149,7 @@ $(document).ready(function(){
 
     //answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
+        console.log($(".intercom_model_bg"));
         $(".intercom_model_bg").show();
     })
 
