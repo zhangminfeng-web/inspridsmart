@@ -45,13 +45,13 @@ module.exports.receivedOffer = async function(data,documentEl,ip){
 
 
     //当offerPc端通过数据通道(datachannel)发送过来信息时,在answerPc端用来接收消息的方法
-    answerPc.ondatachannel = function(e){
+    /*answerPc.ondatachannel = function(e){
         let dataChannel = e.channel;
         dataChannel.onmessage = ev => {
             console.log("answerPc端接收到了信息");
             console.log(ev);
         }
-    }
+    }*/
 
     //将type还原成offer
     data.type = "offer";

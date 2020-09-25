@@ -28,16 +28,16 @@ $(document).ready(function(){
         };
 
         //创建一个数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+        //let dataChannel = peerConnection.createDataChannel("MessageChannel");
 
         //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);
+        //global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
         //主要用来向answerPc端，发送消息
-        dataChannel.onopen = function(e){
+        /*dataChannel.onopen = function(e){
             dataChannel.send("hello RTC");
-        };
+        };*/
 
         //3.获取本地数据流
         const localStream = await navigator.mediaDevices.getUserMedia({
