@@ -193,6 +193,7 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
+
         //answerPc.close();
 
         //5.关闭监听ice信息的方法
