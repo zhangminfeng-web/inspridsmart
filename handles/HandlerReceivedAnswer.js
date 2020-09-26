@@ -2,10 +2,6 @@ const global = require("../global/globalFile");
 
 module.exports.receivedAnswer = async function(data,documentEl){
 
-    //
-    console.log(1);
-    //$(documentEl).find(".intercom_model_bg").show();
-
     //将type还原成offer
     data.type = "answer";
 
