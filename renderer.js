@@ -192,7 +192,7 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-        //answerPc.close();
+        answerPc.close();
 
         //5.关闭监听ice信息的方法
         answerPc.onicecandidate = null;
@@ -204,8 +204,15 @@ $(document).ready(function(){
         $(".intercom_model_bg").hide();
 
         //8.提示关闭弹框
-        console.log(answerPc);
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
+
+        //9.重置初始化方法
+        $(documentEl).trigger("sendMediaStreamObj",[
+            global.getData(global.KEY_LOCAL_MEDIA_STREAM),
+            global.getData(global.KEY_REMOTE_MEDIA_STREAM),
+            vueObj,
+            global.getData(global.LAYER_OBJ)
+        ])
 
     });
 
@@ -223,7 +230,7 @@ $(document).ready(function(){
         document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
-        //offerPc.close();
+        offerPc.close();
 
         //5.关闭监听ice信息的方法
         offerPc.onicecandidate = null;
@@ -235,8 +242,15 @@ $(document).ready(function(){
         $(".intercom_model_bg").hide();
 
         //8.提示关闭弹框
-        console.log(offerPc);
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
+
+        //9.重置初始化方法
+        $(documentEl).trigger("sendMediaStreamObj",[
+            global.getData(global.KEY_LOCAL_MEDIA_STREAM),
+            global.getData(global.KEY_REMOTE_MEDIA_STREAM),
+            vueObj,
+            global.getData(global.LAYER_OBJ)
+        ])
     });
 
 });
