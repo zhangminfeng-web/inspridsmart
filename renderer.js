@@ -192,7 +192,7 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-        answerPc.close();
+        //answerPc.close();
 
         //5.关闭监听ice信息的方法
         answerPc.onicecandidate = null;
@@ -202,6 +202,10 @@ $(document).ready(function(){
 
         //7.关闭本地弹框
         $(".intercom_model_bg").hide();
+
+        //8.提示关闭弹框
+        console.log(answerPc);
+        global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
     });
 
@@ -219,7 +223,7 @@ $(document).ready(function(){
         document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
-        offerPc.close();
+        //offerPc.close();
 
         //5.关闭监听ice信息的方法
         offerPc.onicecandidate = null;
