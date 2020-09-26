@@ -92,7 +92,7 @@
                 unitId:null,    //选中的单元id
             }
         },
-        created(){
+        mounted(){
             axios.get(this.baseURLS+"/").then(res => {
                 let obj = res.data;
                 if(obj.code == 0){

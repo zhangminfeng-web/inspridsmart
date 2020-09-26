@@ -39,7 +39,7 @@
                 policeList:[],
             }
         },
-        created(){
+        mounted(){
             this.init();
         },
         methods:{

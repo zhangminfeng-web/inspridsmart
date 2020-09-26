@@ -25,7 +25,7 @@
                 baseURLS:"http://localhost:43839",    ////全局网址
             }
         },
-        created(){
+        mounted(){
             this.init();
         },
         methods:{

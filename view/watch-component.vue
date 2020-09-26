@@ -54,7 +54,7 @@
                 timer:null,     //定时器参数
             }
         },
-        created(){
+        mounted(){
             //初始化网页数据
             this.init();
         },

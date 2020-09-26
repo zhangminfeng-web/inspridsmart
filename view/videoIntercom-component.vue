@@ -46,7 +46,7 @@
                 intercomTitle:"",    //弹框标题
             }
         },
-        created(){
+        mounted(){
             this.init();
         },
         methods:{

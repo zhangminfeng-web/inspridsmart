@@ -59,6 +59,7 @@
             documentJq = $(this);
         });
     </script>
+    <script src="./renderer.js"></script>
     <script src="./public/js/vue.js"></script>
     <script src="./public/js/http-vue-loader.js"></script>
     <script src="./node_modules/axios/dist/axios.js"></script>
@@ -70,7 +71,7 @@
 
             Vue.use(httpVueLoader);
 
-            new Vue({
+            let vueApp =new Vue({
                 el:"#app",
                 components:{
                     'index-component':'url:./view/index-component.vue',
@@ -108,6 +109,5 @@
             })
         });
     </script>
-    <script src="./renderer.js"></script>
 </body>
 </html>
