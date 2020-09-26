@@ -27,7 +27,7 @@
                     <video controls id="local" class="video1" autoplay></video>
                     <video controls id="remote" class="video2" autoplay></video>
                     <div class="btn-group-box">
-                        <button type="button" class="btn btn-danger" id="localClose">挂断</button>
+                        <button type="button" class="btn btn-danger" @click="localCloseVideo" id="localClose">挂断</button>
                         <button type="button" class="btn btn-success" @click="receivedStreamVideo" id="remoteAccept">接受</button>
                         <button type="button" class="btn btn-danger" @click="remoteCloseVideo" id="remoteClose">挂断</button>
                     </div>
@@ -62,9 +62,13 @@
                 let El = $(event.currentTarget);
                 El.trigger("receviedVideoMsg");
             },
-            remoteCloseVideo(event){  //answerPc端关闭可视对讲
+            remoteCloseVideo(event){  //answerPc端挂断可视对讲
                 let El = $(event.currentTarget);
                 El.trigger("answerPcCloseVideoStream");
+            },
+            localCloseVideo(event){  //offerPc端挂断可视对讲
+                let El = $(event.currentTarget);
+                El.trigger("offerPcCloseVideoStream");
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {

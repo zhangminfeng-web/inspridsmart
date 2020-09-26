@@ -176,10 +176,54 @@ $(document).ready(function(){
         //待定逻辑，还未编写
     });
 
-    //answerPc端关闭可视对讲通过
+    //answerPc端挂断可视对讲时触发
     $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
-        console.log("需要关闭视频流");
+        //1.获取本地连接对象
+        let answerPc = global.getData(global.KEY_ANSWER_PEER_CONNECTION);
 
-    })
+        //2.发送挂断信息给offerPc端
+
+
+        //3.将本地远程remote video标签设置为null
+        document.getElementById('remote').srcObject = null;
+
+        //4.关闭本地连接对象
+        answerPc.close();
+
+        //5.关闭监听ice信息的方法
+        answerPc.onicecandidate = null;
+
+        //6.关闭监听添加媒体流函数
+        answerPc.onaddstream = null;
+
+        //7.关闭本地弹框
+        $(".intercom_model_bg").hide();
+
+    });
+
+
+    //offerPc端挂断可视对讲时触发
+    $(documentEl).on("offerPcCloseVideoStream","#localClose",function(e){
+        //1.获取本地连接对象
+        let offerPc = global.getData(global.KEY_OFFER_PEER_CONNECTION);
+
+        //2.发送挂断信息给answerPc端
+
+
+        //3.将本地远程remote video标签设置为null
+        document.getElementById('local').srcObject = null;
+
+        //4.关闭本地连接对象
+        offerPc.close();
+
+        //5.关闭监听ice信息的方法
+        offerPc.onicecandidate = null;
+
+        //6.关闭监听添加媒体流函数
+        offerPc.onaddstream = null;
+
+        //7.关闭本地弹框
+        $(".intercom_model_bg").hide();
+    });
 
 });
