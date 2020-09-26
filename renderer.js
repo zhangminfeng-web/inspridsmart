@@ -158,9 +158,8 @@ $(document).ready(function(){
     //answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
         //获取vue的实例对象
-        let Vues = global.getData(global.VUE_APP_OBJ);
-        console.log(Vues);
-        Vues.showComponentValue = 3;
+        global.getData(global.VUE_APP_OBJ).showComponentValue = 3;
+        console.log(global.getData(global.VUE_APP_OBJ).showComponentValue);
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
