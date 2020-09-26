@@ -7,18 +7,20 @@ let global = require("./global/globalFile");
 
 $(document).ready(function(){
     let documentEl = $(this);
-    let vueApp = null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
 
-    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp) {
+    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp,layer) {
         console.log("媒体流被添加了");
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
         //将vue实例，保存为全局共享数据
         global.setData(global.VUE_APP_OBJ,vueApp);
+
+        //将layer实例，保存为全局共享数据
+        global.setData(global.LAYER_OBJ,layer);
 
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
         let peerConnection = new RTCPeerConnection();
@@ -204,6 +206,7 @@ $(document).ready(function(){
 
     //offerPc端挂断可视对讲时触发
     $(documentEl).on("offerPcCloseVideoStream","#localClose",function(e){
+        console.log(global.getData(global.KEY_OFFER_PEER_CONNECTION));
         //1.获取本地连接对象
         let offerPc = global.getData(global.KEY_OFFER_PEER_CONNECTION);
 
@@ -224,6 +227,10 @@ $(document).ready(function(){
 
         //7.关闭本地弹框
         $(".intercom_model_bg").hide();
+
+        //8.提示关闭弹框
+        console.log(offerPc);
+        global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
     });
 
 });

@@ -103,7 +103,7 @@
                     },
                     sendMediaStream(localStream,remoteStream){
                         //将媒体流对象发送给客户端
-                        $(documentJq).trigger("sendMediaStreamObj",[localStream,remoteStream,vueApp]);
+                        $(documentJq).trigger("sendMediaStreamObj",[localStream,remoteStream,vueApp,layer]);
                     }
                 }
             })
