@@ -28,9 +28,7 @@
                     <video controls id="remote" class="video2" autoplay></video>
                     <div class="btn-group-box">
                         <button type="button" class="btn btn-danger" id="localClose">挂断</button>
-                        &emsp;
                         <button type="button" class="btn btn-success" id="remoteAccept">接收</button>
-                        &emsp;
                         <button type="button" class="btn btn-danger" id="remoteClose">挂断</button>
                     </div>
                 </div>
@@ -96,6 +94,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .btn-group-box>button{
+        margin-right:5px;
+        display:none;
+    }
+
+    .btn-group-box>button:last-child{
+        margin-right:0;
     }
 
     .video_intercom{
