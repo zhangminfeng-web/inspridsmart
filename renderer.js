@@ -7,6 +7,7 @@ let global = require("./global/globalFile");
 
 $(document).ready(function(){
     let documentEl = $(this);
+    let vueObj = null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -16,9 +17,8 @@ $(document).ready(function(){
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
-        //将vue实例，保存为全局共享数据
-        console.log(vueApp);
-        global.setData(global.VUE_APP_OBJ,vueApp);
+        //将vue实例保存为全局变量
+        vueObj = vueApp;
 
         //将layer实例，保存为全局共享数据
         global.setData(global.LAYER_OBJ,layer);
@@ -158,14 +158,12 @@ $(document).ready(function(){
     //answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
         //获取vue的实例对象
-        global.getData(global.VUE_APP_OBJ).showComponentValue = 3;
-        console.log(global.getData(global.VUE_APP_OBJ).showComponentValue);
-        global.getData(global.VUE_APP_OBJ).$forceUpdate();
+        vueObj.showComponentValue = 3;
+        vueObj.$forceUpdate();
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
         console.log(3);
-        console.log(global.getData(global.VUE_APP_OBJ));
     });
 
     //answerPc点击接收按钮，同意接收视频流消息
