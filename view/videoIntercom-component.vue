@@ -27,9 +27,11 @@
                     <video controls id="local" class="video1" autoplay></video>
                     <video controls id="remote" class="video2" autoplay></video>
                     <div class="btn-group-box">
-                        <button type="button" class="btn btn-danger">挂断</button>
-                        <button type="button" class="btn btn-success">接收</button>
-                        <button type="button" class="btn btn-danger">挂断</button>
+                        <button type="button" class="btn btn-danger" id="localClose">挂断</button>
+                        &emsp;
+                        <button type="button" class="btn btn-success" id="remoteAccept">接收</button>
+                        &emsp;
+                        <button type="button" class="btn btn-danger" id="remoteClose">挂断</button>
                     </div>
                 </div>
             </div>
@@ -54,6 +56,7 @@
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
                 /*this.intercomTitle = El.text();*/
+                $("#localClose").show();
                 $(".intercom_model_bg").show();
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
@@ -92,7 +95,7 @@
         clear: both;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
     }
 
     .video_intercom{
