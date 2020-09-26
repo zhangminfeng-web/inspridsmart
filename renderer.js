@@ -164,7 +164,6 @@ $(document).ready(function(){
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
-        console.log(3);
     });
 
     //answerPc点击接收按钮，同意接收视频流消息
@@ -193,8 +192,11 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-
         //answerPc.close();
+
+        //关闭远程按钮
+        $("#remoteAccept").hide();
+        $("#remoteClose").hide();
 
         //5.关闭监听ice信息的方法
         //answerPc.onicecandidate = null;
@@ -204,6 +206,9 @@ $(document).ready(function(){
 
         //7.关闭本地弹框
         $(".intercom_model_bg").hide();
+
+        //关闭本地按钮
+        $("#localClose").hide();
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
@@ -221,7 +226,7 @@ $(document).ready(function(){
 
     //offerPc端挂断可视对讲时触发
     $(documentEl).on("offerPcCloseVideoStream","#localClose",function(e){
-        console.log(global.getData(global.KEY_OFFER_PEER_CONNECTION));
+
         //1.获取本地连接对象
         let offerPc = global.getData(global.KEY_OFFER_PEER_CONNECTION);
 
