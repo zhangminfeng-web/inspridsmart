@@ -245,6 +245,11 @@ $(document).ready(function(){
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
+        console.log(global.getData(global.KEY_LOCAL_MEDIA_STREAM));
+        console.log(global.getData(global.KEY_REMOTE_MEDIA_STREAM));
+        console.log(vueObj);
+        console.log(global.getData(global.LAYER_OBJ));
+
         //9.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
