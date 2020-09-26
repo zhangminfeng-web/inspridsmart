@@ -160,10 +160,12 @@ $(document).ready(function(){
         //获取vue的实例对象
         global.getData(global.VUE_APP_OBJ).showComponentValue = 3;
         console.log(global.getData(global.VUE_APP_OBJ).showComponentValue);
+        global.getData(global.VUE_APP_OBJ).$forceUpdate();
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
         console.log(3);
+        console.log(global.getData(global.VUE_APP_OBJ));
     });
 
     //answerPc点击接收按钮，同意接收视频流消息
