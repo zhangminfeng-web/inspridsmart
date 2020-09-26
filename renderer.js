@@ -129,6 +129,7 @@ $(document).ready(function(){
     //answerPc端接收到了offerPc端的ice消息
     $(documentEl).on("offerPc_ice",function(e,data){
         //在answerPc端处理ice信息
+        console.log(data);
         handleReceivedOfferICE.receivedOfferICE(data,documentEl);
     });
 
