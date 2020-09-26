@@ -162,6 +162,7 @@ $(document).ready(function(){
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
+        console.log(3);
     });
 
     //answerPc点击接收按钮，同意接收视频流消息
