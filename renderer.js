@@ -169,6 +169,9 @@ $(document).ready(function(){
         //将远程视频流添加到video标签中
         document.getElementById('remote').srcObject = remoteStream;
 
+        //关闭接受按钮
+        $(this).hide();
+
         //当answerPc接受之后，需要通过udp服务告诉offerPc端我接受了视频
         //待定逻辑，还未编写
     });
