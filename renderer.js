@@ -36,7 +36,7 @@ $(document).ready(function(){
         document.getElementById('local').srcObject = localStream;
 
         //4.将远程媒体流对象(localStream)，在本地预览
-        document.getElementById('remote').srcObject = remoteStream;
+        //document.getElementById('remote').srcObject = remoteStream;
 
     });
 
@@ -160,5 +160,13 @@ $(document).ready(function(){
         $("#remoteAccept").show();
         $("#remoteClose").show();
     });
+
+    //answerPc点击接收按钮，同意接收视频流消息
+    $(documentEl).trigger("receviedVideoMsg",function(e){
+        //获取远程视频流对象
+        let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+        //将远程视频流添加到video标签中
+        document.getElementById('remote').srcObject = remoteStream;
+    })
 
 });

@@ -28,7 +28,7 @@
                     <video controls id="remote" class="video2" autoplay></video>
                     <div class="btn-group-box">
                         <button type="button" class="btn btn-danger" id="localClose">挂断</button>
-                        <button type="button" class="btn btn-success" id="remoteAccept">接收</button>
+                        <button type="button" class="btn btn-success" @click="receivedStreamVideo" id="remoteAccept">接收</button>
                         <button type="button" class="btn btn-danger" id="remoteClose">挂断</button>
                     </div>
                 </div>
@@ -58,6 +58,9 @@
                 $(".intercom_model_bg").show();
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
+            },
+            receivedStreamVideo(){
+                El.trigger("receviedVideoMsg");
             },
             closeWatchVideo(){
 
