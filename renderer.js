@@ -168,6 +168,15 @@ $(document).ready(function(){
         let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
         //将远程视频流添加到video标签中
         document.getElementById('remote').srcObject = remoteStream;
+
+        //当answerPc接受之后，需要通过udp服务告诉offerPc端我接受了视频
+        //待定逻辑，还未编写
+    });
+
+    //answerPc端关闭可视对讲通过
+    $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
+        console.log("需要关闭视频流");
+
     })
 
 });

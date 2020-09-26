@@ -21,7 +21,7 @@
             <div class="model_content">
                 <div class="model_header">
                     <span class="model_title" id="model_title">可视对讲</span>
-                    <span class="model_close" @click="closeWatchVideo">&times;</span>
+                    <span class="model_close" ></span>
                 </div>
                 <div class="model_mains">
                     <video controls id="local" class="video1" autoplay></video>
@@ -29,7 +29,7 @@
                     <div class="btn-group-box">
                         <button type="button" class="btn btn-danger" id="localClose">挂断</button>
                         <button type="button" class="btn btn-success" @click="receivedStreamVideo" id="remoteAccept">接收</button>
-                        <button type="button" class="btn btn-danger" id="remoteClose">挂断</button>
+                        <button type="button" class="btn btn-danger" @click="remoteCloseVideo" id="remoteClose">挂断</button>
                     </div>
                 </div>
             </div>
@@ -53,18 +53,18 @@
             endAnswerInfo(event){  //发送offer
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
-                /*this.intercomTitle = El.text();*/
                 $("#localClose").show();
                 $(".intercom_model_bg").show();
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
             },
-            receivedStreamVideo(event){
+            receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);
                 El.trigger("receviedVideoMsg");
             },
-            closeWatchVideo(){
-
+            remoteCloseVideo(event){  //answerPc端关闭可视对讲
+                let El = $(event.currentTarget);
+                El.trigger("answerPcCloseVideoStream");
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {
