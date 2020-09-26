@@ -193,10 +193,10 @@ $(document).ready(function(){
         document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-        answerPc.close();
+        //answerPc.close();
 
         //5.关闭监听ice信息的方法
-        answerPc.onicecandidate = null;
+        //answerPc.onicecandidate = null;
 
         //6.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
@@ -231,10 +231,10 @@ $(document).ready(function(){
         document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
-        offerPc.close();
+        //offerPc.close();
 
         //5.关闭监听ice信息的方法
-        offerPc.onicecandidate = null;
+        //offerPc.onicecandidate = null;
 
         //6.关闭监听添加媒体流函数
         offerPc.onaddstream = null;
@@ -244,13 +244,6 @@ $(document).ready(function(){
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
-
-
-        console.log("********");
-        console.log(global.getData(global.KEY_LOCAL_MEDIA_STREAM));
-        console.log(global.getData(global.KEY_REMOTE_MEDIA_STREAM));
-        console.log(vueObj);
-        console.log(global.getData(global.LAYER_OBJ));
 
         //9.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
