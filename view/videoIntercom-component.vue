@@ -20,12 +20,17 @@
         <div class="intercom_model_bg" style="display:none;">
             <div class="model_content">
                 <div class="model_header">
-                    <span class="model_title" id="model_title">与{{intercomTitle}}的对讲</span>
+                    <span class="model_title" id="model_title">可视对讲</span>
                     <span class="model_close" @click="closeWatchVideo">&times;</span>
                 </div>
                 <div class="model_mains">
                     <video controls id="local" class="video1" autoplay></video>
                     <video controls id="remote" class="video2" autoplay></video>
+                    <div class="btn-group-box">
+                        <button type="button" class="btn btn-danger">挂断</button>
+                        <button type="button" class="btn btn-success">接收</button>
+                        <button type="button" class="btn btn-danger">挂断</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,7 +53,7 @@
             endAnswerInfo(event){  //发送offer
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
-                this.intercomTitle = El.text();
+                /*this.intercomTitle = El.text();*/
                 $(".intercom_model_bg").show();
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
@@ -78,6 +83,16 @@
         cursor:pointer;
         font-size:20px;
         color:#C0C0C0;
+    }
+
+    .btn-group-box{
+        border:1px solid red;
+        width:100%;
+        height:60px;
+        clear: both;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
     }
 
     .video_intercom{
@@ -193,9 +208,8 @@
     }
 
     .model_mains{
-        overflow:hidden;
         width:100%;
-        height:440px;
+        height:400px;
         padding:10px 10px;
     }
 
