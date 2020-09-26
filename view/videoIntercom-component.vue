@@ -59,7 +59,8 @@
                 //发送offer
                 El.trigger("sendAnswer",[ip]);
             },
-            receivedStreamVideo(){
+            receivedStreamVideo(event){
+                let El = $(event.currentTarget);
                 El.trigger("receviedVideoMsg");
             },
             closeWatchVideo(){
