@@ -34,11 +34,11 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <li class="active" @click="toggleComponent" value="1"><a><i class="iconfont icon-loumian"></i>住户管理</a></li>
-                        <li @click="toggleComponent" value="2"><a><i class="iconfont icon-shipinjiankong"></i>视频监控</a></li>
-                        <li @click="toggleComponent" value="3"><a><i class="iconfont icon-duijiangjiankong"></i>可视对讲</a></li>
-                        <li @click="toggleComponent" value="4"><a><i class="iconfont icon-baojing"></i>报警查询</a></li>
-                        <li @click="toggleComponent" value="5"><a><i class="iconfont icon-shebei"></i>在线设备</a></li>
+                        <li :class="showComponentValue==1?'active':''" @click="toggleComponent" value="1"><a><i class="iconfont icon-loumian"></i>住户管理</a></li>
+                        <li :class="showComponentValue==2?'active':''" @click="toggleComponent" value="2"><a><i class="iconfont icon-shipinjiankong"></i>视频监控</a></li>
+                        <li :class="showComponentValue==3?'active':''" @click="toggleComponent" value="3"><a><i class="iconfont icon-duijiangjiankong"></i>可视对讲</a></li>
+                        <li :class="showComponentValue==4?'active':''" @click="toggleComponent" value="4"><a><i class="iconfont icon-baojing"></i>报警查询</a></li>
+                        <li :class="showComponentValue==5?'active':''" @click="toggleComponent" value="5"><a><i class="iconfont icon-shebei"></i>在线设备</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -98,8 +98,6 @@
                 methods:{
                     toggleComponent(event){
                         let El = $(event.currentTarget);
-                        El.parent().find(".active").removeClass('active');
-                        El.addClass('active');
                         this.showComponentValue = El.attr("value");
                     },
                     sendMediaStream(localStream,remoteStream){
