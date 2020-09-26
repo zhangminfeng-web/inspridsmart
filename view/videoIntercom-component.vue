@@ -87,7 +87,6 @@
     }
 
     .btn-group-box{
-        border:1px solid red;
         width:100%;
         height:60px;
         clear: both;
