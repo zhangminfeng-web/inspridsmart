@@ -56,12 +56,6 @@ $(document).ready(function(){
         //获取到远程媒体流对象
         const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
-        //接收answerPc端发送过来的媒体流数据
-        peerConnection.ontrack = e => {
-            //将offerPc的媒体流通道，添加到远程媒体流中
-            remoteStream.addTrack(e.track);
-        };
-
         //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
         //主要用来向answerPc端，发送消息
         /*dataChannel.onopen = function(e){
@@ -167,6 +161,15 @@ $(document).ready(function(){
         let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
         //将远程视频流添加到video标签中
         document.getElementById('remote').srcObject = remoteStream;
+
+        //获取本地的媒体流对象
+        let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
+
+        //接收answerPc端发送过来的媒体流数据
+        peerConnection.ontrack = e => {
+            //将offerPc的媒体流通道，添加到远程媒体流中
+            remoteStream.addTrack(e.track);
+        };
     })
 
 });
