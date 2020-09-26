@@ -7,14 +7,18 @@ let global = require("./global/globalFile");
 
 $(document).ready(function(){
     let documentEl = $(this);
+    let vueApp = null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
 
-    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream) {
+    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp) {
         console.log("媒体流被添加了");
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+
+        //将vue实例，保存为全局共享数据
+        global.setData(global.VUE_APP_OBJ,vueApp);
 
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
         let peerConnection = new RTCPeerConnection();
@@ -149,6 +153,9 @@ $(document).ready(function(){
 
     //answerPc端收到消息的时候，开打弹框
     $(documentEl).on("openPopup",function(e){
+        //获取vue的实例对象
+        let Vue = global.getData(global.VUE_APP_OBJ);
+        Vue.showComponentValue = 3;
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();

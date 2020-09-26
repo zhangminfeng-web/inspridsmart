@@ -21,6 +21,7 @@ module.exports = {
     KEY_DATACHANNEL:"dataChannel",
     KEY_LOCAL_MEDIA_STREAM:"localMediaStream",
     KEY_REMOTE_MEDIA_STREAM:"remoteMediaStream",
+    VUE_APP_OBJ:null,   //vue的实例对象
     /*门口机设备信息数组*/
     VIDEO_EQUIPMENT_DOORWAY_LIST:[],
     /*门铃机设备信息数组*/
