@@ -17,6 +17,7 @@ $(document).ready(function(){
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
 
         //将vue实例，保存为全局共享数据
+        console.log(vueApp);
         global.setData(global.VUE_APP_OBJ,vueApp);
 
         //将layer实例，保存为全局共享数据
