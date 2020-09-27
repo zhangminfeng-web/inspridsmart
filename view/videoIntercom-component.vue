@@ -60,7 +60,7 @@
                 let socket = new WebSocket('ws://'+ip+':58888');
 
                 //发送offer
-                El.trigger("sendAnswer",[ip,ws]);
+                El.trigger("sendAnswer",[ip,socket]);
             },
             receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);
