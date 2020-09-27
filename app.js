@@ -34,7 +34,7 @@ app.listen(global.LOCALHOST_PORT, function(){
     require("./udp/intercomServer");
 
     //启动websocket服务
-    require("./udp/websocketServer");
+    require("./socket/websocketServer");
 
     console.log("running....");
 });
