@@ -55,8 +55,12 @@
                 let ip = El.attr("ip");
                 $("#localClose").show();
                 $(".intercom_model_bg").show();
+
+                //设置服务器地址
+                var ws = new WebSocket("ws://ip:58888");
+
                 //发送offer
-                El.trigger("sendAnswer",[ip]);
+                El.trigger("sendAnswer",[ip,ws]);
             },
             receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);

@@ -98,6 +98,7 @@ $(document).ready(function(){
         //当连接成功触发这个方法
         localWs.open = function(){
             console.log("连接成功了...");
+            ws.send("hello websocket");
         };
 
         //当断开连接触发方法
