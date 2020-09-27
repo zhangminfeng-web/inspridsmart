@@ -31,7 +31,7 @@ app.listen(global.LOCALHOST_PORT, function(){
     //启动net中socket服务
     require("./socket/net_server");
     //启动可视对讲服务器
-    require("./udp/intercomServer");
+    //require("./udp/intercomServer");
 
     //启动websocket服务
     require("./socket/websocketServer");
