@@ -57,10 +57,27 @@
                 $(".intercom_model_bg").show();
 
                 //设置服务器地址
-                var ws = new WebSocket("ws://"+ip+":58888");
+                var ws = new WebSocket("ws://192.168.5.133:58888");
+
+                //当连接成功触发这个方法
+                ws.open = function(){
+                    console.log("连接成功了...");
+                    ws.send("hello websocket");
+                };
+
+                //当断开连接触发方法
+                ws.onclose = function(){
+                    console.log("websocket close");
+                };
+
+                //当服务端有消息发送过来的时候触发方法
+                ws.onmessage = function(e){
+                    console.log("客户端有消息过来了");
+                    console.log(e.data);
+                }
 
                 //发送offer
-                El.trigger("sendAnswer",[ip,ws]);
+                //El.trigger("sendAnswer",[ip,ws]);
             },
             receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);

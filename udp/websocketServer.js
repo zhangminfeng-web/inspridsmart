@@ -12,6 +12,6 @@ var server = ws.createServer(function(conn){
     conn.on("error", function (code,reason){
         console.log("异常关闭");
     });
-}).listen(global.WEB_INTERCOM_PORT,function(){
+}).listen(global.INTERCOM_PORT,function(){
     console.log("websocket服务已经启动...");
 });
