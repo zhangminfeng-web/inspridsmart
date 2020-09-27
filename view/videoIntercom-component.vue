@@ -57,24 +57,24 @@
                 $(".intercom_model_bg").show();
 
                 //设置服务器地址
-                var ws = new WebSocket("ws://192.168.5.133:58888");
+                const socket = new WebSocket('ws://192.168.5.133:58888');
 
                 //当连接成功触发这个方法
-                ws.open = function(){
-                    console.log("连接成功了...");
-                    ws.send("hello websocket");
-                };
-
-                //当断开连接触发方法
-                ws.onclose = function(){
-                    console.log("websocket close");
-                };
+                socket.addEventListener('open', function (event) {
+                    socket.send('Hello Server!');
+                });
 
                 //当服务端有消息发送过来的时候触发方法
-                ws.onmessage = function(e){
-                    console.log("客户端有消息过来了");
-                    console.log(e.data);
-                }
+                socket.addEventListener('message', function (event) {
+                    console.log('Message from server ', event.data);
+                });
+
+
+
+                //当断开连接触发方法
+                socket.onclose = function(){
+                    console.log("websocket close");
+                };
 
                 //发送offer
                 //El.trigger("sendAnswer",[ip,ws]);
