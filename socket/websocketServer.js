@@ -3,8 +3,10 @@ const global = require("../global/globalFile");
 console.log("开始建立连接...");
 var server = ws.createServer(function(conn){
     console.log("新的连接进来了...");
-    conn.on("text", function (str){
-        console.log("收到的信息为:"+str);
+    conn.on("text", function (msg){
+        console.log("收到的信息");
+        let obj = JSON.parse(msg.toString());
+        console.log(obj);
     });
     conn.on("close", function (code,reason){
         console.log("关闭连接");

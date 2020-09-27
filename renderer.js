@@ -100,7 +100,7 @@ $(document).ready(function(){
 
         //当连接成功触发这个方法
         socket.addEventListener('open',function(event){
-            socket.send(offer);
+            socket.send(JSON.stringify(offer));
         });
 
         //当服务端有消息发送过来的时候触发方法
