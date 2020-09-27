@@ -8,7 +8,7 @@ let global = require("./global/globalFile");
 $(document).ready(function(){
     let documentEl = $(this);
     let vueObj = null;
-    let localWs=null;
+    let socket=null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -48,6 +48,9 @@ $(document).ready(function(){
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
         let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
+
+        //将远程的ip保存为共享数据
+        global.receivedIp = ip;
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
@@ -93,24 +96,22 @@ $(document).ready(function(){
         //await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
 
         //将本地websocket连接对象,赋值给全局
-        localWs = ws;
+        socket = ws;
 
         //当连接成功触发这个方法
-        localWs.open = function(){
-            console.log("连接成功了...");
-            ws.send("hello websocket");
-        };
-
-        //当断开连接触发方法
-        localWs.onclose = function(){
-            console.log("websocket close");
-        };
+        socket.addEventListener('open',function(event){
+            socket.send('Hello websocket!');
+        });
 
         //当服务端有消息发送过来的时候触发方法
-        localWs.onmessage = function(e){
-            console.log("客户端有消息过来了");
-            console.log(e.data);
-        }
+        socket.addEventListener('message',function (event) {
+            console.log('收到服务器的消息：',event.data);
+        });
+
+        //当断开连接触发方法
+        socket.addEventListener('message',function () {
+            console.log("websocket连接已经关闭");
+        });
 
     });
 
