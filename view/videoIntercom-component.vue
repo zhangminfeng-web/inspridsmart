@@ -57,7 +57,7 @@
                 $(".intercom_model_bg").show();
 
                 //设置服务器地址
-                var ws = new WebSocket("ws://ip:58888");
+                var ws = new WebSocket("ws://"+ip+":58888");
 
                 //发送offer
                 El.trigger("sendAnswer",[ip,ws]);
