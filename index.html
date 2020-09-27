@@ -83,17 +83,11 @@
                 data:{
                     showComponentValue:1,
                 },
-                watch:{
-                    showComponentValue(newValue,OldValue){
-                        console.log(newValue);
-                        console.log("监听属性被触发");
-                    }
-                },
                 async mounted(){
                     //获取本地媒体流对象
                     let localStream = await navigator.mediaDevices.getUserMedia({
                         video:true,
-                        audio:true
+                        audio:false
                     });
 
                     //获取远程媒体流对象

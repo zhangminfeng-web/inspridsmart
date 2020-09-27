@@ -8,6 +8,7 @@ let global = require("./global/globalFile");
 $(document).ready(function(){
     let documentEl = $(this);
     let vueObj = null;
+    let localWs=null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -44,27 +45,27 @@ $(document).ready(function(){
     });
 
     //发送offer事件
-    $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip){
+    $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
         let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        peerConnection.onicecandidate = e => {
+        /*peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };
+        };*/
 
         //获取到远程媒体流对象
-        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+        //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
         //接收answerPc端发送过来的媒体流数据
-        peerConnection.ontrack = e => {
+        /*peerConnection.ontrack = e => {
             console.log(e);
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        };
+        };*/
 
         //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
         //主要用来向answerPc端，发送消息
@@ -73,13 +74,13 @@ $(document).ready(function(){
         };*/
 
         //3.获取本地数据流
-        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+        //const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        localStream.getTracks().forEach(t => {
+        /*localStream.getTracks().forEach(t => {
             peerConnection.addTrack(t);
-        });
+        });*/
 
         //5.创建一个offer
         let offer = await peerConnection.createOffer();
@@ -89,7 +90,26 @@ $(document).ready(function(){
         offer.type = "answer";
 
         //7.发送offer
-        await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
+        //await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
+
+        //将本地websocket连接对象,赋值给全局
+        localWs = ws;
+
+        //当连接成功触发这个方法
+        localWs.open = function(){
+            console.log("连接成功了...");
+        };
+
+        //当断开连接触发方法
+        localWs.onclose = function(){
+            console.log("websocket close");
+        };
+
+        //当服务端有消息发送过来的时候触发方法
+        localWs.onmessage = function(e){
+            console.log("客户端有消息过来了");
+            console.log(e.data);
+        }
 
     });
 

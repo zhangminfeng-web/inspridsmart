@@ -4,15 +4,6 @@ const bodyParser = require('body-parser');
 const global = require("./global/globalFile");
 const getLocalhostIp = require("./global/getIpAdress");
 const localSendMsg = require("./udp/localhostUdpServer");
-/*const path = require('path');
-const fs = require('fs');
-const https = require('https');
-const privateKey = fs.readFileSync(path.join(__dirname,"ssl","www.insprid.cn.key"), 'utf8')
-const certificate = fs.readFileSync(path.join(__dirname,"ssl","www.insprid.cn.crt"), 'utf8')
-const credentials = {
-    key: privateKey,
-    cert: certificate,
-}*/
 
 const app = express();
 
@@ -30,8 +21,6 @@ app.use((err,req,res,next)=>{
     console.log(err);
 });
 
-/*const httpsServer = https.createServer(credentials,app);*/
-
 app.listen(global.LOCALHOST_PORT, function(){
     //获取本机IP地址
     getLocalhostIp.getIPAdress();
@@ -43,6 +32,9 @@ app.listen(global.LOCALHOST_PORT, function(){
     require("./socket/net_server");
     //启动可视对讲服务器
     require("./udp/intercomServer");
+
+    //启动websocket服务
+    require("./udp/websocketServer");
 
     console.log("running....");
 });

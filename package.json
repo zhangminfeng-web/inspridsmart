@@ -38,6 +38,7 @@
     "express-art-template": "^1.0.1",
     "jquery": "^3.5.1",
     "layui-src": "^2.5.5",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "nodejs-websocket": "^1.7.2"
   }
 }
