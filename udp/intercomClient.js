@@ -63,7 +63,7 @@ exports.sendOfferIntercomInfo = async function(ip,options){
 };
 
 //向服务端发送offer_ice信息给answerPc端
-exports.sendOffer_ice = async function(options){
+/*exports.sendOffer_ice = async function(options){
     //再去发送candidate
     if(options.toJSON){
         delete  options.toJSON;
@@ -75,7 +75,7 @@ exports.sendOffer_ice = async function(options){
             console.log(err);
         }
     });
-}
+}*/
 
 //向服务器发送answer_ice信息给offerPc端
 exports.sendAnswer_ice = async function(options){

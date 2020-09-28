@@ -55,11 +55,11 @@ $(document).ready(function(){
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        /*peerConnection.onicecandidate = e => {
+        peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };*/
+        };
 
         //获取到远程媒体流对象
         //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -93,14 +93,12 @@ $(document).ready(function(){
         await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
         offer.type = "answer";
 
-        //7.发送offer
-        //await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
-
         //将本地weblocalSocket连接对象,赋值给全局
         global.localSocket = ws;
 
         //当连接成功触发这个方法
         global.localSocket.addEventListener('open',function(event){
+            //向answerPc服务端发送offer消息
             global.localSocket.send(JSON.stringify(offer));
         });
 
@@ -167,7 +165,18 @@ $(document).ready(function(){
             }
         }
 
-        intercom_intercom.sendOffer_ice(obj);
+
+        console.log("------");
+        console.log(obj);
+
+        //再去发送candidate
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+        let offerCandidate = JSON.stringify(obj);
+
+        //向answerPc端发送ice信息
+        //global.localSocket.sendOffer_ice(offerCandidate);
 
     });
 
