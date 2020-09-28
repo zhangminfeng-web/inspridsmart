@@ -157,7 +157,7 @@ $(document).ready(function(){
                     window.clearInterval(t);
                 }
             }
-        },50)
+        },100)
     }
 
     //发送answer事件
@@ -225,9 +225,9 @@ $(document).ready(function(){
     });
 
     //answerPc端接收到了offerPc端的ice消息
-    $(documentEl).on("offerPc_ice",function(e,data){
+    $(documentEl).on("offerPc_ice",async function(e,data){
         //获取answer链接对象
-        let answerPc = global.getData(global.KEY_ANSWER_PEER_CONNECTION);
+        let answerPc = await global.getData(global.KEY_ANSWER_PEER_CONNECTION);
 
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
