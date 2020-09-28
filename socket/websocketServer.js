@@ -4,10 +4,14 @@ const selfIp = require('../global/getIpAdress');
 
 var server = ws.createServer(function(conn){
     console.log(conn);
-    let host = conn.headers.host;
-    let index = host.indexOf(":");
-    let ip = host.substring(0,index);
+    let host = conn.socket.remoteAddress;
+    let index = host.lastIndexOf(":");
+    let ip = host.substring(index);
     console.log(ip);
+    //保存IP
+    /*if(ip != selfIp.getIPAdress()){
+        global.SEND_IP = ip;
+    }*/
     console.log("新的连接进来了...");
     conn.on("text", function (msg){
         let obj = JSON.parse(msg.toString());
