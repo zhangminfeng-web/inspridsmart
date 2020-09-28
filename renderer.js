@@ -10,6 +10,8 @@ $(document).ready(function(){
     //将jquery全局对象，保存为全局共享数据
     global.documentJq = documentEl;
     let vueObj = null;
+    let localSocket = null;    //本地socket对象
+    let removeSocket = null;  //远程socket对象
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -94,21 +96,21 @@ $(document).ready(function(){
         offer.type = "answer";
 
         //将本地weblocalSocket连接对象,赋值给全局
-        global.localSocket = ws;
+        localSocket = ws;
 
         //当连接成功触发这个方法
-        global.localSocket.addEventListener('open',function(event){
+        localSocket.addEventListener('open',function(event){
             //向answerPc服务端发送offer消息
-            global.localSocket.send(JSON.stringify(offer));
+            localSocket.send(JSON.stringify(offer));
         });
 
         //当服务端有消息发送过来的时候触发方法
-        global.localSocket.addEventListener('message',function (event) {
+        localSocket.addEventListener('message',function (event) {
             console.log('收到服务器的消息：',event.data);
         });
 
         //当断开连接触发方法
-        global.localSocket.addEventListener('message',function () {
+        localSocket.addEventListener('message',function () {
             console.log("weblocalSocket连接已经关闭");
         });
 
@@ -123,20 +125,20 @@ $(document).ready(function(){
         //设置服务器地址
         let socket = await new WebSocket('ws://'+global.OFFERPC_IP+':58888');
 
-        global.removeSocket = socket;
+        removeSocket = socket;
 
         //当连接成功触发这个方法
-        global.removeSocket.addEventListener('open',function(event){
-            global.removeSocket.send(JSON.stringify(data));
+        removeSocket.addEventListener('open',function(event){
+            removeSocket.send(JSON.stringify(data));
         });
 
         //当服务端有消息发送过来的时候触发方法
-        global.removeSocket.addEventListener('message',function (event){
+        removeSocket.addEventListener('message',function (event){
             console.log('收到服务器的消息：',event.data);
         });
 
         //当断开连接触发方法
-        global.removeSocket.addEventListener('message',function(){
+        removeSocket.addEventListener('message',function(){
             console.log("weblocalSocket连接已经关闭");
         });
 
@@ -174,7 +176,7 @@ $(document).ready(function(){
         let offerCandidate = JSON.stringify(obj);
 
         //向answerPc端发送ice信息
-        global.localSocket.send(offerCandidate);
+        localSocket.send(offerCandidate);
 
     });
 

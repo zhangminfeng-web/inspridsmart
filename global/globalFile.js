@@ -6,8 +6,6 @@ module.exports = {
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
     OFFERPC_IP:"",
-    localSocket:null,    //本地socket对象
-    removeSocket:null,   //远程socket对象
     INTERCOM_CLIENT_PORT:"58866",
     receivedIp:"",
     localhostIp:"",
