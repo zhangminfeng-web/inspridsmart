@@ -165,6 +165,11 @@ $(document).ready(function(){
             }
         }
 
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+
+        console.log(obj);
         //将ice信息转成JSON字符串
         let offerCandidate = JSON.stringify(obj);
 
