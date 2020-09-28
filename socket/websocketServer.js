@@ -36,23 +36,18 @@ function sendLocalMsg(obj){
     switch(obj.type) {
         //处理offerPc端发送过来的offer消息
         case "answer":
-            console.log("收到offer");
             //将消息通过事件派发，发送给本地处理
             $(global.documentJq).trigger("receivedOffer",[obj]);
             break;
         //处理answerPc端发送过来的answer消息
         case "offer":
-            console.log("收到answer");
             //将answerPc发送来的消息通过事件派发，发送给本地处理
             $(global.documentJq).trigger("localAnswer",[obj]);
             break;
         //处理两端发送过来的ice信息
         case "candidate":
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
-            console.log("收到candidate");
-            console.log(obj);
             if(obj.address == global.OFFERPC_IP){
-                console.log("收到offerPc_ice信息");
                 $(global.documentJq).trigger("offerPc_ice",[obj]);
             }
 
