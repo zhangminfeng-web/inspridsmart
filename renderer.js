@@ -101,7 +101,7 @@ $(document).ready(function(){
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
             //向answerPc服务端发送offer消息
-            localSocket.send(JSON.stringify(offer));
+            offerSendMsg(JSON.stringify(offer));
         });
 
         //当服务端有消息发送过来的时候触发方法
@@ -116,6 +116,18 @@ $(document).ready(function(){
 
     });
 
+    //offerPc发送消息的公共方法
+    function offerSendMsg(msg){
+        //向answerPc端发送消息
+        localSocket.send(msg);
+    }
+
+    //answerPc端发送消息的公共方法
+    function answerSendMsg(msg){
+        //向offerPc端发送消息
+        removeSocket.send(msg);
+    }
+
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",async function(e,data){
 
@@ -129,7 +141,7 @@ $(document).ready(function(){
 
         //当连接成功触发这个方法
         removeSocket.addEventListener('open',function(event){
-            removeSocket.send(JSON.stringify(data));
+            answerSendMsg(JSON.stringify(data));
         });
 
         //当服务端有消息发送过来的时候触发方法
@@ -177,7 +189,7 @@ $(document).ready(function(){
 
         console.log(localSocket);
 
-        localSocket.send("123");
+        offerSendMsg("123");
 
         //向answerPc端发送ice信息
         //localSocket.send(offerCandidate);
