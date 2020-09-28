@@ -101,13 +101,7 @@ $(document).ready(function(){
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
             //向answerPc服务端发送offer消息
-            let t = setInterval(function(){
-                let status = offerSendMsg(JSON.stringify(offer));
-                if(status){
-                    window.clearInterval(t);
-                }
-            },50);
-
+            allSendMsg(1,offer);
         });
 
 
@@ -128,7 +122,6 @@ $(document).ready(function(){
     function offerSendMsg(msg){
         //向answerPc端发送消息
         if(localSocket.readyState == 1){
-            console.log("---+++++");
             localSocket.send(msg);
             return true;
         }else{
@@ -140,12 +133,31 @@ $(document).ready(function(){
     function answerSendMsg(msg){
         //向offerPc端发送消息
         if(removeSocket.readyState == 1){
-            console.log("******");
             removeSocket.send(msg);
             return true;
         }else{
             return false;
         }
+    }
+
+    //公共发送消息的函数
+    function allSendMsg(type,msg){
+        let t = setInterval(function(){
+            //offerPc发送消息的公共方法
+            if(type == 1){
+                let status = offerSendMsg(JSON.stringify(msg));
+                if(status){
+                    window.clearInterval(t);
+                }
+            }
+            //answerPc端发送消息的公共方法
+            if(type ==2){
+                let status = answerSendMsg(JSON.stringify(msg));
+                if(status){
+                    window.clearInterval(t);
+                }
+            }
+        },50)
     }
 
     //发送answer事件
@@ -161,12 +173,8 @@ $(document).ready(function(){
 
         //当连接成功触发这个方法
         removeSocket.addEventListener('open',async function(event){
-            let t = setInterval(function(){
-                let status = answerSendMsg(JSON.stringify(data));
-                if(status){
-                    window.clearInterval(t);
-                }
-            },50);
+            //发送answer信息
+            allSendMsg(2,data);
         });
 
         //当服务端有消息发送过来的时候触发方法
@@ -211,15 +219,8 @@ $(document).ready(function(){
         //将ice信息转成JSON字符串
         let offerCandidate = JSON.stringify(obj);
 
-        let t = setInterval(function(){
-            let status = offerSendMsg(JSON.stringify(obj));
-            if(status){
-                window.clearInterval(t);
-            }
-        },50);
-
-        //向answerPc端发送ice信息
-        //localSocket.send(offerCandidate);
+        //offerPc端向answer服务端发送ice信息
+        allSendMsg(1,obj);
 
     });
 
