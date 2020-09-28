@@ -117,13 +117,15 @@ $(document).ready(function(){
     });
 
     //发送answer事件
-    $(documentEl).on("sendAnswerInfo",function(e,data){
+    $(documentEl).on("sendAnswerInfo",async function(e,data){
 
         //发送answer信息：data为answer信息
         //remoteSocket.send(JSON.stringify(data));
 
         //设置服务器地址
-        let socket = new WebSocket('ws://'+global.OFFERPC_IP+':58888');
+        let socket = await new WebSocket('ws://'+global.OFFERPC_IP+':58888');
+
+        global.removeSocket = socket;
 
         //当连接成功触发这个方法
         global.removeSocket.addEventListener('open',function(event){
