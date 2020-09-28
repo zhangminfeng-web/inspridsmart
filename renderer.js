@@ -216,11 +216,8 @@ $(document).ready(function(){
             delete  obj.toJSON;
         }
 
-        //将ice信息转成JSON字符串
-        let offerCandidate = JSON.stringify(obj);
-
         //offerPc端向answer服务端发送ice信息
-        allSendMsg(1,offerCandidate);
+        allSendMsg(1,obj);
 
     });
 
@@ -233,8 +230,6 @@ $(document).ready(function(){
                 resolve(answerPc);
             }
         });
-
-        console.log(answerPc);
 
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
@@ -252,15 +247,8 @@ $(document).ready(function(){
             }
         }
 
-        if(obj.toJSON){
-            delete  obj.toJSON;
-        }
-
-        //将ice信息转成JSON字符串
-        let answerCandidate = JSON.stringify(obj);
-
-        //offerPc端向answer服务端发送ice信息
-        allSendMsg(2,answerCandidate);
+        //向服务器发送answer_ice信息
+        intercom_intercom.sendAnswer_ice(obj)
 
     })
 
