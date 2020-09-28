@@ -8,12 +8,7 @@ module.exports = {
     INTERCOM_CLIENT_PORT:"58866",
     receivedIp:"",
     localhostIp:"",
-    clientMsg:{
-        "answerMsg": null,
-        "offerMsg": null,
-        "offerIce":null,
-        "answerIce":null,
-    },
+    documentJq:null,   //jquery全局文档流对象
     LOCALHOST_IP:"localhost",
     SHAREDATA: new Map(),   //全局共享的数据
     KEY_OFFER_PEER_CONNECTION:"offerPc",

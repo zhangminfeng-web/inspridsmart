@@ -7,6 +7,8 @@ let global = require("./global/globalFile");
 
 $(document).ready(function(){
     let documentEl = $(this);
+    //将jquery全局对象，保存为全局共享数据
+    global.documentJq = documentEl;
     let vueObj = null;
     let socket=null;
 
@@ -116,14 +118,16 @@ $(document).ready(function(){
     });
 
     //发送answer事件
-    $(documentEl).on("sendAnswerInfo",function(e,data,ip){
+    $(documentEl).on("sendAnswerInfo",function(e,data){
         //发送answer信息：data为answer信息
-        intercom_intercom.sendAnswerIntercomInfo(ip,data);
+        //intercom_intercom.sendAnswerIntercomInfo(data);
+        console.log("answerPc端将要发送answer信息");
+        console.log(data);
     });
 
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
-        handleReceivedOffer.receivedOffer(data,documentEl,global.receivedIp);
+        handleReceivedOffer.receivedOffer(data,documentEl);
     });
 
     //offer端接收answer信息
