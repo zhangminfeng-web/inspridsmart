@@ -177,6 +177,8 @@ $(document).ready(function(){
 
         console.log(localSocket);
 
+        localSocket.send("123");
+
         //向answerPc端发送ice信息
         //localSocket.send(offerCandidate);
 
