@@ -119,7 +119,7 @@ $(document).ready(function(){
     //offerPc发送消息的公共方法
     function offerSendMsg(msg){
         //向answerPc端发送消息
-        console.log(localSocket.socket.readyState);
+        console.log(localSocket.readyState);
         console.log("---+++++");
         localSocket.send(msg);
     }
