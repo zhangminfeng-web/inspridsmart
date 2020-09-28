@@ -63,7 +63,7 @@ exports.sendOfferIntercomInfo = async function(ip,options){
 };
 
 //发送answer
-exports.sendAnswerIntercomInfo = async function(ip,options){
+/*exports.sendAnswerIntercomInfo = async function(ip,options){
     let answer = JSON.stringify(options);
     //向服务器发送answer信息
     await client.send(answer,0,answer.length,global.INTERCOM_CLIENT_PORT,global.localhostIp,function(err){
@@ -72,7 +72,7 @@ exports.sendAnswerIntercomInfo = async function(ip,options){
         }
     });
 
-}
+}*/
 
 //向服务端发送offer_ice信息给answerPc端
 exports.sendOffer_ice = async function(options){

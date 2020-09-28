@@ -52,7 +52,7 @@ $(document).ready(function(){
         let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
 
         //将远程的ip保存为共享数据
-        global.receivedIp = ip;
+        /*global.receivedIp = ip;*/
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
@@ -120,9 +120,7 @@ $(document).ready(function(){
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",function(e,data){
         //发送answer信息：data为answer信息
-        //intercom_intercom.sendAnswerIntercomInfo(data);
-        console.log("answerPc端将要发送answer信息");
-        console.log(data);
+        socket.send(JSON.stringify(data));
     });
 
     //answerPc端收到offerPc端的信息了

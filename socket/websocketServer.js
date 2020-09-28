@@ -2,6 +2,7 @@ const ws = require("nodejs-websocket");
 const global = require("../global/globalFile");
 
 var server = ws.createServer(function(conn){
+    console.log(conn);
     console.log("新的连接进来了...");
     conn.on("text", function (msg){
         let obj = JSON.parse(msg.toString());
