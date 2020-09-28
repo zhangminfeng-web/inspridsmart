@@ -4,6 +4,7 @@ const selfIp = require('../global/getIpAdress');
 
 var server = ws.createServer(function(conn){
     console.log(conn);
+    console.log(server.connections);
     let host = conn.socket.remoteAddress;
     let index = host.lastIndexOf(":");
     let ip = host.substring(index);
