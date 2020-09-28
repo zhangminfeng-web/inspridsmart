@@ -165,18 +165,11 @@ $(document).ready(function(){
             }
         }
 
-
-        console.log("------");
-        console.log(obj);
-
-        //再去发送candidate
-        if(obj.toJSON){
-            delete  obj.toJSON;
-        }
+        //将ice信息转成JSON字符串
         let offerCandidate = JSON.stringify(obj);
 
         //向answerPc端发送ice信息
-        //global.localSocket.sendOffer_ice(offerCandidate);
+        global.localSocket.send(offerCandidate);
 
     });
 
