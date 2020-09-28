@@ -175,8 +175,10 @@ $(document).ready(function(){
         //将ice信息转成JSON字符串
         let offerCandidate = JSON.stringify(obj);
 
+        console.log(localSocket);
+
         //向answerPc端发送ice信息
-        localSocket.send(offerCandidate);
+        //localSocket.send(offerCandidate);
 
     });
 
