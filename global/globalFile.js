@@ -5,6 +5,7 @@ module.exports = {
     CLOUD_IP:"",
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
+    SEND_IP:"",
     INTERCOM_CLIENT_PORT:"58866",
     receivedIp:"",
     localhostIp:"",

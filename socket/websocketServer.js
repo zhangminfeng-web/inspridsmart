@@ -1,8 +1,13 @@
 const ws = require("nodejs-websocket");
 const global = require("../global/globalFile");
+const selfIp = require('../global/getIpAdress');
 
 var server = ws.createServer(function(conn){
     console.log(conn);
+    let host = conn.headers.host;
+    let index = host.indexOf(":");
+    let ip = host.substring(0,index);
+    console.log(ip);
     console.log("新的连接进来了...");
     conn.on("text", function (msg){
         let obj = JSON.parse(msg.toString());
