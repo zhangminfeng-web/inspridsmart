@@ -247,8 +247,12 @@ $(document).ready(function(){
             }
         }
 
-        //向服务器发送answer_ice信息
-        intercom_intercom.sendAnswer_ice(obj)
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+
+        //answerPc端向offerPc服务端发送ice信息
+        allSendMsg(2,obj);
 
     })
 
