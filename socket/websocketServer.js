@@ -46,21 +46,29 @@ function sendLocalMsg(obj){
             break;
         //处理两端发送过来的ice信息
         case "candidate":
+
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
-            console.log(obj.address);
-            console.log(global.OFFERPC_IP);
-            console.log("------");
-            if(obj.address == global.OFFERPC_IP){
+            if(obj.offer_ice){
                 console.log(1);
+                console.log(obj);
                 $(global.documentJq).trigger("offerPc_ice",[obj]);
             }
 
             //接收answerPc端向offerPc端发送的ice信息,并转发给自己的客户端
-            if(obj.answer_ice){
+            else{
+
                 console.log(2);
-                console.log("接收到answerPc端发送过来的ice信息");
                 console.log(obj);
+                console.log("接收到answerPc端发送过来的ice信息");
             }
+
+
+            if(obj.answer_ice){
+
+            }
+
+
+
             break;
         default:
     }
