@@ -49,6 +49,8 @@ function sendLocalMsg(obj){
         //处理两端发送过来的ice信息
         case "candidate":
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
+            console.log("收到candidate");
+            console.log(obj);
             if(obj.address == global.OFFERPC_IP){
                 console.log("收到offerPc_ice信息");
                 $(global.documentJq).trigger("offerPc_ice",[obj]);
