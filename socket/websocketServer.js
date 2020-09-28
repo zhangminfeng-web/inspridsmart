@@ -4,27 +4,33 @@ const selfIp = require('../global/getIpAdress');
 
 var server = ws.createServer(function(conn){
     console.log(conn);
-    console.log(server.connections);
-    let host = conn.socket.remoteAddress;
-    let index = host.lastIndexOf(":");
-    let ip = host.substring(index);
-    console.log(ip);
-    //保存IP
-    /*if(ip != selfIp.getIPAdress()){
-        global.SEND_IP = ip;
-    }*/
-    console.log("新的连接进来了...");
-    conn.on("text", function (msg){
-        let obj = JSON.parse(msg.toString());
-        //调用消息处理方法，处理对应的消息
-        sendLocalMsg(obj);
-    });
-    conn.on("close", function (code,reason){
-        console.log("关闭连接");
-    });
-    conn.on("error", function (code,reason){
-        console.log("异常关闭");
-    });
+    if(server.connections.length<=1) {
+        console.log("新的连接进来了...");
+        let host = conn.socket.remoteAddress;
+        let index = host.lastIndexOf(":");
+        let ip = host.substring(index + 1);
+
+        //保存offerPc端的IP
+        if(ip != selfIp.getIPAdress()){
+            global.OFFERPC_IP = ip;
+        }
+
+        conn.on("text", function (msg) {
+            let obj = JSON.parse(msg.toString());
+            //调用消息处理方法，处理对应的消息
+            sendLocalMsg(obj);
+        });
+
+        conn.on("close", function (code, reason) {
+            console.log("关闭连接");
+        });
+
+        conn.on("error", function (code, reason) {
+            console.log("异常关闭");
+        });
+
+    }
+
 });
 
 //定义一个广播的方法
@@ -45,7 +51,8 @@ function sendLocalMsg(obj){
             break;
         //处理answerPc端发送过来的answer消息
         case "offer":
-
+            console.log("收到answerPc端的answer信息");
+            console.log(obj);
             break;
         //处理两端发送过来的ice信息
         case "candidate":

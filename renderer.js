@@ -10,7 +10,6 @@ $(document).ready(function(){
     //将jquery全局对象，保存为全局共享数据
     global.documentJq = documentEl;
     let vueObj = null;
-    let socket=null;
 
     //将jquery全局事件对象传给客户端
     intercom_intercom.sendJqObj(documentEl);
@@ -97,30 +96,50 @@ $(document).ready(function(){
         //7.发送offer
         //await intercom_intercom.sendOfferIntercomInfo(ip,offer,documentEl);
 
-        //将本地websocket连接对象,赋值给全局
-        socket = ws;
+        //将本地weblocalSocket连接对象,赋值给全局
+        global.localSocket = ws;
 
         //当连接成功触发这个方法
-        socket.addEventListener('open',function(event){
-            socket.send(JSON.stringify(offer));
+        global.localSocket.addEventListener('open',function(event){
+            global.localSocket.send(JSON.stringify(offer));
         });
 
         //当服务端有消息发送过来的时候触发方法
-        socket.addEventListener('message',function (event) {
+        global.localSocket.addEventListener('message',function (event) {
             console.log('收到服务器的消息：',event.data);
         });
 
         //当断开连接触发方法
-        socket.addEventListener('message',function () {
-            console.log("websocket连接已经关闭");
+        global.localSocket.addEventListener('message',function () {
+            console.log("weblocalSocket连接已经关闭");
         });
 
     });
 
     //发送answer事件
     $(documentEl).on("sendAnswerInfo",function(e,data){
+
         //发送answer信息：data为answer信息
-        socket.send(JSON.stringify(data));
+        //remoteSocket.send(JSON.stringify(data));
+
+        //设置服务器地址
+        let socket = new WebSocket('ws://'+global.OFFERPC_IP+':58888');
+
+        //当连接成功触发这个方法
+        global.removeSocket.addEventListener('open',function(event){
+            global.removeSocket.send(JSON.stringify(data));
+        });
+
+        //当服务端有消息发送过来的时候触发方法
+        global.removeSocket.addEventListener('message',function (event) {
+            console.log('收到服务器的消息：',event.data);
+        });
+
+        //当断开连接触发方法
+        global.removeSocket.addEventListener('message',function () {
+            console.log("weblocalSocket连接已经关闭");
+        });
+
     });
 
     //answerPc端收到offerPc端的信息了
