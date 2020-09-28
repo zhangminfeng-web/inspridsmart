@@ -99,9 +99,9 @@ $(document).ready(function(){
         localSocket = ws;
 
         //当连接成功触发这个方法
-        localSocket.addEventListener('open',function(event){
+        localSocket.addEventListener('open',async function(event){
             //向answerPc服务端发送offer消息
-            offerSendMsg(JSON.stringify(offer));
+            await offerSendMsg(JSON.stringify(offer));
         });
 
         //当服务端有消息发送过来的时候触发方法
