@@ -234,6 +234,8 @@ $(document).ready(function(){
             }
         });
 
+        console.log(answerPc);
+
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
     });
