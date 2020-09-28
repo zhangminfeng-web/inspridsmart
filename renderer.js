@@ -99,10 +99,14 @@ $(document).ready(function(){
         localSocket = ws;
 
         //当连接成功触发这个方法
-        localSocket.addEventListener('open',async function(event){
-            //向answerPc服务端发送offer消息
-            await offerSendMsg(JSON.stringify(offer));
-        });
+        await new Promise((resolve) => {
+            localSocket.addEventListener('open',function(event){
+                resolve(e.data);
+            });
+        })
+
+        //向answerPc服务端发送offer消息
+        offerSendMsg(JSON.stringify(offer));
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
@@ -142,8 +146,8 @@ $(document).ready(function(){
         removeSocket = socket;
 
         //当连接成功触发这个方法
-        removeSocket.addEventListener('open',function(event){
-            answerSendMsg(JSON.stringify(data));
+        removeSocket.addEventListener('open',async function(event){
+            await answerSendMsg(JSON.stringify(data));
         });
 
         //当服务端有消息发送过来的时候触发方法
