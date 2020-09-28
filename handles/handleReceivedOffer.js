@@ -19,7 +19,8 @@ module.exports.receivedOffer = async function(data,documentEl){
 
     //将answerPc保存为全局共享数据
     global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
-
+    console.log("全局answer信息为：");
+    console.log(global.getData(global.KEY_ANSWER_PEER_CONNECTION));
 
     //获取远程媒体流对象
     //let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
