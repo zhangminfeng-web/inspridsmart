@@ -56,7 +56,6 @@ function sendLocalMsg(obj){
 
             //接收answerPc端向offerPc端发送的ice信息,并转发给自己的客户端
             else{
-
                 console.log(2);
                 console.log(obj);
                 console.log("接收到answerPc端发送过来的ice信息");
