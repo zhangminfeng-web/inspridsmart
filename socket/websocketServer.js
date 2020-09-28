@@ -3,7 +3,6 @@ const global = require("../global/globalFile");
 const selfIp = require('../global/getIpAdress');
 
 var server = ws.createServer(function(conn){
-    console.log(conn);
     if(server.connections.length<=1) {
         console.log("新的连接进来了...");
         let host = conn.socket.remoteAddress;
@@ -33,15 +32,6 @@ var server = ws.createServer(function(conn){
 
 });
 
-//定义一个广播的方法
-/*function broadcast(msg){
-    //server.connections表示所有的用户
-    server.connections.forEach(item => {
-        //给每一个用户发送消息
-        item.send(msg);
-    });
-}*/
-
 function sendLocalMsg(obj){
     switch(obj.type) {
         //处理offerPc端发送过来的offer消息
@@ -51,8 +41,8 @@ function sendLocalMsg(obj){
             break;
         //处理answerPc端发送过来的answer消息
         case "offer":
-            console.log("收到answerPc端的answer信息");
-            console.log(obj);
+            //将answerPc发送来的消息通过事件派发，发送给本地处理
+            $(global.documentJq).trigger("localAnswer",[obj]);
             break;
         //处理两端发送过来的ice信息
         case "candidate":

@@ -133,12 +133,12 @@ $(document).ready(function(){
         });
 
         //当服务端有消息发送过来的时候触发方法
-        global.removeSocket.addEventListener('message',function (event) {
+        global.removeSocket.addEventListener('message',function (event){
             console.log('收到服务器的消息：',event.data);
         });
 
         //当断开连接触发方法
-        global.removeSocket.addEventListener('message',function () {
+        global.removeSocket.addEventListener('message',function(){
             console.log("weblocalSocket连接已经关闭");
         });
 
