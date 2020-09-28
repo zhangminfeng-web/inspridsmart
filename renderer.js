@@ -220,7 +220,7 @@ $(document).ready(function(){
         let offerCandidate = JSON.stringify(obj);
 
         //offerPc端向answer服务端发送ice信息
-        allSendMsg(1,obj);
+        allSendMsg(1,offerCandidate);
 
     });
 
@@ -250,8 +250,15 @@ $(document).ready(function(){
             }
         }
 
-        //向服务器发送answer_ice信息
-        intercom_intercom.sendAnswer_ice(obj)
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+
+        //将ice信息转成JSON字符串
+        let answerCandidate = JSON.stringify(obj);
+
+        //offerPc端向answer服务端发送ice信息
+        allSendMsg(2,answerCandidate);
 
     })
 

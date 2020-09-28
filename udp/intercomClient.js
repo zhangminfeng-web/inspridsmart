@@ -78,7 +78,7 @@ exports.sendOfferIntercomInfo = async function(ip,options){
 }*/
 
 //向服务器发送answer_ice信息给offerPc端
-exports.sendAnswer_ice = async function(options){
+/*exports.sendAnswer_ice = async function(options){
     //发送answer_ice的candidate消息
     if(options.toJSON){
         delete  options.toJSON;
@@ -90,7 +90,7 @@ exports.sendAnswer_ice = async function(options){
         }
     });
 
-}
+}*/
 
 //接收jquery全局对象
 exports.sendJqObj = function(Jobj){
