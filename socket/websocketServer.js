@@ -45,7 +45,7 @@ function sendLocalMsg(obj){
         case "candidate":
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
             console.log("answerPc端收到了ice信息");
-            $(global.documentJq).trigger("offerPc_ice",[obj,global.getData(global.KEY_ANSWER_PEER_CONNECTION)]);
+            $(global.documentJq).trigger("offerPc_ice",[obj]);
             break;
         default:
     }

@@ -6,6 +6,9 @@ module.exports.receivedOffer = async function(data,documentEl){
     //创建answerPc连接对象
     let answerPc = new RTCPeerConnection();
 
+    //将answerPc保存为全局共享数据
+    await global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
+
     //answerPc端接收到offer信息，就打开本地弹框
     $(documentEl).trigger("openPopup");
 
@@ -18,8 +21,6 @@ module.exports.receivedOffer = async function(data,documentEl){
         answerPc.addTrack(t);
     });*/
 
-    //将answerPc保存为全局共享数据
-    await global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
 
     //获取远程媒体流对象
     //let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
