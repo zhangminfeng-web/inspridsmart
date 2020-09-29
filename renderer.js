@@ -208,7 +208,7 @@ $(document).ready(function(){
         console.log(data);*/
 
         //在answerPc端处理ice信息
-        handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
+        await handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
     });
 
     //answerPc端发送answer_ice信息给offerPc端
