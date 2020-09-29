@@ -1,4 +1,3 @@
-let intercom_intercom = require("./udp/intercomClient");
 let handleReceivedOffer = require("./handles/handleReceivedOffer");
 let handleReceivedAnswer = require("./handles/HandlerReceivedAnswer");
 let handleReceivedOfferICE = require("./handles/handleReceivedOfferICE");
@@ -13,8 +12,6 @@ $(document).ready(function(){
     let localSocket = null;    //本地socket对象
     let removeSocket = null;  //远程socket对象
 
-    //将jquery全局事件对象传给客户端
-    intercom_intercom.sendJqObj(documentEl);
 
     $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp,layer) {
         console.log("媒体流被添加了");
