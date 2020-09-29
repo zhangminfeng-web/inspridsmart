@@ -195,17 +195,18 @@ $(document).ready(function(){
     });
 
     //answerPc端接收到了offerPc端的ice消息
-    $(documentEl).on("offerPc_ice",async function(e,data){
+    $(documentEl).on("offerPc_ice",async function(e,data,answerPc){
         //获取answer链接对象
-        let answerPc = await new Promise((resolve) => {
+        /*let answerPc = await new Promise((resolve) => {
             let answerPc = global.getData(global.KEY_ANSWER_PEER_CONNECTION);
             if(answerPc){
                 resolve(answerPc);
             }
-        });
+        });*/
 
         /*console.log("answerPc端本地处理ice信息");
         console.log(data);*/
+        console.log(answerPc);
 
         //在answerPc端处理ice信息
         await handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
