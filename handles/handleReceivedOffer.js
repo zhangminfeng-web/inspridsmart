@@ -64,7 +64,6 @@ module.exports.receivedOffer = async function(data,documentEl){
     answer.type = "offer";
 
     //通过事件派发机制，发送answer信息
-    //$(documentEl).trigger("sendAnswerInfo",[answer]);
     websocketServer.sendMsgToClient(JSON.stringify(answer));
 
 

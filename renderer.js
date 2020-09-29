@@ -57,11 +57,11 @@ $(document).ready(function(){
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        /*peerConnection.onicecandidate = e => {
+        peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };*/
+        };
 
         //获取到远程媒体流对象
         //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -101,7 +101,7 @@ $(document).ready(function(){
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
             //向answerPc服务端发送offer消息
-            allSendMsg(1,offer);
+            allSendMsg(offer);
         });
 
 
@@ -151,35 +151,15 @@ $(document).ready(function(){
         }
     }
 
-    //answerPc端发送消息的公共方法
-    function answerSendMsg(msg){
-        //向offerPc端发送消息
-        if(removeSocket.readyState == 1){
-            removeSocket.send(msg);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
     //公共发送消息的函数
-    function allSendMsg(type,msg){
+    function allSendMsg(msg){
         let t = setInterval(function(){
             //offerPc发送消息的公共方法
-            if(type == 1){
-                let status = offerSendMsg(JSON.stringify(msg));
-                if(status){
-                    window.clearInterval(t);
-                }
+            let status = offerSendMsg(JSON.stringify(msg));
+            if(status){
+                window.clearInterval(t);
             }
-            //answerPc端发送消息的公共方法
-            if(type ==2){
-                let status = answerSendMsg(JSON.stringify(msg));
-                if(status){
-                    window.clearInterval(t);
-                }
-            }
-        },100)
+        },100);
     }
 
     //answerPc端收到offerPc端的信息了
@@ -210,7 +190,7 @@ $(document).ready(function(){
         }
 
         //offerPc端向answer服务端发送ice信息
-        allSendMsg(1,obj);
+        allSendMsg(obj);
 
     });
 
