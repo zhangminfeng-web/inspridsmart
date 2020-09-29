@@ -193,7 +193,7 @@ $(document).ready(function(){
     });
 
     //answerPc端接收到了offerPc端的ice消息
-    $(documentEl).on("offerPc_ice",async function(e,data){
+    $(documentEl).on("offerPc_ice",function(e,data){
         //获取answer链接对象
         /*let answerPc = await new Promise((resolve) => {
 
@@ -207,7 +207,7 @@ $(document).ready(function(){
         /*console.log(answerPc);*/
 
         //在answerPc端处理ice信息
-        await handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
+        handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
     });
 
     //answerPc端发送answer_ice信息给offerPc端
