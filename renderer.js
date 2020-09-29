@@ -204,8 +204,8 @@ $(document).ready(function(){
             }
         });
 
-        console.log("answerPc端本地处理ice信息");
-        console.log(data);
+        /*console.log("answerPc端本地处理ice信息");
+        console.log(data);*/
 
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
