@@ -5,15 +5,6 @@ const selfIp = require('../global/getIpAdress');
 var server = ws.createServer(function(conn){
     if(server.connections.length<=1) {
         console.log("新的连接进来了...");
-        /*let host = conn.socket.remoteAddress;
-        let index = host.lastIndexOf(":");
-        let ip = host.substring(index + 1);
-
-        //保存offerPc端的IP
-        if(ip != selfIp.getIPAdress()){
-            global.OFFERPC_IP = ip;
-        }*/
-
         conn.on("text",function (msg) {
             let obj = JSON.parse(msg.toString());
             //调用消息处理方法，处理对应的消息
@@ -74,11 +65,11 @@ function sendLocalMsg(obj){
             }*/
 
 
-            if(obj.answer_ice){
+            /*if(obj.answer_ice){
 
             }
 
-
+*/
 
             break;
         default:

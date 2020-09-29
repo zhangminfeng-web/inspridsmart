@@ -108,7 +108,8 @@ $(document).ready(function(){
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
-            console.log('收到服务器的消息：',event.data);
+            //调用接收服务器消息的公共函数
+            receiveServerMsg(JSON.parse(event.data));
         });
 
         //当断开连接触发方法
@@ -117,6 +118,27 @@ $(document).ready(function(){
         });
 
     });
+
+    function receiveServerMsg(obj){
+        switch(obj.type) {
+            //处理offerPc端发送过来的offer消息
+            case "answer":
+                //将消息通过事件派发，处理offer消息
+                $(global.documentJq).trigger("receivedOffer",[obj]);
+                break;
+            //处理answerPc端发送过来的answer消息
+            case "offer":
+                //将answerPc发送来的消息通过事件派发，发送给本地处理
+                $(global.documentJq).trigger("localAnswer",[obj]);
+                break;
+            //处理两端发送过来的ice信息
+            case "candidate":
+                console.log("收到服务器发送回来的candidate消息");
+                console.log(obj);
+                break;
+            default:
+        }
+    }
 
     //offerPc发送消息的公共方法
     function offerSendMsg(msg){
@@ -159,35 +181,6 @@ $(document).ready(function(){
             }
         },100)
     }
-
-    //发送answer事件
-    /*$(documentEl).on("sendAnswerInfo",async function(e,data){
-
-        //发送answer信息：data为answer信息
-        //remoteSocket.send(JSON.stringify(data));
-
-        //设置服务器地址
-        let socket = await new WebSocket('ws://'+global.OFFERPC_IP+':58888');
-
-        removeSocket = socket;
-
-        //当连接成功触发这个方法
-        removeSocket.addEventListener('open',async function(event){
-            //发送answer信息
-            allSendMsg(2,data);
-        });
-
-        //当服务端有消息发送过来的时候触发方法
-        removeSocket.addEventListener('message',function (event){
-            console.log('收到服务器的消息：',event.data);
-        });
-
-        //当断开连接触发方法
-        removeSocket.addEventListener('message',function(){
-            console.log("weblocalSocket连接已经关闭");
-        });
-
-    });*/
 
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
