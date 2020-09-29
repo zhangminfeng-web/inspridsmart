@@ -59,7 +59,6 @@ $(document).ready(function(){
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
         peerConnection.onicecandidate = e => {
             if(e.candidate){
-                console.log(1);
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
         };
@@ -205,7 +204,7 @@ $(document).ready(function(){
 
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-        console.log(answerPc);
+        /*console.log(answerPc);*/
 
         //在answerPc端处理ice信息
         await handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
