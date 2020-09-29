@@ -33,8 +33,16 @@ var server = ws.createServer(function(conn){
 
 //向客户端发送消息的公共函数
 exports.sendMsgToClient = function(msg){
-    server.send(msg);
+    //调用广播函数
+    broadcast(server,msg);
 };
+
+// 服务端广播
+function broadcast(server, msg) {
+    server.connections.forEach(function(conn) {
+        conn.sendText(msg)
+    })
+}
 
 function sendLocalMsg(obj){
     switch(obj.type) {
