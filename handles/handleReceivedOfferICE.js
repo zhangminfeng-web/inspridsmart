@@ -5,7 +5,5 @@ module.exports.receivedOfferICE = async function(data,documentEl,answerPc){
     //通过这种方式就将answer端的icecandidate添加上了
     if(answerPc){
         await answerPc.addIceCandidate(new RTCIceCandidate(data));
-        console.log("answerPc端添加ice信息成功");
     }
-
 };

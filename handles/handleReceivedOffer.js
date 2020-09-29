@@ -34,11 +34,30 @@ module.exports.receivedOffer = async function(data,documentEl){
 
     //监听网路信息事件,获取网路信息
     //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
-    /*answerPc.onicecandidate = e => {
+    answerPc.onicecandidate = e => {
         if(e.candidate){
-            $(documentEl).trigger("answer_ice",[e.candidate]);
+            sendIceToOfferPc(e.candidate);
         }
-    }*/
+    }
+
+    //通过answerPc服务端向offerPc客户端发送ice信息
+    function sendIceToOfferPc(data){
+        let obj = {};
+        for(let key in data){
+            if(key == "type"){
+                obj[key] = "candidate";
+            }else{
+                obj[key] = data[key];
+            }
+        }
+
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+
+        //offerPc端向answer服务端发送ice信息
+        websocketServer.sendMsgToClient(JSON.stringify(obj));
+    }
 
     //当offerPc端通过数据通道(datachannel)发送过来信息时,在answerPc端用来接收消息的方法
     /*answerPc.ondatachannel = function(e){

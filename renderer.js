@@ -119,11 +119,6 @@ $(document).ready(function(){
 
     function receiveServerMsg(obj){
         switch(obj.type) {
-            //处理offerPc端发送过来的offer消息
-            case "answer":
-                //将消息通过事件派发，处理offer消息
-                $(global.documentJq).trigger("receivedOffer",[obj]);
-                break;
             //处理answerPc端发送过来的answer消息
             case "offer":
                 //将answerPc发送来的消息通过事件派发，发送给本地处理
@@ -172,39 +167,11 @@ $(document).ready(function(){
     });
 
     //发送offer_ice消息
-    $(documentEl).on("offer_ice",function(e,data){
-        let obj = {};
-        for(let key in data){
-            if(key == "type"){
-                obj[key] = "candidate";
-                obj["offer_ice"] = "offer_ice";
-            }else{
-                obj[key] = data[key];
-            }
-        }
-
-        if(obj.toJSON){
-            delete  obj.toJSON;
-        }
-
-        //offerPc端向answer服务端发送ice信息
-        allSendMsg(obj);
-
-    });
 
     //answerPc端接收到了offerPc端的ice消息
     $(documentEl).on("offerPc_ice",function(e,data){
         //获取answer链接对象
-        /*let answerPc = await new Promise((resolve) => {
-
-            if(answerPc){
-                resolve(answerPc);
-            }
-        });*/
-
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
-
-        /*console.log(answerPc);*/
 
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
@@ -216,7 +183,6 @@ $(document).ready(function(){
         for(let key in data){
             if(key == "type"){
                 obj[key] = "candidate";
-                obj["answer_ice"] = "answer_ice";
             }else{
                 obj[key] = data[key];
             }
@@ -227,9 +193,8 @@ $(document).ready(function(){
         }
 
         //answerPc端向offerPc服务端发送ice信息
-        allSendMsg(2,obj);
-
-    })
+        allSendMsg(obj);
+    });
 
     //offerPc客户端接收到了answerPc端发送过来的ice信息
     $(documentEl).on("answerPc_ice",function(e,data){
