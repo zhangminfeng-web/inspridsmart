@@ -55,14 +55,6 @@ $(document).ready(function(){
         //将远程的ip保存为共享数据
         /*global.receivedIp = ip;*/
 
-        //当dataChannel通道打开后,监听网路信息事件,获取网路信息
-        //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        peerConnection.onicecandidate = e => {
-            if(e.candidate){
-                $(documentEl).trigger("offer_ice",[e.candidate])
-            }
-        };
-
         //获取到远程媒体流对象
         //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
@@ -116,6 +108,14 @@ $(document).ready(function(){
         localSocket.addEventListener('message',function () {
             console.log("weblocalSocket连接已经关闭");
         });
+
+        //当dataChannel通道打开后,监听网路信息事件,获取网路信息
+        //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
+        peerConnection.onicecandidate = e => {
+            if(e.candidate){
+                $(documentEl).trigger("offer_ice",[e.candidate])
+            }
+        };
 
     });
 
@@ -204,7 +204,7 @@ $(document).ready(function(){
             }
         });
 
-        /*console.log(answerPc);*/
+        console.log(answerPc);
 
         //在answerPc端处理ice信息
         await handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
