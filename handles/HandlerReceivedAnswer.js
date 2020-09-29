@@ -6,7 +6,7 @@ module.exports.receivedAnswer = async function(data,documentEl){
     data.type = "answer";
 
     //设置远端与连接关联的描述信息
-    global.getData(global.KEY_OFFER_PEER_CONNECTION).setRemoteDescription(new RTCSessionDescription(data));
+    await global.KEY_OFFER_PEER_CONNECTION.setRemoteDescription(new RTCSessionDescription(data));
 
     console.log("peerA和peerB的offer、answer信息减缓完成");
 }

@@ -12,8 +12,8 @@ module.exports = {
     documentJq:null,   //jquery全局文档流对象
     LOCALHOST_IP:"localhost",
     SHAREDATA: new Map(),   //全局共享的数据
-    KEY_OFFER_PEER_CONNECTION:"offerPc",
-    KEY_ANSWER_PEER_CONNECTION:"answerPc",
+    KEY_OFFER_PEER_CONNECTION:null,
+    KEY_ANSWER_PEER_CONNECTION:null,
     KEY_DATACHANNEL:"dataChannel",
     KEY_LOCAL_MEDIA_STREAM:"localMediaStream",
     KEY_REMOTE_MEDIA_STREAM:"remoteMediaStream",

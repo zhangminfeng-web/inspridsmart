@@ -31,7 +31,7 @@ $(document).ready(function(){
         let peerConnection = new RTCPeerConnection();
 
         //2.将peerConnection保存为全局共享数据
-        global.setData(global.KEY_OFFER_PEER_CONNECTION,peerConnection);
+        global.KEY_OFFER_PEER_CONNECTION =peerConnection;
 
         //创建一个数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel");
@@ -50,7 +50,7 @@ $(document).ready(function(){
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
-        let peerConnection = global.getData(global.KEY_OFFER_PEER_CONNECTION);
+        let peerConnection = global.KEY_OFFER_PEER_CONNECTION;
 
         //将远程的ip保存为共享数据
         /*global.receivedIp = ip;*/
@@ -203,7 +203,7 @@ $(document).ready(function(){
             }
         });*/
 
-        let answerPc = await global.getData(global.KEY_ANSWER_PEER_CONNECTION);
+        let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
         console.log(answerPc);
 
@@ -265,7 +265,7 @@ $(document).ready(function(){
     //answerPc端挂断可视对讲时触发
     $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
         //1.获取本地连接对象
-        let answerPc = global.getData(global.KEY_ANSWER_PEER_CONNECTION);
+        let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
         //2.发送挂断信息给offerPc端
 
@@ -310,7 +310,7 @@ $(document).ready(function(){
     $(documentEl).on("offerPcCloseVideoStream","#localClose",function(e){
 
         //1.获取本地连接对象
-        let offerPc = global.getData(global.KEY_OFFER_PEER_CONNECTION);
+        let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //2.发送挂断信息给answerPc端
 

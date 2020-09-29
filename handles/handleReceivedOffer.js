@@ -7,7 +7,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     let answerPc = new RTCPeerConnection();
 
     //将answerPc保存为全局共享数据
-    await global.setData(global.KEY_ANSWER_PEER_CONNECTION,answerPc);
+    global.KEY_ANSWER_PEER_CONNECTION = answerPc;
 
     //answerPc端接收到offer信息，就打开本地弹框
     $(documentEl).trigger("openPopup");
