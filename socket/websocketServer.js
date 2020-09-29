@@ -5,16 +5,16 @@ const selfIp = require('../global/getIpAdress');
 var server = ws.createServer(function(conn){
     if(server.connections.length<=1) {
         console.log("新的连接进来了...");
-        let host = conn.socket.remoteAddress;
+        /*let host = conn.socket.remoteAddress;
         let index = host.lastIndexOf(":");
         let ip = host.substring(index + 1);
 
         //保存offerPc端的IP
         if(ip != selfIp.getIPAdress()){
             global.OFFERPC_IP = ip;
-        }
+        }*/
 
-        conn.on("text", function (msg) {
+        conn.on("text",function (msg) {
             let obj = JSON.parse(msg.toString());
             //调用消息处理方法，处理对应的消息
             sendLocalMsg(obj);
@@ -29,8 +29,12 @@ var server = ws.createServer(function(conn){
         });
 
     }
-
 });
+
+//向客户端发送消息的公共函数
+exports.sendMsgToClient = function(msg){
+    server.send(msg);
+};
 
 function sendLocalMsg(obj){
     switch(obj.type) {
@@ -42,24 +46,24 @@ function sendLocalMsg(obj){
         //处理answerPc端发送过来的answer消息
         case "offer":
             //将answerPc发送来的消息通过事件派发，发送给本地处理
-            $(global.documentJq).trigger("localAnswer",[obj]);
+            //$(global.documentJq).trigger("localAnswer",[obj]);
             break;
         //处理两端发送过来的ice信息
         case "candidate":
 
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
-            if(obj.offer_ice){
+            /*if(obj.offer_ice){
                 console.log(1);
                 console.log(obj);
                 $(global.documentJq).trigger("offerPc_ice",[obj]);
             }
 
             //接收answerPc端向offerPc端发送的ice信息,并转发给自己的客户端
-            else{
+            if(obj.answer_ice){
                 console.log(2);
                 console.log(obj);
                 console.log("接收到answerPc端发送过来的ice信息");
-            }
+            }*/
 
 
             if(obj.answer_ice){

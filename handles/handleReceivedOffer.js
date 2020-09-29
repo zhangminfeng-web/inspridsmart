@@ -1,4 +1,5 @@
 let global = require("../global/globalFile");
+let websocketServer = require("../socket/websocketServer");
 
 module.exports.receivedOffer = async function(data,documentEl){
 
@@ -32,11 +33,11 @@ module.exports.receivedOffer = async function(data,documentEl){
 
     //监听网路信息事件,获取网路信息
     //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
-    answerPc.onicecandidate = e => {
+    /*answerPc.onicecandidate = e => {
         if(e.candidate){
             $(documentEl).trigger("answer_ice",[e.candidate]);
         }
-    }
+    }*/
 
     //当offerPc端通过数据通道(datachannel)发送过来信息时,在answerPc端用来接收消息的方法
     /*answerPc.ondatachannel = function(e){
@@ -63,8 +64,8 @@ module.exports.receivedOffer = async function(data,documentEl){
     answer.type = "offer";
 
     //通过事件派发机制，发送answer信息
-    $(documentEl).trigger("sendAnswerInfo",[answer]);
-
+    //$(documentEl).trigger("sendAnswerInfo",[answer]);
+    websocketServer.sendMsgToClient(JSON.stringify(answer));
 
 
 };

@@ -57,11 +57,11 @@ $(document).ready(function(){
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        peerConnection.onicecandidate = e => {
+        /*peerConnection.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };
+        };*/
 
         //获取到远程媒体流对象
         //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -161,7 +161,7 @@ $(document).ready(function(){
     }
 
     //发送answer事件
-    $(documentEl).on("sendAnswerInfo",async function(e,data){
+    /*$(documentEl).on("sendAnswerInfo",async function(e,data){
 
         //发送answer信息：data为answer信息
         //remoteSocket.send(JSON.stringify(data));
@@ -187,7 +187,7 @@ $(document).ready(function(){
             console.log("weblocalSocket连接已经关闭");
         });
 
-    });
+    });*/
 
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
