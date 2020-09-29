@@ -52,7 +52,6 @@ $(document).ready(function(){
 
         let peerConnection = global.KEY_OFFER_PEER_CONNECTION;
 
-
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
         peerConnection.onicecandidate = e => {
@@ -66,6 +65,8 @@ $(document).ready(function(){
 
         //接收answerPc端发送过来的媒体流数据
         peerConnection.ontrack = e => {
+            console.log("接收answerPc端发送过来的媒体流数据");
+            console.log(e);
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
         };
@@ -208,8 +209,9 @@ $(document).ready(function(){
         //关闭接受按钮
         $(this).hide();
 
-        //当answerPc接受之后，需要通过udp服务告诉offerPc端我接受了视频
+        //当answerPc接受之后，需要通过服务器发送消息告诉offerPc端我接受了视频
         //待定逻辑，还未编写
+
     });
 
     //answerPc端挂断可视对讲时触发

@@ -6,7 +6,6 @@ module.exports = {
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
     OFFERPC_IP:"",
-    INTERCOM_CLIENT_PORT:"58866",
     receivedIp:"",
     localhostIp:"",
     documentJq:null,   //jquery全局文档流对象
