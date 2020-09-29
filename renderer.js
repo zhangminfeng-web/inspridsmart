@@ -153,6 +153,28 @@ $(document).ready(function(){
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
+    //发送offer_ice消息
+    $(documentEl).on("offer_ice",function(e,data){
+        console.log("offer_ice");
+        console.log(data);
+        let obj = {};
+        for(let key in data){
+            if(key == "type"){
+                obj[key] = "candidate";
+            }else{
+                obj[key] = data[key];
+            }
+        }
+        if(obj.toJSON){
+            delete  obj.toJSON;
+        }
+
+        console.log(obj);
+
+        //offerPc端向answer服务端发送ice信息
+        allSendMsg(obj);
+    });
+
     //answerPc端接收到了offerPc端的ice消息
     $(documentEl).on("offerPc_ice",function(e,data){
         //获取answer链接对象

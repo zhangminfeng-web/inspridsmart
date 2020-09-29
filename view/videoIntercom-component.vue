@@ -10,7 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
-                        <li @click="endAnswerInfo" port="58888" ip="192.68.5.94">测试机</li>
+                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.133">测试机</li>
                     </ul>
                 </div>
             </div>
@@ -57,6 +57,7 @@
                 $("#localClose").show();
                 $(".intercom_model_bg").show();
 
+                console.log('ws://'+ip+':58888');
                 //设置服务器地址
                 let socket = new WebSocket('ws://'+ip+':58888');
 
