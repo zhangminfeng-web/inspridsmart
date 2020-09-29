@@ -73,12 +73,6 @@ $(document).ready(function(){
             remoteStream.addTrack(e.track);
         };*/
 
-        //给dataChannel监听事件,在dataChannel打开数据通道之后，就会被触发
-        //主要用来向answerPc端，发送消息
-        /*dataChannel.onopen = function(e){
-            dataChannel.send("hello RTC");
-        };*/
-
         //3.获取本地数据流
         //const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
