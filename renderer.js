@@ -119,15 +119,13 @@ $(document).ready(function(){
 
     function receiveServerMsg(obj){
         switch(obj.type) {
-            //处理answerPc端发送过来的answer消息
             case "offer":
-                //将answerPc发送来的消息通过事件派发，发送给本地处理
+                //将answerPc端发送来的answer消息通过事件派发，发送给本地处理
                 $(global.documentJq).trigger("localAnswer",[obj]);
                 break;
-            //处理两端发送过来的ice信息
             case "candidate":
-                console.log("收到服务器发送回来的candidate消息");
-                console.log(obj);
+                //将answerPc端发送来的ice消息通过事件派发，发送给本地处理
+                $(documentEl).trigger("answerPc_ice",[obj]);
                 break;
             default:
         }
@@ -166,13 +164,10 @@ $(document).ready(function(){
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
-    //发送offer_ice消息
-
     //answerPc端接收到了offerPc端的ice消息
     $(documentEl).on("offerPc_ice",function(e,data){
         //获取answer链接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
-
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
     });
