@@ -10,4 +10,6 @@ module.exports.receivedOfferICE = async function(data,documentEl,answerPc){
         }
         await answerPc.addIceCandidate(new RTCIceCandidate(data));
     }
+
+    console.log("answerPc端交换ice信息完成了");
 };

@@ -14,5 +14,5 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         await offerPc.addIceCandidate(new RTCIceCandidate(data));
     }
 
-    console.log("offerPc端和answerPc端交换ice信息完成了");
+    console.log("offerPc端交换ice信息完成了");
 };
