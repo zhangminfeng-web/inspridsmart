@@ -39,7 +39,7 @@ function sendLocalMsg(obj){
     switch(obj.type) {
         //处理offerPc端发送过来的offer消息
         //case "answer":
-        case "offer":
+        case "answer":
             //将消息通过事件派发，发送给本地处理
             $(global.documentJq).trigger("receivedOffer",[obj]);
             break;

@@ -86,11 +86,11 @@ $(document).ready(function(){
         //5.创建一个offer
         let offer = await offerPc.createOffer();
 
-        //7.更改与连接关联的本地描述
+        //6.更改与连接关联的本地描述
         await offerPc.setLocalDescription(new RTCSessionDescription(offer));
 
-        //6.设置本地为answer端信息
-        //offer.type = "answer";
+        //7.设置本地为answer端信息
+        offer.type = "answer";
 
         //将本地weblocalSocket连接对象,赋值给全局
         localSocket = ws;
@@ -116,7 +116,7 @@ $(document).ready(function(){
 
     function receiveServerMsg(obj){
         switch(obj.type) {
-            case "answer":
+            case "offer":
                 //将answerPc端发送来的answer消息通过事件派发，发送给本地处理
                 $(global.documentJq).trigger("localAnswer",[obj]);
                 break;

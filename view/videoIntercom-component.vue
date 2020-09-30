@@ -10,7 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
-                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.133">测试机</li>
+                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.94">测试机</li>
                     </ul>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div class="model_content">
                 <div class="model_header">
                     <span class="model_title" id="model_title">可视对讲</span>
-                    <span class="model_close" ></span>
+                    <span class="model_close"></span>
                 </div>
                 <div class="model_mains">
                     <video controls id="local" class="video1" autoplay></video>

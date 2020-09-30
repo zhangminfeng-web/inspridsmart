@@ -3,7 +3,7 @@ const global = require("../global/globalFile");
 module.exports.receivedAnswer = async function(data,documentEl){
 
     //将type还原成offer
-    //data.type = "answer"; //对接本地PC机
+    data.type = "answer"; //对接本地PC机
     //console.log(data);
     //data.type = "offer"; //对接安卓
 
