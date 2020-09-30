@@ -69,7 +69,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     let answer = await answerPc.createAnswer();
 
     //设置本地与连接关联的描述信息
-     await answerPc.setLocalDescription(new RTCSessionDescription(answer));
+    await answerPc.setLocalDescription(new RTCSessionDescription(answer));
 
     //将answer的type属性修改成offer
     answer.type = "offer";

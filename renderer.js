@@ -54,7 +54,6 @@ $(document).ready(function(){
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
-        console.log(offerPc);
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
@@ -87,8 +86,10 @@ $(document).ready(function(){
         //5.创建一个offer
         let offer = await offerPc.createOffer();
 
-        //6.更改与连接关联的本地描述
+        //7.更改与连接关联的本地描述
         await offerPc.setLocalDescription(new RTCSessionDescription(offer));
+
+        //6.设置本地为answer端信息
         offer.type = "answer";
 
         //将本地weblocalSocket连接对象,赋值给全局
