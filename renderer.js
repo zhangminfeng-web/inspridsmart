@@ -21,11 +21,11 @@ $(document).ready(function(){
         //保存本地媒体流
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
 
-        //将远程媒体流对象(localStream)，在本地预览
+        /*//将远程媒体流对象(localStream)，在本地预览
         document.getElementById('remote').srcObject = remoteStream;
 
         //保存远程媒体流
-        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+        global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);*/
 
         //将vue实例保存为全局变量
         vueObj = vueApp;
