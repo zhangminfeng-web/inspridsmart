@@ -84,6 +84,14 @@
                     showComponentValue:1,
                 },
                 async mounted(){
+                    //获取本地媒体流对象
+                    /*let localStream = await navigator.mediaDevices.getUserMedia({
+                        video:true,
+                        audio:false
+                    });
+
+                    //获取远程媒体流对象
+                    let remoteStream = new MediaStream();*/
 
                     //传递给sendMediaStream函数
                     this.sendMediaStream();
@@ -93,7 +101,7 @@
                         let El = $(event.currentTarget);
                         this.showComponentValue = El.attr("value");
                     },
-                    sendMediaStream(localStream,remoteStream){
+                    sendMediaStream(){
                         //将媒体流对象发送给客户端
                         $(documentJq).trigger("sendMediaStreamObj",[vueApp,layer]);
                     }
