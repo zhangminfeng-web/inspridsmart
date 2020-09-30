@@ -10,7 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
-                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.133">测试机</li>
+                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.94">测试机</li>
                     </ul>
                 </div>
             </div>
@@ -64,8 +64,8 @@
 
                 //发送offer
                 El.trigger("sendAnswer",[ip,socket]);
-            },/*
-            receivedStreamVideo(event){   //answerPc端接受可视对讲请求
+            },
+            /*receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);
                 El.trigger("receviedVideoMsg");
             },*/

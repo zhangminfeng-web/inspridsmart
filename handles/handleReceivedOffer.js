@@ -60,7 +60,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     }
 
     //将type还原成offer****暂时注释****
-    data.type = "offer";
+    //data.type = "offer";
 
     //设置远端与连接关联的描述信息
     await answerPc.setRemoteDescription(new RTCSessionDescription(data));
@@ -72,7 +72,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     await answerPc.setLocalDescription(new RTCSessionDescription(answer));
 
     //将answer的type属性修改成offer
-    answer.type = "offer";
+    //answer.type = "offer";
 
     //通过事件派发机制，发送answer信息
     websocketServer.sendMsgToClient(JSON.stringify(answer));
