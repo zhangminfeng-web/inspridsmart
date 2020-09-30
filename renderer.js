@@ -58,9 +58,6 @@ $(document).ready(function(){
         //获取到远程媒体流对象
         const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
-        //4.将远程媒体流对象(localStream)，在本地预览
-        document.getElementById('remote').srcObject = remoteStream;
-
         //接收answerPc端发送过来的媒体流数据
         peerConnection.ontrack = e => {
             console.log("接收answerPc端发送过来的媒体流数据");
@@ -226,9 +223,6 @@ $(document).ready(function(){
 
         //关闭接受按钮
         $(this).hide();
-
-        //当answerPc接受之后，需要通过服务器发送消息告诉offerPc端我接受了视频
-        //待定逻辑，还未编写
 
     });
 
