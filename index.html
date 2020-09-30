@@ -83,9 +83,9 @@
                 data:{
                     showComponentValue:1,
                 },
-                async mounted(){
-                    //获取本地媒体流对象
-                    /*let localStream = await navigator.mediaDevices.getUserMedia({
+                mounted(){
+                    /*//获取本地媒体流对象
+                    let localStream = await navigator.mediaDevices.getUserMedia({
                         video:true,
                         audio:false
                     });
@@ -94,16 +94,14 @@
                     let remoteStream = new MediaStream();*/
 
                     //传递给sendMediaStream函数
-                    this.sendMediaStream();
+                    /*this.sendMediaStream(localStream,remoteStream);*/
+                    //将媒体流对象发送给客户端
+                    $(documentJq).trigger("sendMediaStreamObj",[this,layer]);
                 },
                 methods:{
                     toggleComponent(event){
                         let El = $(event.currentTarget);
                         this.showComponentValue = El.attr("value");
-                    },
-                    sendMediaStream(){
-                        //将媒体流对象发送给客户端
-                        $(documentJq).trigger("sendMediaStreamObj",[vueApp,layer]);
                     }
                 }
             })
