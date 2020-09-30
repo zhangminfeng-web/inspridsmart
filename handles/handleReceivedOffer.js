@@ -16,8 +16,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     answerPc.ontrack = e => {
         console.log("将offerPc的媒体流通道，添加到远程媒体流中");
         console.log(e);
-        //将offerPc的媒体流通道，添加到远程媒体流中
-        //remoteStream.addTrack(e.track);
+        remoteStream.addTrack(e.track);
     };
 
     //answerPc端接收到offer信息，就打开本地弹框
