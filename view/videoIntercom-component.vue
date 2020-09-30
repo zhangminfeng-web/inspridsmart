@@ -31,7 +31,7 @@
                         <!-- @click="localCloseVideo"-->
                         <button type="button" class="btn btn-danger" id="localClose">挂断</button>
                         <!--@click="receivedStreamVideo"-->
-                        <button type="button" class="btn btn-success"  id="remoteAccept">接受</button>
+                        <button type="button" class="btn btn-success" @click="receivedStreamVideo" id="remoteAccept">接受</button>
                         <!--@click="remoteCloseVideo"-->
                         <button type="button" class="btn btn-danger" id="remoteClose">挂断</button>
                     </div>
@@ -59,19 +59,17 @@
                 let ip = El.attr("ip");
                 $("#localClose").show();
                 $(".intercom_model_bg").show();
-
-                console.log('ws://'+ip+':58888');
                 //设置服务器地址
                 let socket = new WebSocket('ws://'+ip+':58888');
 
                 //发送offer
                 El.trigger("sendAnswer",[ip,socket]);
             },
-            /*receivedStreamVideo(event){   //answerPc端接受可视对讲请求
+            receivedStreamVideo(event){   //answerPc端接受可视对讲请求
                 let El = $(event.currentTarget);
                 El.trigger("receviedVideoMsg");
             },
-            remoteCloseVideo(event){  //answerPc端挂断可视对讲
+            /*remoteCloseVideo(event){  //answerPc端挂断可视对讲
                 let El = $(event.currentTarget);
                 El.trigger("answerPcCloseVideoStream");
             },
