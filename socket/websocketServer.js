@@ -44,8 +44,6 @@ function sendLocalMsg(obj){
             break;
         case "candidate":
             //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
-            console.log("answerPc端收到了ice信息");
-            console.log(obj);
             $(global.documentJq).trigger("offerPc_ice",[obj]);
             break;
         default:
