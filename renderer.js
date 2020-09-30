@@ -37,7 +37,10 @@ $(document).ready(function(){
         global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //4.在本地预览本地媒体流对象(localStream)
-        document.getElementById('local').srcObject = localStream;
+        document.getElementById('local').srcObject = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+
+        //5.将远程媒体流对象(localStream)，在本地预览
+        document.getElementById('remote').srcObject = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
     });
 
@@ -53,7 +56,6 @@ $(document).ready(function(){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
         };
-
 
         //获取到远程媒体流对象
         const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -223,6 +225,9 @@ $(document).ready(function(){
 
         //关闭接受按钮
         $(this).hide();
+
+        //当answerPc接受之后，需要通过服务器发送消息告诉offerPc端我接受了视频
+        //待定逻辑，还未编写
 
     });
 

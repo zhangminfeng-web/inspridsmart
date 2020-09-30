@@ -31,11 +31,6 @@ module.exports.receivedOffer = async function(data,documentEl){
         remoteStream.addTrack(e.track);
     };
 
-
-    //将远程视频流添加到video标签中
-    document.getElementById('remote').srcObject = remoteStream;
-
-
     //监听网路信息事件,获取网路信息
     //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
     answerPc.onicecandidate = e => {
