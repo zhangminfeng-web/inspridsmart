@@ -13,11 +13,11 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
 
 
-    $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
+    $(documentEl).on("sendMediaStreamObj",function (e,vueApp,layer) {
         console.log("媒体流被添加了");
 
         //获取本地媒体流对象
-        let localStream = await navigator.mediaDevices.getUserMedia({
+        let localStream = navigator.mediaDevices.getUserMedia({
             video:true,
             audio:false
         });
@@ -63,6 +63,7 @@ $(document).ready(function(){
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
+        console.log(offerPc);
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
