@@ -15,8 +15,22 @@ $(document).ready(function(){
 
     $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp,layer) {
         console.log("媒体流被添加了");
+        //在本地预览本地媒体流对象(localStream)
+        document.getElementById('local').srcObject = localStream;
+
+        //保存本地媒体流
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
+
+        //将远程媒体流对象(localStream)，在本地预览
+        document.getElementById('remote').srcObject = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+        //保存远程媒体流
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
+
+        console.log("本地流");
+        console.log(localStream.getTracks());
+        console.log("远程流");
+        console.log(remoteStream.getTracks());
 
         //将vue实例保存为全局变量
         vueObj = vueApp;
@@ -36,35 +50,21 @@ $(document).ready(function(){
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
 
-        //4.在本地预览本地媒体流对象(localStream)
-        document.getElementById('local').srcObject = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
-        //5.将远程媒体流对象(localStream)，在本地预览
-        document.getElementById('remote').srcObject = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
     });
 
     //发送offer事件
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
-        let peerConnection = global.KEY_OFFER_PEER_CONNECTION;
+        let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        peerConnection.onicecandidate = e => {
+        offerPc.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };
-
-        //获取到远程媒体流对象
-        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
-
-        //接收answerPc端发送过来的媒体流数据
-        peerConnection.ontrack = e => {
-            console.log("接收answerPc端发送过来的媒体流数据");
-            //将offerPc的媒体流通道，添加到远程媒体流中
-            remoteStream.addTrack(e.track);
         };
 
         //3.获取本地数据流
@@ -73,14 +73,27 @@ $(document).ready(function(){
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
-            peerConnection.addTrack(t);
+            console.log("获取本地媒体轨道，并添加到peerConnection中");
+            console.log(t);
+            offerPc.addTrack(t);
         });
 
+
+        //获取到远程媒体流对象
+        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+        //接收answerPc端发送过来的媒体流数据
+        offerPc.ontrack = e => {
+            console.log("接收answerPc端发送过来的媒体流数据");
+            //将offerPc的媒体流通道，添加到远程媒体流中
+            remoteStream.addTrack(e.track);
+        };
+
         //5.创建一个offer
-        let offer = await peerConnection.createOffer();
+        let offer = await offerPc.createOffer();
 
         //6.更改与连接关联的本地描述
-        await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+        await offerPc.setLocalDescription(new RTCSessionDescription(offer));
         offer.type = "answer";
 
         //将本地weblocalSocket连接对象,赋值给全局
@@ -154,8 +167,6 @@ $(document).ready(function(){
 
     //发送offer_ice消息
     $(documentEl).on("offer_ice",function(e,data){
-        console.log("offer_ice");
-        console.log(data);
         let obj = {};
         for(let key in data){
             if(key == "type"){

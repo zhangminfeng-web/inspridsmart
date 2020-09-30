@@ -9,6 +9,17 @@ module.exports.receivedOffer = async function(data,documentEl){
     //将answerPc保存为全局共享数据
     global.KEY_ANSWER_PEER_CONNECTION = answerPc;
 
+    //获取远程媒体流对象
+    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+    //接收offerPc端发送过来的媒体流数据
+    answerPc.ontrack = e => {
+        console.log("将offerPc的媒体流通道，添加到远程媒体流中");
+        console.log(e);
+        //将offerPc的媒体流通道，添加到远程媒体流中
+        //remoteStream.addTrack(e.track);
+    };
+
     //answerPc端接收到offer信息，就打开本地弹框
     $(documentEl).trigger("openPopup");
 
@@ -21,15 +32,6 @@ module.exports.receivedOffer = async function(data,documentEl){
         answerPc.addTrack(t);
     });
 
-
-    //获取远程媒体流对象
-    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
-
-    //接收offerPc端发送过来的媒体流数据
-    answerPc.ontrack = e => {
-        //将offerPc的媒体流通道，添加到远程媒体流中
-        remoteStream.addTrack(e.track);
-    };
 
     //监听网路信息事件,获取网路信息
     //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
