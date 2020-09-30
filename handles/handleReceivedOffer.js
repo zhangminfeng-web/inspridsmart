@@ -12,14 +12,10 @@ module.exports.receivedOffer = async function(data,documentEl){
     //获取远程媒体流对象
     let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
-    console.log(remoteStream);
-
     //接收offerPc端发送过来的媒体流数据
     answerPc.ontrack = e => {
         console.log("将offerPc的媒体流通道，添加到远程媒体流中");
-        console.log(e);
         remoteStream.addTrack(e.track);
-        console.log(remoteStream);
     };
 
 

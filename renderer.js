@@ -70,8 +70,6 @@ $(document).ready(function(){
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
-            console.log("获取本地媒体轨道，并添加到peerConnection中");
-            console.log(t);
             offerPc.addTrack(t);
         });
 
