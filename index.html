@@ -83,25 +83,27 @@
                 data:{
                     showComponentValue:1,
                 },
-                mounted(){
-                    /*//获取本地媒体流对象
+                async mounted(){
+                    //获取本地媒体流对象
                     let localStream = await navigator.mediaDevices.getUserMedia({
                         video:true,
                         audio:false
                     });
 
                     //获取远程媒体流对象
-                    let remoteStream = new MediaStream();*/
+                    let remoteStream = new MediaStream();
 
                     //传递给sendMediaStream函数
-                    /*this.sendMediaStream(localStream,remoteStream);*/
-                    //将媒体流对象发送给客户端
-                    $(documentJq).trigger("sendMediaStreamObj",[this,layer]);
+                    this.sendMediaStream(localStream,remoteStream);
                 },
                 methods:{
                     toggleComponent(event){
                         let El = $(event.currentTarget);
                         this.showComponentValue = El.attr("value");
+                    },
+                    sendMediaStream(localStream,remoteStream){
+                        //将媒体流对象发送给客户端
+                        $(documentJq).trigger("sendMediaStreamObj",[localStream,remoteStream,this,layer]);
                     }
                 }
             })

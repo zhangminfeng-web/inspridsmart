@@ -13,17 +13,8 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
 
 
-    $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
+    $(documentEl).on("sendMediaStreamObj",async function (e,localStream,remoteStream,vueApp,layer) {
         console.log("媒体流被添加了");
-
-        //获取本地媒体流对象
-        let localStream = await navigator.mediaDevices.getUserMedia({
-            video:true,
-            audio:false
-        });
-
-        //获取远程媒体流对象
-        let remoteStream = new MediaStream();
 
         //在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
