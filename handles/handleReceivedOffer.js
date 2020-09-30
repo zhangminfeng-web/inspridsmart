@@ -60,7 +60,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     }
 
     //将type还原成offer****暂时注释****
-    /*data.type = "offer";*/
+    data.type = "offer";
 
     //设置远端与连接关联的描述信息
     await answerPc.setRemoteDescription(new RTCSessionDescription(data));
