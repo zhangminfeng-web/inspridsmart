@@ -7,6 +7,9 @@ module.exports.receivedAnswer = async function(data,documentEl){
     //console.log(data);
     //data.type = "offer"; //对接安卓
 
+    console.log("offerPc端接收到answer信息");
+    console.log(data);
+
     //设置远端与连接关联的描述信息
     await global.KEY_OFFER_PEER_CONNECTION.setRemoteDescription(new RTCSessionDescription(data));
 
