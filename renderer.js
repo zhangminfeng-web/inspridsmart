@@ -39,9 +39,6 @@ $(document).ready(function(){
         //4.在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
 
-        //4.将远程媒体流对象(localStream)，在本地预览
-        //document.getElementById('remote').srcObject = remoteStream;
-
     });
 
     //发送offer事件
@@ -57,13 +54,16 @@ $(document).ready(function(){
             }
         };
 
+
         //获取到远程媒体流对象
         const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+
+        //4.将远程媒体流对象(localStream)，在本地预览
+        document.getElementById('remote').srcObject = remoteStream;
 
         //接收answerPc端发送过来的媒体流数据
         peerConnection.ontrack = e => {
             console.log("接收answerPc端发送过来的媒体流数据");
-            console.log(e);
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
         };
@@ -169,8 +169,6 @@ $(document).ready(function(){
             delete  obj.toJSON;
         }
 
-        console.log(obj);
-
         //offerPc端向answer服务端发送ice信息
         allSendMsg(obj);
     });
@@ -179,6 +177,7 @@ $(document).ready(function(){
     $(documentEl).on("offerPc_ice",function(e,data){
         //获取answer链接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
+
         //在answerPc端处理ice信息
         handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
     });

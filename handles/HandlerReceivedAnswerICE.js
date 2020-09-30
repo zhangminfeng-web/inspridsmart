@@ -1,18 +1,16 @@
 const global = require("../global/globalFile");
 
 module.exports.receivedAnswerICE = async function(data,documentEl){
-    console.log("&&&&&&&answerPc端的answer_ice消息");
-    console.log(data);
 
     //获取offerPc连接对象
     let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
     //给offerPc添加来自answerPc端的answer_ice消息
     if(offerPc){
-        /*if(!data.sdpMLineIndex){
+        if(!data.sdpMLineIndex){
             data.sdpMLineIndex = 0;
             data.sdpMid = "0";
-        }*/
+        }
         await offerPc.addIceCandidate(new RTCIceCandidate(data));
     }
 
