@@ -13,16 +13,26 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
 
 
-    $(documentEl).on("sendMediaStreamObj",function (e,localStream,remoteStream,vueApp,layer) {
+    $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
         console.log("媒体流被添加了");
+
+        //获取本地媒体流对象
+        let localStream = await navigator.mediaDevices.getUserMedia({
+            video:true,
+            audio:false
+        });
+
+        //获取远程媒体流对象
+        let remoteStream = new MediaStream();
+
         //在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
 
         //保存本地媒体流
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
 
-        /*//将远程媒体流对象(localStream)，在本地预览
-        document.getElementById('remote').srcObject = remoteStream;*/
+        //将远程媒体流对象(localStream)，在本地预览
+        document.getElementById('remote').srcObject = remoteStream;
 
         //保存远程媒体流
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
