@@ -48,21 +48,6 @@ $(document).ready(function(){
         //创建一个数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel",dataChannelOptions);
 
-        dataChannel.onerror = function (error) {
-            console.log("Data Channel Error:", error);
-        };
-
-        dataChannel.onmessage = function (event) {
-            console.log("Got Data Channel Message:", event.data);
-        };
-
-        dataChannel.onopen = function () {
-            dataChannel.send("Hello World!");
-        };
-
-        dataChannel.onclose = function () {
-            console.log("The Data Channel is Closed");
-        };
 
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
