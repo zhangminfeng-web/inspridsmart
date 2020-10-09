@@ -97,6 +97,9 @@ $(document).ready(function(){
 
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
+            for(let k in offer){
+                console.log(offer[k]);
+            }
             //向answerPc服务端发送offer消息
             allSendMsg(offer);
         });
