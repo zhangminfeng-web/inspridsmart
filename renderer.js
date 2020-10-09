@@ -40,8 +40,29 @@ $(document).ready(function(){
         //2.将peerConnection保存为全局共享数据
         global.KEY_OFFER_PEER_CONNECTION =peerConnection;
 
+        var dataChannelOptions = {
+            ordered: false, // do not guarantee order
+            maxRetransmitTime: 3000, // in milliseconds
+        };
+
         //创建一个数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel");
+        let dataChannel = peerConnection.createDataChannel("MessageChannel",dataChannelOptions);
+
+        dataChannel.onerror = function (error) {
+            console.log("Data Channel Error:", error);
+        };
+
+        dataChannel.onmessage = function (event) {
+            console.log("Got Data Channel Message:", event.data);
+        };
+
+        dataChannel.onopen = function () {
+            dataChannel.send("Hello World!");
+        };
+
+        dataChannel.onclose = function () {
+            console.log("The Data Channel is Closed");
+        };
 
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
@@ -100,6 +121,7 @@ $(document).ready(function(){
             for(let k in offer){
                 console.log(offer[k]);
             }
+
             //向answerPc服务端发送offer消息
             allSendMsg(offer);
         });
