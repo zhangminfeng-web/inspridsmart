@@ -117,6 +117,9 @@ $(document).ready(function(){
         //向客户端发送offer信息
         websocketServer.sendMsgToClient(JSON.stringify(offer));
 
+        //answerPc端接收到offer信息，就打开本地弹框
+        $(documentEl).trigger("openPopup");
+
 
     });
 
@@ -132,11 +135,8 @@ $(document).ready(function(){
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
-            console.log("客户端接收到服务端发送过来的offer信息");
-            console.log(JSON.parse(event.data));
-
             //调用接收服务器消息的公共函数
-            //receiveServerMsg(JSON.parse(event.data));
+            receiveServerMsg(JSON.parse(event.data));
         });
 
         //当断开连接触发方法
@@ -147,9 +147,9 @@ $(document).ready(function(){
 
     function receiveServerMsg(obj){
         switch(obj.type) {
-            case "answer":
-                //将answerPc端发送来的answer消息通过事件派发，发送给本地处理
-                $(global.documentJq).trigger("localAnswer",[obj]);
+            case "offer":
+                //客户端端处理服务端发送来的offer消息
+                $(global.documentJq).trigger("receivedOffer",[obj]);
                 break;
             case "candidate":
                 //将answerPc端发送来的ice消息通过事件派发，发送给本地处理
@@ -159,8 +159,8 @@ $(document).ready(function(){
         }
     }
 
-    //offerPc发送消息的公共方法
-    function offerSendMsg(msg){
+    //客户端发送消息的公共方法
+    function answerSendMsg(msg){
         //向answerPc端发送消息
         if(localSocket.readyState == 1){
             localSocket.send(msg);
@@ -174,21 +174,27 @@ $(document).ready(function(){
     function allSendMsg(msg){
         let t = setInterval(function(){
             //offerPc发送消息的公共方法
-            let status = offerSendMsg(JSON.stringify(msg));
+            let status = answerSendMsg(JSON.stringify(msg));
             if(status){
                 window.clearInterval(t);
             }
         },100);
     }
 
+    //客户端发送answer信息给服务端
+    $(documentEl).on("sendAnswerMsgClient",function(e,data){
+        console.log("客户端即将发送answer信息给服务端");
+        allSendMsg(data);
+    });
+
     //answerPc端收到offerPc端的信息了
     $(documentEl).on("receivedOffer",function(e,data){
         handleReceivedOffer.receivedOffer(data,documentEl);
     });
 
-    //offer端接收answer信息
-    $(documentEl).on("localAnswer",function(e,data){
-        //本地接收answer信息
+    //服务端处理客户端发送来的answer信息
+    $(documentEl).on("serverAnswer",function(e,data){
+        //服务端处理接收answer信息
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 

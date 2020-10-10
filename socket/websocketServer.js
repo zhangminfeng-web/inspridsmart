@@ -40,11 +40,10 @@ function broadcast(server, msg) {
 function sendLocalMsg(obj){
     if(obj){
         switch(obj.type) {
-            //处理offerPc端发送过来的offer消息
-            //case "answer":
-            case "offer":
+            //处理客户端发送过来的answer消息
+            case "answer":
                 //将消息通过事件派发，发送给本地处理
-                $(global.documentJq).trigger("receivedOffer",[obj]);
+                $(global.documentJq).trigger("serverAnswer",[obj]);
                 break;
             case "candidate":
                 //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
