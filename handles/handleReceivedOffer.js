@@ -10,13 +10,13 @@ module.exports.receivedOffer = async function(data,documentEl){
     global.KEY_ANSWER_PEER_CONNECTION = answerPc;
 
     //获取远程媒体流对象
-    //let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
     //接收客户端发送过来的媒体流数据
-    /*answerPc.ontrack = e => {
+    answerPc.ontrack = e => {
         console.log("将客户端的媒体流通道，添加到远程媒体流中");
         remoteStream.addTrack(e.track);
-    };*/
+    };
 
     //获取本地视频流
     //let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
