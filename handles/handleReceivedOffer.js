@@ -14,20 +14,19 @@ module.exports.receivedOffer = async function(data,documentEl){
 
     //接收客户端发送过来的媒体流数据
     answerPc.ontrack = e => {
-        console.log("将客户端的媒体流通道，添加到远程媒体流中");
-        console.log(e.track);
         remoteStream.addTrack(e.track);
     };
 
     //获取本地视频流
-    //let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+    let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
     //通过getTracks()方法获取到媒体流设备轨道
     //再通过addTrack()将每一个轨道添加到answerPc中
-    /*localStream.getTracks().forEach(t => {
-        console.log();
+    localStream.getTracks().forEach(t => {
+        console.log("向服务端媒体流添加视频轨道");
+        console.log(t);
         answerPc.addTrack(t);
-    });*/
+    });
 
 
     //监听网路信息事件,获取网路信息
