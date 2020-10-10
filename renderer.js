@@ -35,18 +35,11 @@ $(document).ready(function(){
         //将layer实例，保存为全局共享数据
         global.setData(global.LAYER_OBJ,layer);
 
-    });
-
-    //服务器端向客户端发送offer信息
-    $(documentEl).on("sendAnswer",async function(e){
-
-        //let offerPc = global.KEY_OFFER_PEER_CONNECTION;
-
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
-        let offerPc = new RTCPeerConnection();
+        let peerConnection = new RTCPeerConnection();
 
         //2.将peerConnection保存为全局共享数据
-        global.KEY_OFFER_PEER_CONNECTION = offerPc;
+        global.KEY_OFFER_PEER_CONNECTION =peerConnection;
 
         var dataChannelOptions = {
             ordered: false, // do not guarantee order
@@ -54,11 +47,18 @@ $(document).ready(function(){
         };
 
         //创建一个数据通道，用于传输数据
-        let dataChannel = offerPc.createDataChannel("MessageChannel",dataChannelOptions);
+        let dataChannel = peerConnection.createDataChannel("MessageChannel",dataChannelOptions);
 
 
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
+
+    });
+
+    //服务器端向客户端发送offer信息
+    $(documentEl).on("sendAnswer",async function(e){
+
+        let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
