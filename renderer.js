@@ -2,6 +2,7 @@ let handleReceivedOffer = require("./handles/handleReceivedOffer");
 let handleReceivedAnswer = require("./handles/HandlerReceivedAnswer");
 let handleReceivedOfferICE = require("./handles/handleReceivedOfferICE");
 let HandlerReceivedAnswerICE = require("./handles/HandlerReceivedAnswerICE");
+let websocketServer = require('./socket/websocketServer');
 let global = require("./global/globalFile");
 
 $(document).ready(function(){
@@ -34,7 +35,7 @@ $(document).ready(function(){
         //将layer实例，保存为全局共享数据
         global.setData(global.LAYER_OBJ,layer);
 
-        //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
+       /* //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
         let peerConnection = new RTCPeerConnection();
 
         //2.将peerConnection保存为全局共享数据
@@ -50,44 +51,62 @@ $(document).ready(function(){
 
 
         //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);
+        global.setData(global.KEY_DATACHANNEL,dataChannel);*/
 
 
 
     });
 
-    //发送offer事件
+    //服务器端向客户端发送offer信息
     $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
 
-        let offerPc = global.KEY_OFFER_PEER_CONNECTION;
+        //let offerPc = global.KEY_OFFER_PEER_CONNECTION;
+
+        //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
+        let offerPc = new RTCPeerConnection();
+
+        //2.将peerConnection保存为全局共享数据
+        global.KEY_OFFER_PEER_CONNECTION = offerPc;
+
+        var dataChannelOptions = {
+            ordered: false, // do not guarantee order
+            maxRetransmitTime: 3000, // in milliseconds
+        };
+
+        //创建一个数据通道，用于传输数据
+        let dataChannel = offerPc.createDataChannel("MessageChannel",dataChannelOptions);
+
+
+        //将dataChannel设置为全局共享数据
+        global.setData(global.KEY_DATACHANNEL,dataChannel);
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        offerPc.onicecandidate = e => {
+        /*offerPc.onicecandidate = e => {
             if(e.candidate){
                 $(documentEl).trigger("offer_ice",[e.candidate])
             }
-        };
+        };*/
 
         //3.获取本地数据流
-        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+        //const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        localStream.getTracks().forEach(t => {
+        /*localStream.getTracks().forEach(t => {
             offerPc.addTrack(t);
-        });
+        });*/
 
 
         //获取到远程媒体流对象
-        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+        //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
         //接收answerPc端发送过来的媒体流数据
-        offerPc.ontrack = e => {
+        /*offerPc.ontrack = e => {
             console.log("接收answerPc端发送过来的媒体流数据");
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        };
+        };*/
 
         //5.创建一个offer
         let offer = await offerPc.createOffer();
@@ -95,33 +114,35 @@ $(document).ready(function(){
         //6.更改与连接关联的本地描述
         await offerPc.setLocalDescription(new RTCSessionDescription(offer));
 
-        //7.设置本地为answer端信息
-        //offer.type = "answer";
+        //向客户端发送offer信息
+        websocketServer.sendMsgToClient(JSON.stringify(offer));
 
+
+    });
+
+    //客户端socket信息的发送和接收事件
+    $(documentEl).on("clientSocketMsg",function(e,socket){
         //将本地weblocalSocket连接对象,赋值给全局
-        localSocket = ws;
+        localSocket = socket;
 
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
-            for(let k in offer){
-                console.log(offer[k]);
-            }
 
-            //向answerPc服务端发送offer消息
-            allSendMsg(offer);
         });
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
+            console.log("客户端接收到服务端发送过来的offer信息");
+            console.log(JSON.parse(event.data));
+
             //调用接收服务器消息的公共函数
-            receiveServerMsg(JSON.parse(event.data));
+            //receiveServerMsg(JSON.parse(event.data));
         });
 
         //当断开连接触发方法
-        localSocket.addEventListener('message',function () {
+        localSocket.addEventListener('close',function () {
             console.log("weblocalSocket连接已经关闭");
         });
-
     });
 
     function receiveServerMsg(obj){

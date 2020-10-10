@@ -19,6 +19,8 @@ var server = ws.createServer(function(conn){
             console.log("异常关闭");
         });
 
+        //初始化发送offer
+        sendLocalMsg();
     }
 });
 
@@ -36,20 +38,23 @@ function broadcast(server, msg) {
 }
 
 function sendLocalMsg(obj){
-    switch(obj.type) {
-        //处理offerPc端发送过来的offer消息
-        //case "answer":
-        case "offer":
-            //将消息通过事件派发，发送给本地处理
-            $(global.documentJq).trigger("receivedOffer",[obj]);
-            break;
-        case "candidate":
-            //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
-            $(global.documentJq).trigger("offerPc_ice",[obj]);
-            break;
-        default:
+    if(obj){
+        switch(obj.type) {
+            //处理offerPc端发送过来的offer消息
+            //case "answer":
+            case "offer":
+                //将消息通过事件派发，发送给本地处理
+                $(global.documentJq).trigger("receivedOffer",[obj]);
+                break;
+            case "candidate":
+                //answerPc端收到offerPc端发送的ice信息,并转发给自己的客户端
+                $(global.documentJq).trigger("offerPc_ice",[obj]);
+                break;
+            default:
+        }
+    }else{
+        console.log("需要发送offer给客户端");
     }
-
 }
 
 server.listen(global.INTERCOM_PORT,function(){

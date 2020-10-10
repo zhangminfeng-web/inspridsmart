@@ -86,7 +86,7 @@
                 async mounted(){
                     //获取本地媒体流对象
                     let localStream = await navigator.mediaDevices.getUserMedia({
-                        video:false,
+                        video:true,
                         audio:true
                     });
 
