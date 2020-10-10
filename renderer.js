@@ -58,7 +58,7 @@ $(document).ready(function(){
     });
 
     //服务器端向客户端发送offer信息
-    $(documentEl).on("sendAnswer","#house_list_intercom>li",async function(e,ip,ws){
+    $(documentEl).on("sendAnswer",async function(e){
 
         //let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 

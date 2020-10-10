@@ -53,7 +53,8 @@ function sendLocalMsg(obj){
             default:
         }
     }else{
-        console.log("需要发送offer给客户端");
+        //触发创建offer事件,并将offer信息发送给客户端
+        $(global.documentJq).trigger("sendAnswer");
     }
 }
 
