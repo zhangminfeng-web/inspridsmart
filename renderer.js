@@ -69,23 +69,23 @@ $(document).ready(function(){
         };
 
         //3.获取本地数据流
-        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        localStream.getTracks().forEach(t => {
+        remoteStream.getTracks().forEach(t => {
             offerPc.addTrack(t);
         });
 
 
         //获取到远程媒体流对象
-        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //接收answerPc端发送过来的媒体流数据
         offerPc.ontrack = e => {
             console.log("接收客户端发送过来的媒体流数据");
             //将offerPc的媒体流通道，添加到远程媒体流中
-            remoteStream.addTrack(e.track);
+            localStream.addTrack(e.track);
         };
 
         //5.创建一个offer
