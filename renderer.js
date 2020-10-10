@@ -35,26 +35,6 @@ $(document).ready(function(){
         //将layer实例，保存为全局共享数据
         global.setData(global.LAYER_OBJ,layer);
 
-       /* //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
-        let peerConnection = new RTCPeerConnection();
-
-        //2.将peerConnection保存为全局共享数据
-        global.KEY_OFFER_PEER_CONNECTION =peerConnection;
-
-        var dataChannelOptions = {
-            ordered: false, // do not guarantee order
-            maxRetransmitTime: 3000, // in milliseconds
-        };
-
-        //创建一个数据通道，用于传输数据
-        let dataChannel = peerConnection.createDataChannel("MessageChannel",dataChannelOptions);
-
-
-        //将dataChannel设置为全局共享数据
-        global.setData(global.KEY_DATACHANNEL,dataChannel);*/
-
-
-
     });
 
     //服务器端向客户端发送offer信息
@@ -82,31 +62,31 @@ $(document).ready(function(){
 
         //当dataChannel通道打开后,监听网路信息事件,获取网路信息
         //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        /*offerPc.onicecandidate = e => {
+        offerPc.onicecandidate = e => {
             if(e.candidate){
-                $(documentEl).trigger("offer_ice",[e.candidate])
+                websocketServer.sendMsgToClient(JSON.stringify(e.candidate));
             }
-        };*/
+        };
 
         //3.获取本地数据流
-        //const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        /*localStream.getTracks().forEach(t => {
+        localStream.getTracks().forEach(t => {
             offerPc.addTrack(t);
-        });*/
+        });
 
 
         //获取到远程媒体流对象
-        //const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+        const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
         //接收answerPc端发送过来的媒体流数据
-        /*offerPc.ontrack = e => {
-            console.log("接收answerPc端发送过来的媒体流数据");
+        offerPc.ontrack = e => {
+            console.log("接收客户端发送过来的媒体流数据");
             //将offerPc的媒体流通道，添加到远程媒体流中
             remoteStream.addTrack(e.track);
-        };*/
+        };
 
         //5.创建一个offer
         let offer = await offerPc.createOffer();
@@ -152,8 +132,8 @@ $(document).ready(function(){
                 $(global.documentJq).trigger("receivedOffer",[obj]);
                 break;
             case "candidate":
-                //将answerPc端发送来的ice消息通过事件派发，发送给本地处理
-                $(documentEl).trigger("answerPc_ice",[obj]);
+                //客户端处理服务端发送来的ice消息
+                $(documentEl).trigger("offer_candidate",[obj]);
                 break;
             default:
         }
@@ -198,7 +178,7 @@ $(document).ready(function(){
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
-    //发送offer_ice消息
+    //客户端处理服务端发送来的ice消息
     $(documentEl).on("offer_ice",function(e,data){
         let obj = {};
         for(let key in data){
@@ -216,13 +196,13 @@ $(document).ready(function(){
         allSendMsg(obj);
     });
 
-    //answerPc端接收到了offerPc端的ice消息
-    $(documentEl).on("offerPc_ice",function(e,data){
+    //服务端处理客户端发送的ice信息
+    $(documentEl).on("answer_candidate",function(e,data){
         //获取answer链接对象
-        let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
+        let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
-        //在answerPc端处理ice信息
-        handleReceivedOfferICE.receivedOfferICE(data,documentEl,answerPc);
+        //处理客户端发送来的candidate消息
+        handleReceivedOfferICE.receivedOfferICE(data,documentEl,offerPc);
     });
 
     //answerPc端发送answer_ice信息给offerPc端
@@ -244,9 +224,9 @@ $(document).ready(function(){
         allSendMsg(obj);
     });
 
-    //offerPc客户端接收到了answerPc端发送过来的ice信息
-    $(documentEl).on("answerPc_ice",function(e,data){
-        //offerPc端处理,由answerPc端发送过来的ice信息
+    //客户端处理服务端发送来的ice消息
+    $(documentEl).on("offer_candidate",function(e,data){
+        //处理服务端发送来的candidate消息
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 

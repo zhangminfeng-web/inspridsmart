@@ -10,34 +10,34 @@ module.exports.receivedOffer = async function(data,documentEl){
     global.KEY_ANSWER_PEER_CONNECTION = answerPc;
 
     //获取远程媒体流对象
-    //let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
+    let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
 
     //接收offerPc端发送过来的媒体流数据
-    // answerPc.ontrack = e => {
-    //     console.log("将offerPc的媒体流通道，添加到远程媒体流中");
-    //     remoteStream.addTrack(e.track);
-    // };
+    answerPc.ontrack = e => {
+        console.log("将客户端的媒体流通道，添加到远程媒体流中");
+        remoteStream.addTrack(e.track);
+    };
 
     //获取本地视频流
-    //let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+    let localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
     //通过getTracks()方法获取到媒体流设备轨道
     //再通过addTrack()将每一个轨道添加到answerPc中
-    /*localStream.getTracks().forEach(t => {
+    localStream.getTracks().forEach(t => {
         answerPc.addTrack(t);
-    });*/
+    });
 
 
     //监听网路信息事件,获取网路信息
     //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
-    /*answerPc.onicecandidate = e => {
+    answerPc.onicecandidate = e => {
         if(e.candidate){
             sendIceToOfferPc(e.candidate);
         }
-    }*/
+    }
 
-    //通过answerPc服务端向offerPc客户端发送ice信息
-    /*function sendIceToOfferPc(data){
+    //客户端向服务端发送ice信息
+    function sendIceToOfferPc(data){
         let obj = {};
         for(let key in data){
             if(key == "type"){
@@ -52,8 +52,8 @@ module.exports.receivedOffer = async function(data,documentEl){
         }
 
         //offerPc端向answer服务端发送ice信息
-        websocketServer.sendMsgToClient(JSON.stringify(obj));
-    }*/
+        $(documentEl).trigger("offer_ice",[obj]);
+    }
 
     //设置远端与连接关联的描述信息
     await answerPc.setRemoteDescription(new RTCSessionDescription(data));
@@ -66,6 +66,5 @@ module.exports.receivedOffer = async function(data,documentEl){
 
     //通过事件派发机制，发送answer信息
     $(documentEl).trigger("sendAnswerMsgClient",[answer]);
-    //websocketServer.sendMsgToClient(JSON.stringify(answer));
 
 };
