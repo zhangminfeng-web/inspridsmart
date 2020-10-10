@@ -15,6 +15,7 @@ module.exports.receivedOffer = async function(data,documentEl){
     //接收客户端发送过来的媒体流数据
     answerPc.ontrack = e => {
         console.log("将客户端的媒体流通道，添加到远程媒体流中");
+        console.log(e.track);
         remoteStream.addTrack(e.track);
     };
 
