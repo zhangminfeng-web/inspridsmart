@@ -69,13 +69,15 @@ $(document).ready(function(){
         };
 
         //3.获取本地数据流
-        //const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
+        const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
-        /*localStream.getTracks().forEach(t => {
+        localStream.getTracks().forEach(t => {
+            console.log("服务端本地视频流轨道");
+            console.log(t);
             offerPc.addTrack(t);
-        });*/
+        });
 
 
         //获取到远程媒体流对象
