@@ -10,7 +10,7 @@
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
-                        <li @click="endAnswerInfo" port="58888" ip="192.168.1.100">测试机</li>
+                        <li @click="endAnswerInfo" port="58888" ip="192.168.5.22">测试机</li>
                     </ul>
                 </div>
             </div>
@@ -51,7 +51,10 @@
             }
         },
         mounted(){
-            this.init();
+            let _this = this;
+            setInterval(function(){
+                _this.init();
+            },5000);
         },
         methods:{
             endAnswerInfo(event){  //发送offer

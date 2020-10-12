@@ -56,7 +56,10 @@
         },
         mounted(){
             //初始化网页数据
-            this.init();
+            let _this = this;
+            setInterval(function(){
+                _this.init();
+            },5000);
         },
         methods:{
             changeStatusLi(event){  //切换门口机和门铃机

@@ -26,7 +26,10 @@
             }
         },
         mounted(){
-            this.init();
+            let _this = this;
+            setInterval(function(){
+                _this.init();
+            },5000);
         },
         methods:{
             init(){
