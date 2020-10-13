@@ -10,10 +10,12 @@ var server = ws.createServer(function(conn){
 
 
 
-        /*conn.on("text",function (msg) {
-            let obj = JSON.parse(msg.toString());
+        conn.on("text",function (msg) {
+            console.log("服务器收到消息");
+            console.log(msg);
+            //let obj = JSON.parse(msg.toString());
             //调用消息处理方法，处理对应的消息
-            sendLocalMsg(obj);
+            //sendLocalMsg(obj);
         });
 
         conn.on("close", function (code, reason) {
@@ -24,7 +26,7 @@ var server = ws.createServer(function(conn){
             console.log("异常关闭");
         });
 
-        //初始化发送offer
+        /*//初始化发送offer
         sendLocalMsg();*/
     }else{
         //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话

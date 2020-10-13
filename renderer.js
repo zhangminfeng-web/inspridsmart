@@ -130,16 +130,21 @@ $(document).ready(function(){
             }
 
             if(event.data == "connect"){  //当前服务端正在待机状态,可以通信
-                //中心管理机设备
+                //
                 //1.遍历本地数据流，查看有无摄像头。
                 navigator.mediaDevices.enumerateDevices().then(devices => {
-                    //遍历当前设备信息数组,判断有没有摄像头设备
+                    //1. 遍历当前设备信息数组,判断有没有摄像头设备
                     let flag = devices.some(device => {
                         //判断有没有摄像头设备
                         return device.kind == "videoinput";
                     });
 
-                    console.log(flag);
+                    //2. flag返回值为true表示有摄像头1，false没有摄像头0
+                    let index = flag?"1":"0";
+
+                    //3.向服务器发送设备的反馈信息
+                    sendStringText("中心管理机设备,"+index);
+
 
                 });
 
@@ -189,6 +194,29 @@ $(document).ready(function(){
         let t = setInterval(function(){
             //offerPc发送消息的公共方法
             let status = answerSendMsg(JSON.stringify(msg));
+            if(status){
+                window.clearInterval(t);
+            }
+        },100);
+    }
+
+
+
+    //向服务器发送纯字符串的消息
+    function sendToServerStringMsg(msg){
+        if(localSocket.readyState == 1){
+            localSocket.send(msg);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //发送纯字符串的公共函数
+    function sendStringText(msg){
+        let t = setInterval(function(){
+            //offerPc发送消息的公共方法
+            let status = sendToServerStringMsg(msg);
             if(status){
                 window.clearInterval(t);
             }
