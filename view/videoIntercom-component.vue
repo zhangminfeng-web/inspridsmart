@@ -60,8 +60,10 @@
             endAnswerInfo(event){  //发送offer
                 let El = $(event.currentTarget);
                 let ip = El.attr("ip");
-                $("#localClose").show();
-                $(".intercom_model_bg").show();
+                //挂断按钮
+                //$("#localClose").show();
+                //可视弹框
+                //$(".intercom_model_bg").show();
 
                 //设置服务器地址
                 let socket = new WebSocket('ws://'+ip+':58888');
