@@ -313,9 +313,27 @@ $(document).ready(function(){
 
     //服务端收到客户端设备信息,打开询问弹框
     $(documentEl).on("openConfirmBox",function (e,options) {
-        console.log("服务端即将打开弹框");
-        console.log(options);
-    })
+
+        //1. 获取layer实例
+        let layerObj = global.getData(global.LAYER_OBJ);
+        //2. 打开来电铃声
+        let audioEl = document.getElementById("audio-player");
+        audioEl.play();
+
+        //3.询问是否接收可视对讲请求
+        layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
+            btn: ['接收','拒绝'] //按钮
+        },function(){
+            console.log("接收了视频对讲请求");
+            audioEl.pause();
+            audioEl.load();
+        },function(){
+            console.log("拒绝了视频对讲请求");
+            audioEl.pause();
+            audioEl.load();
+        });
+
+    });
 
     //answerPc端挂断可视对讲时触发
     $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {

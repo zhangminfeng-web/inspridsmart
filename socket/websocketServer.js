@@ -8,10 +8,8 @@ var server = ws.createServer(function(conn){
         //1.通知客户端,当前服务端正在待机状态中
         conn.sendText("connect");
 
-
-
         conn.on("text",function (msg) {
-            if(msg.indexOf("{") != -1){ //对象信息
+            if(msg.indexOf("{") != -1){ //对象信息如：offer answer candidate
                 /*let obj = JSON.parse(msg.toString());
                 //调用消息处理方法，处理对应的消息
                 sendLocalMsg(obj);*/
@@ -41,7 +39,7 @@ var server = ws.createServer(function(conn){
         });
 
         //初始化发送offer
-        sendLocalMsg();
+        /*sendLocalMsg();*/
     }else{
         //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话
         conn.sendText("isPhone");
