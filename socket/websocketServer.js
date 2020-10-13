@@ -13,9 +13,23 @@ var server = ws.createServer(function(conn){
         conn.on("text",function (msg) {
             console.log("服务器收到消息");
             console.log(msg);
-            //let obj = JSON.parse(msg.toString());
-            //调用消息处理方法，处理对应的消息
-            //sendLocalMsg(obj);
+            if(msg.indexOf("{") != -1){ //对象信息
+                let obj = JSON.parse(msg.toString());
+                //调用消息处理方法，处理对应的消息
+                sendLocalMsg(obj);
+            }else{  //纯字符串信息
+
+                //接收客户端的设备名称和摄像头是否存在的状态
+                if(msg.indexOf(",0") != -1 || msg.indexOf(",1") != -1){
+                    let index = msg.indexOf(",");
+                    let deviceName = msg.substring(0,index);
+                    let videoStatus = msg.substring(index);
+                    console.log(deviceName);
+                    console.log(videoStatus);
+                }
+
+
+            }
         });
 
         conn.on("close", function (code, reason) {
