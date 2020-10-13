@@ -133,9 +133,17 @@ $(document).ready(function(){
                 //中心管理机设备
                 //1.遍历本地数据流，查看有无摄像头。
                 navigator.mediaDevices.enumerateDevices().then(devices => {
-                    console.log(devices);
+                    //遍历当前设备信息数组,判断有没有摄像头设备
+                    let flag = devices.some(device => {
+                        //判断有没有摄像头设备
+                        return device.kind == "videoinput";
+                    });
+
+                    console.log(flag);
+
                 });
 
+                return false;
             }
 
 
