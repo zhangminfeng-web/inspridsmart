@@ -7,7 +7,6 @@
                     <div class="floor_title video_intercom">
                         <i class="iconfont icon-fl-jia"></i>
                         <span class="title_index">在线室内设备</span>
-
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
