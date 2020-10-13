@@ -335,6 +335,12 @@ $(document).ready(function(){
                 layerObj.close(index);
                 audioEl.pause();
                 audioEl.load();
+            },
+            cancel:function(index){
+                console.log("拒绝了视频对讲请求");
+                layerObj.close(index);
+                audioEl.pause();
+                audioEl.load();
             }
         });
     });
