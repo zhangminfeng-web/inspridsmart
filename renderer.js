@@ -130,7 +130,6 @@ $(document).ready(function(){
             }
 
             if(event.data == "connect"){  //当前服务端正在待机状态,可以通信
-                //
                 //1.遍历本地数据流，查看有无摄像头。
                 navigator.mediaDevices.enumerateDevices().then(devices => {
                     //1. 遍历当前设备信息数组,判断有没有摄像头设备
@@ -138,16 +137,11 @@ $(document).ready(function(){
                         //判断有没有摄像头设备
                         return device.kind == "videoinput";
                     });
-
                     //2. flag返回值为true表示有摄像头1，false没有摄像头0
                     let index = flag?"1":"0";
-
                     //3.向服务器发送设备的反馈信息
                     sendStringText("中心管理机设备,"+index);
-
-
                 });
-
                 return false;
             }
 
@@ -316,6 +310,12 @@ $(document).ready(function(){
         //待定逻辑，还未编写
 
     });
+
+    //服务端收到客户端设备信息,打开询问弹框
+    $(documentEl).on("openConfirmBox",function (e,options) {
+        console.log("服务端即将打开弹框");
+        console.log(options);
+    })
 
     //answerPc端挂断可视对讲时触发
     $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
