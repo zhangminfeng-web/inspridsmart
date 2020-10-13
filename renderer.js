@@ -323,12 +323,14 @@ $(document).ready(function(){
         //3.询问是否接收可视对讲请求
         layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
             btn: ['接收','拒绝'] //按钮
-        },function(){
+        },function(index){
             console.log("接收了视频对讲请求");
+            layerObj.close(index);
             audioEl.pause();
             audioEl.load();
         },function(){
             console.log("拒绝了视频对讲请求");
+            layerObj.close(index);
             audioEl.pause();
             audioEl.load();
         });
