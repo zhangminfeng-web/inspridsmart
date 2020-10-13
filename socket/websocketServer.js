@@ -26,8 +26,8 @@ var server = ws.createServer(function(conn){
             console.log("异常关闭");
         });
 
-        /*//初始化发送offer
-        sendLocalMsg();*/
+        //初始化发送offer
+        sendLocalMsg();
     }else{
         //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话
         conn.sendText("isPhone");
