@@ -129,6 +129,15 @@ $(document).ready(function(){
                 return false;
             }
 
+            if(event.data == "connect"){  //当前服务端正在待机状态,可以通信
+                //中心管理机设备
+                //1.遍历本地数据流，查看有无摄像头。
+                navigator.mediaDevices.enumerateDevices().then(devices => {
+                    console.log(devices);
+                });
+
+            }
+
 
             //调用接收服务器消息的公共函数
             receiveServerMsg(JSON.parse(event.data));

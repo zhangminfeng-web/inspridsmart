@@ -5,6 +5,11 @@ const selfIp = require('../global/getIpAdress');
 var server = ws.createServer(function(conn){
     if(server.connections.length<=1) {
         console.log("新的连接进来了...");
+        //1.通知客户端,当前服务端正在待机状态中
+        conn.sendText("connect");
+
+
+
         /*conn.on("text",function (msg) {
             let obj = JSON.parse(msg.toString());
             //调用消息处理方法，处理对应的消息
