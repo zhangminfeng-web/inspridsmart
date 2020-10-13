@@ -19,7 +19,7 @@ module.exports = class Db{
             host:'127.0.0.1',
             user:'root',
             password:'123',
-            database:'inspridsmart'
+            database:'inspridmart'
         })
 
         //如果链接发生错误
