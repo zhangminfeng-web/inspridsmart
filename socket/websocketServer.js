@@ -11,8 +11,6 @@ var server = ws.createServer(function(conn){
 
 
         conn.on("text",function (msg) {
-            console.log("服务器收到消息");
-            console.log(msg);
             if(msg.indexOf("{") != -1){ //对象信息
                 /*let obj = JSON.parse(msg.toString());
                 //调用消息处理方法，处理对应的消息
