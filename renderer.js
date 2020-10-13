@@ -321,20 +321,22 @@ $(document).ready(function(){
         audioEl.play();
 
         //3.询问是否接收可视对讲请求
-        layerObj.open(options.deviceName+'正在请求与您对讲...',{
-            btn: ['接收','拒绝'] //按钮
-        },function(index){
-            console.log("接收了视频对讲请求");
-            layerObj.close(index);
-            audioEl.pause();
-            audioEl.load();
-        },function(){
-            console.log("拒绝了视频对讲请求");
-            layerObj.close(index);
-            audioEl.pause();
-            audioEl.load();
+        layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
+            btn: ['接收','拒绝'], //按钮
+            title:options.deviceName+"的请求!",
+            btn1:function(index){
+                console.log("接收了视频对讲请求");
+                layerObj.close(index);
+                audioEl.pause();
+                audioEl.load();
+            },
+            btn2:function(index){
+                console.log("拒绝了视频对讲请求");
+                layerObj.close(index);
+                audioEl.pause();
+                audioEl.load();
+            }
         });
-
     });
 
     //answerPc端挂断可视对讲时触发
