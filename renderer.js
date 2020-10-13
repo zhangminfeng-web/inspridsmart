@@ -116,8 +116,24 @@ $(document).ready(function(){
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
+            if(event.data == "isPhone"){  //当前占线,提示客户端
+                //获取layer实例
+                let layerObj = global.getData(global.LAYER_OBJ);
+                //弹框提示客户端，当前设备正在通话中。
+                layerObj.alert('当前设备正在通话中,请稍后再拨...',{
+                    icon:0,
+                    anim:6
+                });
+                //关闭连接
+                localSocket.close();
+                return false;
+            }
+
+
             //调用接收服务器消息的公共函数
             receiveServerMsg(JSON.parse(event.data));
+
+
         });
 
         //当断开连接触发方法

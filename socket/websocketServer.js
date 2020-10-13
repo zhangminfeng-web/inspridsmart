@@ -5,7 +5,7 @@ const selfIp = require('../global/getIpAdress');
 var server = ws.createServer(function(conn){
     if(server.connections.length<=1) {
         console.log("新的连接进来了...");
-        conn.on("text",function (msg) {
+        /*conn.on("text",function (msg) {
             let obj = JSON.parse(msg.toString());
             //调用消息处理方法，处理对应的消息
             sendLocalMsg(obj);
@@ -20,7 +20,10 @@ var server = ws.createServer(function(conn){
         });
 
         //初始化发送offer
-        sendLocalMsg();
+        sendLocalMsg();*/
+    }else{
+        //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话
+        conn.sendText("isPhone");
     }
 });
 
@@ -33,7 +36,7 @@ exports.sendMsgToClient = function(msg){
 // 服务端广播
 function broadcast(server, msg) {
     server.connections.forEach(function(conn) {
-        conn.sendText(msg)
+        conn.sendText(msg);
     })
 }
 
