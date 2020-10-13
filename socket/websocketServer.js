@@ -23,7 +23,7 @@ var server = ws.createServer(function(conn){
                 if(msg.indexOf(",0") != -1 || msg.indexOf(",1") != -1){
                     let index = msg.indexOf(",");
                     let deviceName = msg.substring(0,index);
-                    let videoStatus = msg.substring(index);
+                    let videoStatus = msg.substring(index+1);
                     console.log(deviceName);
                     console.log(videoStatus);
                 }
