@@ -135,7 +135,7 @@ $(document).ready(function(){
             if(event.data == "hangup"){
                 //弹框提示客户端，当前设备正在通话中。
                 layerObj.alert('对方已挂断...',{
-                    icon:0,
+                    icon:5,
                     anim:6
                 });
                 //关闭连接
