@@ -352,7 +352,9 @@ $(document).ready(function(){
         //4.如果没有摄像头,就提示没有摄像头
         if(options.videoStatus == "1"){
             //获取远程视频标签,并添加封面图片
-            console.log($("remote"));
+            $(documentEl).find(".video2").attr("poster","../public/img/tishi.png");
+            //显示弹框
+            $(documentEl).find(".intercom_model_bg").show();
 
         }
     });
