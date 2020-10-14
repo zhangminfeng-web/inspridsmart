@@ -116,7 +116,9 @@ $(document).ready(function(){
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
-            if(event.data == "isPhone"){  //当前占线,提示客户端
+
+            //当前占线,提示客户端
+            if(event.data == "isPhone"){
                 //获取layer实例
                 let layerObj = global.getData(global.LAYER_OBJ);
                 //弹框提示客户端，当前设备正在通话中。
@@ -129,7 +131,8 @@ $(document).ready(function(){
                 return false;
             }
 
-            if(event.data == "connect"){  //当前服务端正在待机状态,可以通信
+            //当前服务端正在待机状态,可以通信
+            if(event.data == "connect"){
                 //1.遍历本地数据流，查看有无摄像头。
                 navigator.mediaDevices.enumerateDevices().then(devices => {
                     //1. 遍历当前设备信息数组,判断有没有摄像头设备
@@ -296,7 +299,7 @@ $(document).ready(function(){
         $("#remoteClose").show();
     });
 
-    //answerPc点击接收按钮，同意接收视频流消息
+    /*//answerPc点击接收按钮，同意接收视频流消息
     $(documentEl).on("receviedVideoMsg","#remoteAccept",function(e){
         //获取远程视频流对象
         let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -309,7 +312,7 @@ $(document).ready(function(){
         //当answerPc接受之后，需要通过服务器发送消息告诉offerPc端我接受了视频
         //待定逻辑，还未编写
 
-    });
+    });*/
 
     //服务端收到客户端设备信息,打开询问弹框
     $(documentEl).on("openConfirmBox",function (e,options) {
@@ -324,26 +327,48 @@ $(document).ready(function(){
         layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
             btn: ['接收','拒绝'], //按钮
             title:options.deviceName+"的请求!",
+            //点击接受可视对讲请求
             btn1:function(index){
-                console.log("接收了视频对讲请求");
-                layerObj.close(index);
-                audioEl.pause();
-                audioEl.load();
+                //关闭弹框,关闭音乐
+                musicClose(layerObj,index,audioEl);
+
             },
+            //点击拒绝可视对讲请求
             btn2:function(index){
-                console.log("拒绝了视频对讲请求");
-                layerObj.close(index);
-                audioEl.pause();
-                audioEl.load();
+                //关闭弹框,关闭音乐
+                musicClose(layerObj,index,audioEl);
+                //服务器向客户端发送挂断指令 hangup
+
             },
+            //点击拒绝可视对讲请求
             cancel:function(index){
-                console.log("拒绝了视频对讲请求");
-                layerObj.close(index);
-                audioEl.pause();
-                audioEl.load();
+                //关闭弹框,关闭音乐
+                musicClose(layerObj,index,audioEl);
+                //服务器向客户端发送挂断指令 hangup
+
             }
         });
+
+        //4.如果没有摄像头,就提示没有摄像头
+        if(options.videoStatus == "1"){
+            //获取远程视频标签,并添加封面图片
+            console.log($("remote"));
+
+        }
     });
+
+
+    /**
+     * 关闭音乐的公共方法
+     * @param layers  layer对讲
+     * @param popupObj  弹框对象
+     * @param audioEl   audio元素
+     */
+    function musicClose(layers,popupObj,audioEl){
+        layers.close(popupObj);
+        audioEl.pause();
+        audioEl.load();
+    }
 
     //answerPc端挂断可视对讲时触发
     $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
