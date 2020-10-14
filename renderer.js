@@ -116,13 +116,25 @@ $(document).ready(function(){
 
         //当服务端有消息发送过来的时候触发方法
         localSocket.addEventListener('message',function (event) {
+            //获取layer实例
+            let layerObj = global.getData(global.LAYER_OBJ);
 
             //当前占线,提示客户端
             if(event.data == "isPhone"){
-                //获取layer实例
-                let layerObj = global.getData(global.LAYER_OBJ);
                 //弹框提示客户端，当前设备正在通话中。
                 layerObj.alert('当前设备正在通话中,请稍后再拨...',{
+                    icon:0,
+                    anim:6
+                });
+                //关闭连接
+                localSocket.close();
+                return false;
+            }
+
+            //收到服务端的挂断指令
+            if(event.data == "hangup"){
+                //弹框提示客户端，当前设备正在通话中。
+                layerObj.alert('对方已挂断...',{
                     icon:0,
                     anim:6
                 });
@@ -338,24 +350,24 @@ $(document).ready(function(){
                 //关闭弹框,关闭音乐
                 musicClose(layerObj,index,audioEl);
                 //服务器向客户端发送挂断指令 hangup
-
+                websocketServer.sendMsgToClient("hangup");
             },
             //点击拒绝可视对讲请求
             cancel:function(index){
                 //关闭弹框,关闭音乐
                 musicClose(layerObj,index,audioEl);
                 //服务器向客户端发送挂断指令 hangup
-
+                websocketServer.sendMsgToClient("hangup");
             }
         });
 
         //4.如果没有摄像头,就提示没有摄像头
-        if(options.videoStatus == "1"){
+        if(options.videoStatus == "0"){
             //获取远程视频标签,并添加封面图片
-            $(documentEl).find(".video2").attr("poster","../public/img/tishi.png");
-            //显示弹框
-            $(documentEl).find(".intercom_model_bg").show();
-
+            $(documentEl).find(".video2").attr("poster","./public/img/tishi.png");
+        }else{
+            //移除封面图片
+            $(documentEl).find(".video2").removeAttr("poster");
         }
     });
 
