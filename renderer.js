@@ -113,9 +113,10 @@ $(document).ready(function(){
         let layerObj = global.getData(global.LAYER_OBJ);
 
         //开启等待服务器端回应的加载层
-        layerObj.load(2,{
-            shade: [0.6, '#fff'],
-            content: '等待对方应答中...',
+        layerObj.load(1,{
+            shade: [0.8,'#fff'], //0.1透明度的白色背景
+            shadeClose: false,
+            title: '等待对方应答中...'
         });
 
         //当连接成功触发这个方法
