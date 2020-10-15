@@ -109,6 +109,15 @@ $(document).ready(function(){
         //将本地weblocalSocket连接对象,赋值给全局
         localSocket = socket;
 
+        //获取layer实例
+        let layerObj = global.getData(global.LAYER_OBJ);
+
+        //开启等待服务器端回应的加载层
+        layerObj.load(2,{
+            shade: [0.6, '#fff'],
+            content: '等待对方应答中...',
+        });
+
         //当连接成功触发这个方法
         localSocket.addEventListener('open',function(event){
 
@@ -158,6 +167,14 @@ $(document).ready(function(){
                     sendStringText("中心管理机设备,"+index);
                 });
                 return false;
+            }
+
+            //服务器端接收了可视对讲请求，并返回了answer
+            if(event.data == "answer"){
+                //关闭加载层
+                layerObj.closeAll("loading");
+                //开打视频通话弹框
+                $(documentEl).find(".intercom_model_bg").show();
             }
 
 
@@ -343,7 +360,13 @@ $(document).ready(function(){
             btn1:function(index){
                 //关闭弹框,关闭音乐
                 musicClose(layerObj,index,audioEl);
-
+                //获取vue的实例对象
+                vueObj.showComponentValue = 3;
+                vueObj.$forceUpdate();
+                //开打视频通话弹框
+                $(documentEl).find(".intercom_model_bg").show();
+                //向客户端发送接收了可视对讲的指令  answer
+                websocketServer.sendMsgToClient("answer");
             },
             //点击拒绝可视对讲请求
             btn2:function(index){
