@@ -175,6 +175,7 @@ $(document).ready(function(){
                 layerObj.closeAll("loading");
                 //开打视频通话弹框
                 $(documentEl).find(".intercom_model_bg").show();
+                return false;
             }
 
 
