@@ -193,6 +193,7 @@ $(document).ready(function(){
 
         //当断开连接触发方法
         localSocket.addEventListener('close',function () {
+            layerObj.closeAll("loading");
             console.log("weblocalSocket连接已经关闭");
         });
     });
