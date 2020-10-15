@@ -26,6 +26,11 @@ var server = ws.createServer(function(conn){
                     $(global.documentJq).trigger("openConfirmBox",[obj]);
                 }
 
+                //服务端接收到客户端端已经准备就绪的指令 clientok
+                if(msg == "clientok"){
+                    //初始化发送offer
+                    sendLocalMsg();
+                }
 
             }
         });
@@ -38,8 +43,6 @@ var server = ws.createServer(function(conn){
             console.log("异常关闭");
         });
 
-        //初始化发送offer
-        /*sendLocalMsg();*/
     }else{
         //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话
         conn.sendText("isPhone");

@@ -114,7 +114,7 @@ $(document).ready(function(){
 
         //开启等待服务器端回应的加载层
         layerObj.load(1,{
-            shade: [0.8,'#fff'], //0.1透明度的白色背景
+            shade: [0.6,'#fff'], //0.1透明度的白色背景
             shadeClose: false,
             content: '等待对方应答中...'
         });
@@ -178,6 +178,9 @@ $(document).ready(function(){
                 layerObj.closeAll("loading");
                 //开打视频通话弹框
                 $(documentEl).find(".intercom_model_bg").show();
+                //向服务端发现设备准备就绪指令 clientok
+                sendStringText("clientok");
+
                 return false;
             }
 
