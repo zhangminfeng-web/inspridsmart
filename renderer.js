@@ -99,7 +99,7 @@ $(document).ready(function(){
         websocketServer.sendMsgToClient(JSON.stringify(offer));
 
         //answerPc端接收到offer信息，就打开本地弹框
-        $(documentEl).trigger("openPopup");
+        //$(documentEl).trigger("openPopup");
 
 
     });
@@ -326,14 +326,14 @@ $(document).ready(function(){
     });
 
     //answerPc端收到消息的时候，开打弹框
-    $(documentEl).on("openPopup",function(e){
+    /*$(documentEl).on("openPopup",function(e){
         //获取vue的实例对象
         vueObj.showComponentValue = 3;
         vueObj.$forceUpdate();
         $(".intercom_model_bg").show();
         $("#remoteAccept").show();
         $("#remoteClose").show();
-    });
+    });*/
 
     /*//answerPc点击接收按钮，同意接收视频流消息
     $(documentEl).on("receviedVideoMsg","#remoteAccept",function(e){
