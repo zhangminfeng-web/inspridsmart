@@ -116,7 +116,7 @@ $(document).ready(function(){
         layerObj.load(1,{
             shade: [0.8,'#fff'], //0.1透明度的白色背景
             shadeClose: false,
-            title: '等待对方应答中...'
+            content: '等待对方应答中...'
         });
 
         //当连接成功触发这个方法
@@ -148,6 +148,8 @@ $(document).ready(function(){
                     icon:5,
                     anim:6
                 });
+                //关闭加载层
+                layerObj.closeAll("loading");
                 //关闭连接
                 localSocket.close();
                 return false;
