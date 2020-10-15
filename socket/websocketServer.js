@@ -28,6 +28,7 @@ var server = ws.createServer(function(conn){
 
                 //服务端接收到客户端端已经准备就绪的指令 clientok
                 if(msg == "clientok"){
+                    console.log("发送offer啦*******");
                     //初始化发送offer
                     sendLocalMsg();
                 }
