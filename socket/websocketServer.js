@@ -10,9 +10,9 @@ var server = ws.createServer(function(conn){
 
         conn.on("text",function (msg) {
             if(msg.indexOf("{") != -1){ //对象信息如：offer answer candidate
-                /*let obj = JSON.parse(msg.toString());
+                let obj = JSON.parse(msg.toString());
                 //调用消息处理方法，处理对应的消息
-                sendLocalMsg(obj);*/
+                sendLocalMsg(obj);
             }else{  //纯字符串信息
 
                 //接收客户端的设备名称和摄像头是否存在的状态
