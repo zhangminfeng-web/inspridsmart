@@ -401,13 +401,13 @@ $(document).ready(function(){
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //3.将本地远程remote video标签设置为null
-        document.getElementById('remote').srcObject = null;
+        //document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-        //offerPc.close();
+        offerPc.close();
 
         //5.关闭监听ice信息的方法
-        //offerPc.onicecandidate = null;
+        offerPc.onicecandidate = null;
 
         console.log(offerPc);
         //6.关闭监听添加媒体流函数
@@ -444,13 +444,13 @@ $(document).ready(function(){
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
         //3.将本地远程remote video标签设置为null
-        document.getElementById('local').srcObject = null;
+        //document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
-        //answerPc.close();
+        answerPc.close();
 
         //5.关闭监听ice信息的方法
-        //answerPc.onicecandidate = null;
+        answerPc.onicecandidate = null;
 
         console.log(answerPc);
         //6.关闭监听添加媒体流函数
