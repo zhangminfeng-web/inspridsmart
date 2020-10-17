@@ -151,6 +151,12 @@ $(document).ready(function(){
                     anim:6,
                     time:2000
                 });
+                //1.获取本地连接对象
+                let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
+                if(answerPc.onaddstream != null){
+                    answerPc.onaddstream = null;
+                }
+                
                 return false;
             }
 
@@ -407,7 +413,7 @@ $(document).ready(function(){
         //offerPc.close();
 
         //5.关闭监听ice信息的方法
-        offerPc.onicecandidate = null;
+        //offerPc.onicecandidate = null;
 
         console.log(offerPc);
         //6.关闭监听添加媒体流函数
@@ -450,7 +456,7 @@ $(document).ready(function(){
         //answerPc.close();
 
         //5.关闭监听ice信息的方法
-        answerPc.onicecandidate = null;
+        //answerPc.onicecandidate = null;
 
         console.log(answerPc);
         //6.关闭监听添加媒体流函数
