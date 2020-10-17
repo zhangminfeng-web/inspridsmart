@@ -49,7 +49,6 @@ $(document).ready(function(){
         //创建一个数据通道，用于传输数据
         let dataChannel = peerConnection.createDataChannel("MessageChannel",dataChannelOptions);
 
-
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
 
@@ -97,9 +96,6 @@ $(document).ready(function(){
 
         //向客户端发送offer信息
         websocketServer.sendMsgToClient(JSON.stringify(offer));
-
-        //answerPc端接收到offer信息，就打开本地弹框
-        //$(documentEl).trigger("openPopup");
 
 
     });
@@ -188,7 +184,6 @@ $(document).ready(function(){
             //调用接收服务器消息的公共函数
             receiveServerMsg(JSON.parse(event.data));
 
-
         });
 
         //当断开连接触发方法
@@ -196,6 +191,8 @@ $(document).ready(function(){
             layerObj.closeAll("loading");
             console.log("weblocalSocket连接已经关闭");
         });
+
+
     });
 
     function receiveServerMsg(obj){
@@ -326,30 +323,6 @@ $(document).ready(function(){
         HandlerReceivedAnswerICE.receivedAnswerICE(data,documentEl);
     });
 
-    //answerPc端收到消息的时候，开打弹框
-    /*$(documentEl).on("openPopup",function(e){
-        //获取vue的实例对象
-        vueObj.showComponentValue = 3;
-        vueObj.$forceUpdate();
-        $(".intercom_model_bg").show();
-        $("#remoteAccept").show();
-        $("#remoteClose").show();
-    });*/
-
-    /*//answerPc点击接收按钮，同意接收视频流消息
-    $(documentEl).on("receviedVideoMsg","#remoteAccept",function(e){
-        //获取远程视频流对象
-        let remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
-        //将远程视频流添加到video标签中
-        document.getElementById('remote').srcObject = remoteStream;
-
-        //关闭接受按钮
-        $(this).hide();
-
-        //当answerPc接受之后，需要通过服务器发送消息告诉offerPc端我接受了视频
-        //待定逻辑，还未编写
-
-    });*/
 
     //服务端收到客户端设备信息,打开询问弹框
     $(documentEl).on("openConfirmBox",function (e,options) {

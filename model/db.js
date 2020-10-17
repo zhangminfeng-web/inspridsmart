@@ -20,7 +20,7 @@ module.exports = class Db{
             user:'root',
             password:'123',
             database:'inspridsmart'
-        })
+        });
 
         //如果链接发生错误
         this.conn.connect(err => {
