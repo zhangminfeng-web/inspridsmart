@@ -14,8 +14,18 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
 
 
-    $(documentEl).on("sendMediaStreamObj",async function (e,localStream,remoteStream,vueApp,layer) {
+    $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
         console.log("媒体流被添加了");
+
+        //获取本地媒体流对象
+        let localStream = await navigator.mediaDevices.getUserMedia({
+            video:true,
+            audio:true
+        });
+
+        //获取远程媒体流对象
+        let remoteStream = new MediaStream();
+
 
         //在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
@@ -156,7 +166,7 @@ $(document).ready(function(){
 
                 if(document.getElementById('remote').srcObject != null){
 
-                    //document.getElementById('remote').srcObject = null;
+                    document.getElementById('remote').srcObject = null;
 
                     //7.关闭本地连接对象
                     answerPc.close();
@@ -169,8 +179,6 @@ $(document).ready(function(){
 
                     //10.重置初始化方法
                     $(documentEl).trigger("sendMediaStreamObj",[
-                        global.getData(global.KEY_LOCAL_MEDIA_STREAM),
-                        global.getData(global.KEY_REMOTE_MEDIA_STREAM),
                         vueObj,
                         global.getData(global.LAYER_OBJ)
                     ])
@@ -440,7 +448,7 @@ $(document).ready(function(){
         websocketServer.sendMsgToClient("hangup");
 
         //6.将本地远程remote video标签设置为null
-        //document.getElementById('remote').srcObject = null;
+        document.getElementById('remote').srcObject = null;
 
         //7.关闭本地连接对象
         offerPc.close();
@@ -453,8 +461,6 @@ $(document).ready(function(){
 
         //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
-            global.getData(global.KEY_LOCAL_MEDIA_STREAM),
-            global.getData(global.KEY_REMOTE_MEDIA_STREAM),
             vueObj,
             global.getData(global.LAYER_OBJ)
         ])
@@ -494,8 +500,6 @@ $(document).ready(function(){
 
         //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
-            global.getData(global.KEY_LOCAL_MEDIA_STREAM),
-            global.getData(global.KEY_REMOTE_MEDIA_STREAM),
             vueObj,
             global.getData(global.LAYER_OBJ)
         ])
