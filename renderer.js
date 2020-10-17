@@ -473,20 +473,17 @@ $(document).ready(function(){
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-        //2.关闭本地弹框
+        //2.向服务端发送挂断指令
+        sendStringText("hangup");
+
+        //3.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
 
-        //3.关闭本地按钮
+        //4.关闭本地按钮
         $(documentEl).find("#localClose").hide();
-
-        //4.向服务端发送挂断指令
-        sendStringText("hangup");
 
         //5.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
-
-        //6.断开与服务器的链接
-        localSocket.close();
 
         //7.将本地远程remote video标签设置为null
         document.getElementById('remote').srcObject = null;
@@ -504,7 +501,10 @@ $(document).ready(function(){
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)
-        ])
+        ]);
+
+        //6.断开与服务器的链接
+        localSocket.close();
     });
 
 });
