@@ -469,12 +469,15 @@ $(document).ready(function(){
 
     //客户端挂断可视对讲时触发
     $(documentEl).on("clientPcCloseVideoStream",function(e){
+        //2.向服务端发送挂断指令
+        sendStringText("hangup");
+
+        console.log("客户端点击了挂断");
 
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-        //2.向服务端发送挂断指令
-        sendStringText("hangup");
+
 
         //3.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
