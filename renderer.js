@@ -139,15 +139,18 @@ $(document).ready(function(){
 
             //收到服务端的挂断指令
             if(event.data == "hangup"){
-                //弹框提示客户端，当前设备正在通话中。
-                layerObj.alert('对方已挂断...',{
-                    icon:5,
-                    anim:6
-                });
                 //关闭加载层
                 layerObj.closeAll("loading");
+                //关闭本地视频弹框
+                $(documentEl).find(".intercom_model_bg").hide();
                 //关闭连接
                 localSocket.close();
+                //弹框提示客户端，当前设备正在通话中。
+                layerObj.msg('对方已挂断...',{
+                    icon:5,
+                    anim:6,
+                    time:2000
+                });
                 return false;
             }
 
