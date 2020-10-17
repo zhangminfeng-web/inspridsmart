@@ -283,12 +283,15 @@ $(document).ready(function(){
     }
 
     //发送纯字符串的公共函数
-    function sendStringText(msg){
+    function sendStringText(msg,callback){
         let t = setInterval(function(){
             //offerPc发送消息的公共方法
             let status = sendToServerStringMsg(msg);
             if(status){
                 window.clearInterval(t);
+                if(callback){
+                    callback("true");
+                }
             }
         },100);
     }
@@ -469,15 +472,10 @@ $(document).ready(function(){
 
     //客户端挂断可视对讲时触发
     $(documentEl).on("clientPcCloseVideoStream",function(e){
-        //2.向服务端发送挂断指令
-        sendStringText("hangup");
-
         console.log("客户端点击了挂断");
 
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
-
-
 
         //3.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
@@ -487,6 +485,12 @@ $(document).ready(function(){
 
         //5.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
+
+        //6.向服务端发送挂断指令
+        sendStringText("hangup",function(){
+            //断开与服务器的链接
+            localSocket.close();
+        });
 
         //7.将本地远程remote video标签设置为null
         document.getElementById('remote').srcObject = null;
@@ -506,8 +510,6 @@ $(document).ready(function(){
             global.getData(global.LAYER_OBJ)
         ]);
 
-        //6.断开与服务器的链接
-        localSocket.close();
     });
 
 });
