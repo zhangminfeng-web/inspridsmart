@@ -401,14 +401,10 @@ $(document).ready(function(){
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //3.将本地远程remote video标签设置为null
-        //document.getElementById('remote').srcObject = null;
+        document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
         //offerPc.close();
-
-        //关闭远程按钮
-        //$("#remoteAccept").hide();
-        //$("#remoteClose").hide();
 
         //5.关闭监听ice信息的方法
         //offerPc.onicecandidate = null;
@@ -421,8 +417,8 @@ $(document).ready(function(){
         $(documentEl).find(".intercom_model_bg").hide();
 
 
-        /*//关闭本地按钮
-        $(documentEl).find("#localClose").hide();*/
+        //关闭本地按钮
+        $(documentEl).find("#remoteClose").hide();
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
@@ -441,14 +437,14 @@ $(document).ready(function(){
     });
 
 
-    //offerPc端挂断可视对讲时触发
+    //客户端挂断可视对讲时触发
     $(documentEl).on("clientPcCloseVideoStream","#localClose",function(e){
 
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
         //3.将本地远程remote video标签设置为null
-        //document.getElementById('local').srcObject = null;
+        document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
         //answerPc.close();
@@ -462,6 +458,9 @@ $(document).ready(function(){
 
         //7.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
+
+        //关闭本地按钮
+        $(documentEl).find("#localClose").hide();
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
