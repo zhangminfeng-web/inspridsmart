@@ -389,22 +389,19 @@ $(document).ready(function(){
     }
 
     //answerPc端挂断可视对讲时触发
-    $(documentEl).on("answerPcCloseVideoStream","#remoteClose",function (e) {
+    $(documentEl).on("serverPcCloseVideoStream","#remoteClose",function (e) {
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-        //2.发送挂断信息给offerPc端
-
-
         //3.将本地远程remote video标签设置为null
-        document.getElementById('remote').srcObject = null;
+        //document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
         //answerPc.close();
 
         //关闭远程按钮
-        $("#remoteAccept").hide();
-        $("#remoteClose").hide();
+        //$("#remoteAccept").hide();
+        //$("#remoteClose").hide();
 
         //5.关闭监听ice信息的方法
         //answerPc.onicecandidate = null;
@@ -413,36 +410,36 @@ $(document).ready(function(){
         answerPc.onaddstream = null;
 
         //7.关闭本地弹框
-        $(".intercom_model_bg").hide();
+        $(documentEl).find(".intercom_model_bg").hide();
 
-        //关闭本地按钮
-        $("#localClose").hide();
+        /*//关闭本地按钮
+        $(documentEl).find("#localClose").hide();*/
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
-        //9.重置初始化方法
+        //9服务器端断开连接
+        websocketServer.sendMsgToClient("hangup");
+
+        /*//10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
             global.getData(global.KEY_REMOTE_MEDIA_STREAM),
             vueObj,
             global.getData(global.LAYER_OBJ)
-        ])
+        ])*/
 
     });
 
 
     //offerPc端挂断可视对讲时触发
-    $(documentEl).on("offerPcCloseVideoStream","#localClose",function(e){
+    $(documentEl).on("clientPcCloseVideoStream","#localClose",function(e){
 
         //1.获取本地连接对象
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
-        //2.发送挂断信息给answerPc端
-
-
         //3.将本地远程remote video标签设置为null
-        document.getElementById('local').srcObject = null;
+        //document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
         //offerPc.close();
@@ -454,18 +451,21 @@ $(document).ready(function(){
         offerPc.onaddstream = null;
 
         //7.关闭本地弹框
-        $(".intercom_model_bg").hide();
+        $(documentEl).find(".intercom_model_bg").hide();
 
         //8.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
-        //9.重置初始化方法
-        $(documentEl).trigger("sendMediaStreamObj",[
+        //9.断开与服务器的链接
+        localSocket.close();
+
+        //10.重置初始化方法
+        /*$(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
             global.getData(global.KEY_REMOTE_MEDIA_STREAM),
             vueObj,
             global.getData(global.LAYER_OBJ)
-        ])
+        ])*/
     });
 
 });

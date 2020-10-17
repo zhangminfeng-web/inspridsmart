@@ -67,18 +67,14 @@
                 //发送offer
                 El.trigger("clientSocketMsg",[socket]);
             },
-            /*receivedStreamVideo(event){   //answerPc端接受可视对讲请求
+            remoteCloseVideo(event){  //服务端挂断可视对讲
                 let El = $(event.currentTarget);
-                El.trigger("receviedVideoMsg");
-            },*/
-            /*remoteCloseVideo(event){  //answerPc端挂断可视对讲
-                let El = $(event.currentTarget);
-                El.trigger("answerPcCloseVideoStream");
+                El.trigger("serverPcCloseVideoStream");
             },
-            localCloseVideo(event){  //offerPc端挂断可视对讲
+            localCloseVideo(event){  //客户端挂断可视对讲
                 let El = $(event.currentTarget);
-                El.trigger("offerPcCloseVideoStream");
-            },*/
+                El.trigger("clientPcCloseVideoStream");
+            },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {
                     let obj = res.data;
