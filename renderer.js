@@ -410,6 +410,7 @@ $(document).ready(function(){
         //5.关闭监听ice信息的方法
         //answerPc.onicecandidate = null;
 
+        console.log(answerPc);
         //6.关闭监听添加媒体流函数
         //answerPc.onaddstream = null;
 
@@ -452,6 +453,7 @@ $(document).ready(function(){
         //5.关闭监听ice信息的方法
         //offerPc.onicecandidate = null;
 
+        console.log(offerPc);
         //6.关闭监听添加媒体流函数
         //offerPc.onaddstream = null;
 
