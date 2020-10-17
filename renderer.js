@@ -415,7 +415,7 @@ $(document).ready(function(){
 
         console.log(offerPc);
         //6.关闭监听添加媒体流函数
-        //offerPc.onaddstream = null;
+        offerPc.onaddstream = null;
 
         //7.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
@@ -458,7 +458,7 @@ $(document).ready(function(){
 
         console.log(answerPc);
         //6.关闭监听添加媒体流函数
-        //answerPc.onaddstream = null;
+        answerPc.onaddstream = null;
 
         //7.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
