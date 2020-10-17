@@ -153,8 +153,28 @@ $(document).ready(function(){
                 });
                 //1.获取本地连接对象
                 let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
-                if(answerPc.onaddstream != null){
+
+                if(document.getElementById('remote').srcObject != null){
+
+                    document.getElementById('remote').srcObject = null;
+
+                    //7.关闭本地连接对象
+                    answerPc.close();
+
+                    //8.关闭监听ice信息的方法
+                    answerPc.onicecandidate = null;
+
+                    //9.关闭监听添加媒体流函数
                     answerPc.onaddstream = null;
+
+                    //10.重置初始化方法
+                    $(documentEl).trigger("sendMediaStreamObj",[
+                        global.getData(global.KEY_LOCAL_MEDIA_STREAM),
+                        global.getData(global.KEY_REMOTE_MEDIA_STREAM),
+                        vueObj,
+                        global.getData(global.LAYER_OBJ)
+                    ])
+
                 }
 
                 return false;
