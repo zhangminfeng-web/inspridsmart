@@ -156,7 +156,7 @@ $(document).ready(function(){
                 if(answerPc.onaddstream != null){
                     answerPc.onaddstream = null;
                 }
-                
+
                 return false;
             }
 
@@ -406,31 +406,30 @@ $(document).ready(function(){
         //1.获取本地连接对象
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
-        //3.将本地远程remote video标签设置为null
-        //document.getElementById('remote').srcObject = null;
-
-        //4.关闭本地连接对象
-        //offerPc.close();
-
-        //5.关闭监听ice信息的方法
-        //offerPc.onicecandidate = null;
-
-        console.log(offerPc);
-        //6.关闭监听添加媒体流函数
-        offerPc.onaddstream = null;
-
-        //7.关闭本地弹框
+        //2.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
 
 
-        //关闭本地按钮
+        //3.关闭本地按钮
         $(documentEl).find("#remoteClose").hide();
 
-        //8.提示关闭弹框
+        //4.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
-        //9服务器端断开连接
+        //5.服务器端断开连接
         websocketServer.sendMsgToClient("hangup");
+
+        //6.将本地远程remote video标签设置为null
+        document.getElementById('local').srcObject = null;
+
+        //7.关闭本地连接对象
+        offerPc.close();
+
+        //8.关闭监听ice信息的方法
+        offerPc.onicecandidate = null;
+
+        //9.关闭监听添加媒体流函数
+        offerPc.onaddstream = null;
 
         /*//10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
@@ -449,30 +448,29 @@ $(document).ready(function(){
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-        //3.将本地远程remote video标签设置为null
-        //document.getElementById('local').srcObject = null;
-
-        //4.关闭本地连接对象
-        //answerPc.close();
-
-        //5.关闭监听ice信息的方法
-        //answerPc.onicecandidate = null;
-
-        console.log(answerPc);
-        //6.关闭监听添加媒体流函数
-        answerPc.onaddstream = null;
-
-        //7.关闭本地弹框
+        //2.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
 
-        //关闭本地按钮
+        //3.关闭本地按钮
         $(documentEl).find("#localClose").hide();
 
-        //8.提示关闭弹框
+        //4.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
-        //9.断开与服务器的链接
+        //5.断开与服务器的链接
         localSocket.close();
+
+        //6.将本地远程remote video标签设置为null
+        document.getElementById('remote').srcObject = null;
+
+        //7.关闭本地连接对象
+        answerPc.close();
+
+        //8.关闭监听ice信息的方法
+        answerPc.onicecandidate = null;
+
+        //9.关闭监听添加媒体流函数
+        answerPc.onaddstream = null;
 
         //10.重置初始化方法
         /*$(documentEl).trigger("sendMediaStreamObj",[
