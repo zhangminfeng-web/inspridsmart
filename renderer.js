@@ -404,7 +404,7 @@ $(document).ready(function(){
         //document.getElementById('remote').srcObject = null;
 
         //4.关闭本地连接对象
-        offerPc.close();
+        //offerPc.close();
 
         //5.关闭监听ice信息的方法
         offerPc.onicecandidate = null;
@@ -447,7 +447,7 @@ $(document).ready(function(){
         //document.getElementById('local').srcObject = null;
 
         //4.关闭本地连接对象
-        answerPc.close();
+        //answerPc.close();
 
         //5.关闭监听ice信息的方法
         answerPc.onicecandidate = null;
