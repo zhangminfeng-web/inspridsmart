@@ -420,16 +420,16 @@ $(document).ready(function(){
         websocketServer.sendMsgToClient("hangup");
 
         //6.将本地远程remote video标签设置为null
-        //document.getElementById('local').srcObject = null;
+        document.getElementById('remote').srcObject = null;
 
         //7.关闭本地连接对象
-        //offerPc.close();
+        offerPc.close();
 
         //8.关闭监听ice信息的方法
-        //offerPc.onicecandidate = null;
+        offerPc.onicecandidate = null;
 
         //9.关闭监听添加媒体流函数
-        //offerPc.onaddstream = null;
+        offerPc.onaddstream = null;
 
         //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
@@ -461,16 +461,16 @@ $(document).ready(function(){
         localSocket.close();
 
         //6.将本地远程remote video标签设置为null
-        //document.getElementById('remote').srcObject = null;
+        document.getElementById('remote').srcObject = null;
 
         //7.关闭本地连接对象
-        //answerPc.close();
+        answerPc.close();
 
         //8.关闭监听ice信息的方法
-        //answerPc.onicecandidate = null;
+        answerPc.onicecandidate = null;
 
         //9.关闭监听添加媒体流函数
-        //answerPc.onaddstream = null;
+        answerPc.onaddstream = null;
 
         //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
