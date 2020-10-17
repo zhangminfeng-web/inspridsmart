@@ -32,6 +32,12 @@ var server = ws.createServer(function(conn){
                     sendLocalMsg();
                 }
 
+                //服务端收到客户端的挂断指令
+                if(msg == "hangup"){
+                    //服务端执行挂断逻辑
+                    $(global.documentJq).trigger("serverPcCloseVideoStream");
+                }
+
             }
         });
 

@@ -64,12 +64,10 @@
                 El.trigger("clientSocketMsg",[socket]);
             },
             remoteCloseVideo(event){  //服务端挂断可视对讲
-                let El = $(event.currentTarget);
-                El.trigger("serverPcCloseVideoStream");
+                $(documentJq).trigger("serverPcCloseVideoStream");
             },
             localCloseVideo(event){  //客户端挂断可视对讲
-                let El = $(event.currentTarget);
-                El.trigger("clientPcCloseVideoStream");
+                $(documentJq).trigger("clientPcCloseVideoStream");
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {

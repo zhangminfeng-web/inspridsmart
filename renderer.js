@@ -430,13 +430,12 @@ $(document).ready(function(){
     }
 
     //服务端挂断可视对讲时触发
-    $(documentEl).on("serverPcCloseVideoStream","#remoteClose",function (e) {
+    $(documentEl).on("serverPcCloseVideoStream",function (e) {
         //1.获取本地连接对象
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
         //2.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
-
 
         //3.关闭本地按钮
         $(documentEl).find("#remoteClose").hide();
@@ -469,7 +468,7 @@ $(document).ready(function(){
 
 
     //客户端挂断可视对讲时触发
-    $(documentEl).on("clientPcCloseVideoStream","#localClose",function(e){
+    $(documentEl).on("clientPcCloseVideoStream",function(e){
 
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
@@ -480,25 +479,28 @@ $(document).ready(function(){
         //3.关闭本地按钮
         $(documentEl).find("#localClose").hide();
 
-        //4.提示关闭弹框
+        //4.向服务端发送挂断指令
+        sendStringText("hangup");
+
+        //5.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});
 
-        //5.断开与服务器的链接
+        //6.断开与服务器的链接
         localSocket.close();
 
-        //6.将本地远程remote video标签设置为null
+        //7.将本地远程remote video标签设置为null
         document.getElementById('remote').srcObject = null;
 
-        //7.关闭本地连接对象
+        //8.关闭本地连接对象
         answerPc.close();
 
-        //8.关闭监听ice信息的方法
+        //9.关闭监听ice信息的方法
         answerPc.onicecandidate = null;
 
-        //9.关闭监听添加媒体流函数
+        //10.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
 
-        //10.重置初始化方法
+        //11.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)
