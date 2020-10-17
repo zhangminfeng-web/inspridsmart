@@ -473,7 +473,7 @@ $(document).ready(function(){
         /*$(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
             global.getData(global.KEY_REMOTE_MEDIA_STREAM),
-            vueObj,
+            vueObj,  140.82.114.3   199.232.69.194
             global.getData(global.LAYER_OBJ)
         ])*/
     });
