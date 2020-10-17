@@ -174,6 +174,8 @@ $(document).ready(function(){
                 layerObj.closeAll("loading");
                 //开打视频通话弹框
                 $(documentEl).find(".intercom_model_bg").show();
+                //显示客户端挂断按钮
+                $(documentEl).find("#localClose").show();
                 //向服务端发现设备准备就绪指令 clientok
                 sendStringText("clientok");
 
@@ -344,8 +346,10 @@ $(document).ready(function(){
                 //获取vue的实例对象
                 vueObj.showComponentValue = 3;
                 vueObj.$forceUpdate();
-                //开打视频通话弹框
+                //打开打视频通话弹框
                 $(documentEl).find(".intercom_model_bg").show();
+                //显示服务端挂断按钮
+                $(documentEl).find("#remoteClose").show();
                 //向客户端发送接收了可视对讲的指令  answer
                 websocketServer.sendMsgToClient("answer");
             },
