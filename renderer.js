@@ -472,8 +472,6 @@ $(document).ready(function(){
 
     //客户端挂断可视对讲时触发
     $(documentEl).on("clientPcCloseVideoStream",function(e){
-        console.log("客户端点击了挂断");
-
         //1.获取本地连接对象
         let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
