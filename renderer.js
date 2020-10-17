@@ -412,6 +412,7 @@ $(document).ready(function(){
         //7.关闭本地弹框
         $(documentEl).find(".intercom_model_bg").hide();
 
+
         /*//关闭本地按钮
         $(documentEl).find("#localClose").hide();*/
 
