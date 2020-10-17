@@ -431,13 +431,13 @@ $(document).ready(function(){
         //9.关闭监听添加媒体流函数
         offerPc.onaddstream = null;
 
-        /*//10.重置初始化方法
+        //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
             global.getData(global.KEY_REMOTE_MEDIA_STREAM),
             vueObj,
             global.getData(global.LAYER_OBJ)
-        ])*/
+        ])
 
     });
 
@@ -473,12 +473,12 @@ $(document).ready(function(){
         answerPc.onaddstream = null;
 
         //10.重置初始化方法
-        /*$(documentEl).trigger("sendMediaStreamObj",[
+        $(documentEl).trigger("sendMediaStreamObj",[
             global.getData(global.KEY_LOCAL_MEDIA_STREAM),
             global.getData(global.KEY_REMOTE_MEDIA_STREAM),
-            vueObj,  140.82.114.3   199.232.69.194
+            vueObj,
             global.getData(global.LAYER_OBJ)
-        ])*/
+        ])
     });
 
 });
