@@ -420,7 +420,7 @@ $(document).ready(function(){
         websocketServer.sendMsgToClient("hangup");
 
         //6.将本地远程remote video标签设置为null
-        document.getElementById('local').srcObject = null;
+        //document.getElementById('local').srcObject = null;
 
         //7.关闭本地连接对象
         offerPc.close();
@@ -461,7 +461,7 @@ $(document).ready(function(){
         localSocket.close();
 
         //6.将本地远程remote video标签设置为null
-        document.getElementById('remote').srcObject = null;
+        //document.getElementById('remote').srcObject = null;
 
         //7.关闭本地连接对象
         answerPc.close();
