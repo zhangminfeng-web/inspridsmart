@@ -239,14 +239,12 @@ $(document).ready(function(){
     $(documentEl).on("sendPoliceMsg",function(e,clientSocket){
         //当连接成功触发这个方法
         clientSocket.addEventListener('open',function(event){
-
+            clientSocket.send("alarm=1-1-101=燃气=2020/10=10:12");
         });
 
         //当服务端有消息发送过来的时候触发方法
         clientSocket.addEventListener('message',function (event) {
-            sendStringText("alarm=1-1-101=燃气=2020/10=10:12",function(){
-                localSocket.close();
-            });
+            clientSocket.close();
         });
 
         //当断开连接触发方法
