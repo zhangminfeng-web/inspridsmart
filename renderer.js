@@ -232,26 +232,6 @@ $(document).ready(function(){
             console.log("weblocalSocket连接已经关闭");
         });
 
-
-    });
-
-    //向服务器发送报警信息
-    $(documentEl).on("sendPoliceMsg",function(e,clientSocket){
-        //当连接成功触发这个方法
-        clientSocket.addEventListener('open',function(event){
-            clientSocket.send("alarm=1-1-101=燃气=2020/10=10:12");
-        });
-
-        //当服务端有消息发送过来的时候触发方法
-        clientSocket.addEventListener('message',function (event) {
-            clientSocket.close();
-        });
-
-        //当断开连接触发方法
-        clientSocket.addEventListener('close',function () {
-            console.log("weblocalSocket连接已经关闭");
-        });
-
     });
 
     //服务端处理报警信息
