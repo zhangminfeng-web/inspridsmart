@@ -254,6 +254,16 @@ $(document).ready(function(){
 
     });
 
+    //服务端处理报警信息
+    $(documentEl).on("policeServerMsg",function(e,obj){
+        //获取layer实例
+        let layerObj = global.getData(global.LAYER_OBJ);
+        //展示报警弹框
+        layerObj.alert("门牌号: "+obj.alias_name+"</br>"+
+                       "报警内容："+obj.police_msg+"</br>"+
+                       "报警时间："+obj.now_time);
+    });
+
     function receiveServerMsg(obj){
         switch(obj.type) {
             case "offer":

@@ -20,9 +20,9 @@
                         <tbody class="police-tbody">
                             <tr v-for="(item,index) in policeList">
                                 <td>{{index+1}}</td>
-                                <td>{{item.senderName}}</td>
-                                <td>{{item.msg}}</td>
-                                <td>{{item.dateTime}}</td>
+                                <td>{{item.alias_name}}</td>
+                                <td>{{item.police_msg}}</td>
+                                <td>{{item.now_time}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -37,6 +37,7 @@
         data:function(){
             return {
                 policeList:[],
+                baseURLS:"http://localhost:43839", //全局网址
             }
         },
         mounted(){
@@ -47,28 +48,15 @@
         },
         methods:{
             init(){
-                this.policeList = [
-                    {
-                        senderName:"1-1-1001",
-                        msg:"燃气1",
-                        dateTime:"2020-09-19"
-                    },
-                    {
-                        senderName:"1-1-1002",
-                        msg:"燃气2",
-                        dateTime:"2020-09-19"
-                    },
-                    {
-                        senderName:"1-1-1003",
-                        msg:"燃气3",
-                        dateTime:"2020-09-19"
-                    },
-                    {
-                        senderName:"1-1-1004",
-                        msg:"燃气4",
-                        dateTime:"2020-09-19"
-                    },
-                ]
+                let _this = this;
+                //获取报警信息数据
+                axios.get(this.baseURLS+"/videoIntercom").then(res => {
+                    let obj = res.data;
+                    if(obj.code == 0){
+                        _this.policeList = obj.indoorList;
+                    }
+                });
+
             }
         }
     }

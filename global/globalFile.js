@@ -24,6 +24,8 @@ module.exports = {
     VIDEO_EQUIPMENT_DOORBELL_LIST:[],
     /*室内设备数组*/
     VIDEO_EQUIPMENT_INDOOR_LIST:[],
+    /*报警信息数组*/
+    CALL_POLICE_LIST:[],
     /**
      * 设置全局数据
      * @param k  键

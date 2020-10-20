@@ -145,6 +145,14 @@ Router.get("/allOnlineEquipment",function (req,res){
         code:0,
         onlineList:[...global.VIDEO_EQUIPMENT_INDOOR_LIST,...global.VIDEO_EQUIPMENT_DOORWAY_LIST,...global.VIDEO_EQUIPMENT_DOORBELL_LIST]
     });
+});
+
+//获取报警信息数据
+Router.get("/getCallPoliceData",function(req,res){
+    res.json({
+        code:0,
+        callPoliceList:global.CALL_POLICE_LIST
+    })
 })
 
 /*3.将路由容器导出*/

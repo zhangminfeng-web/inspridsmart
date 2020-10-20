@@ -42,8 +42,8 @@ var server = ws.createServer(function(conn){
                 if(msg.indexOf("alarm") != -1){
                     //调用处理报警信息的公共函数,返回一个对讲
                     let obj = policeMsg(msg);
-
-                    console.log(obj);
+                    //服务处理报警信息
+                    $(global.documentJq).trigger("policeServerMsg",[obj]);
 
                 }
 
