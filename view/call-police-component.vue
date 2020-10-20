@@ -53,7 +53,7 @@
                 axios.get(this.baseURLS+"/getCallPoliceData").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
-                        _this.policeList = obj.indoorList;
+                        _this.policeList = obj.callPoliceList;
                     }
                 });
 
