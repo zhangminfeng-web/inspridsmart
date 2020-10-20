@@ -38,6 +38,15 @@ var server = ws.createServer(function(conn){
                     $(global.documentJq).trigger("serverPcCloseVideoStream");
                 }
 
+                //报警信息
+                if(msg.indexOf("alarm") != -1){
+                    //调用处理报警信息的公共函数,返回一个对讲
+                    let obj = policeMsg(msg);
+
+                    console.log(obj);
+
+                }
+
             }
         });
 
@@ -50,9 +59,12 @@ var server = ws.createServer(function(conn){
         });
 
     }else{
+
         //表示当前大于1人正在连接，通知其它连接的客户端，当前正在视频通话
         conn.sendText("isPhone");
+
     }
+
 });
 
 //向客户端发送消息的公共函数
@@ -60,6 +72,17 @@ exports.sendMsgToClient = function(msg){
     //调用广播函数
     broadcast(server,msg);
 };
+
+//处理报警信息的公共函数
+function policeMsg(msg){
+    let arr = msg.split("=");
+    return {
+        "type":arr[0],
+        "alias_name":arr[1],
+        "police_msg":arr[2],
+        "now_time":arr[3]+" "+arr[4]
+    }
+}
 
 // 服务端广播
 function broadcast(server, msg) {

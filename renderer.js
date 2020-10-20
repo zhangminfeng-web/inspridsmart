@@ -190,7 +190,7 @@ $(document).ready(function(){
 
             //当前服务端正在待机状态,可以通信
             if(event.data == "connect"){
-                //1.遍历本地数据流，查看有无摄像头。
+                /*//1.遍历本地数据流，查看有无摄像头。
                 navigator.mediaDevices.enumerateDevices().then(devices => {
                     //1. 遍历当前设备信息数组,判断有没有摄像头设备
                     let flag = devices.some(device => {
@@ -201,7 +201,10 @@ $(document).ready(function(){
                     let index = flag?"1":"0";
                     //3.向服务器发送设备的反馈信息
                     sendStringText("中心管理机设备,"+index);
-                });
+                });*/
+
+                sendStringText("alarm=1-1-101=燃气=2020/10=10:12");
+
                 return false;
             }
 
@@ -231,6 +234,11 @@ $(document).ready(function(){
             console.log("weblocalSocket连接已经关闭");
         });
 
+
+    });
+
+    //向服务器发送报警信息
+    $(documentEl).on("sendPoliceMsg",function(e){
 
     });
 
@@ -466,6 +474,7 @@ $(document).ready(function(){
             vueObj,
             global.getData(global.LAYER_OBJ)
         ])
+        
 
     });
 
