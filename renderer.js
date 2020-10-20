@@ -164,7 +164,7 @@ $(document).ready(function(){
                 //1.获取本地连接对象
                 let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-                if(document.getElementById('remote').srcObject != null){
+                if(answerPc != null){
 
                     document.getElementById('remote').srcObject = null;
 
