@@ -264,6 +264,15 @@ $(document).ready(function(){
         layerObj.alert("门牌号: "+obj.alias_name+"</br>"+
                        "报警内容："+obj.police_msg+"</br>"+
                        "报警时间："+obj.now_time);
+        //打开报警音乐
+        let audioEl = document.getElementById("police-player");
+        audioEl.play();
+        //6秒之后关闭报警音乐
+        let t = setTimeout(function(){
+            clearTimeout(t);
+            audioEl.pause();
+            audioEl.load();
+        },6000);
     });
 
     function receiveServerMsg(obj){
