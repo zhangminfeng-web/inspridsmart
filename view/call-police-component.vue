@@ -50,7 +50,7 @@
             init(){
                 let _this = this;
                 //获取报警信息数据
-                axios.get(this.baseURLS+"/videoIntercom").then(res => {
+                axios.get(this.baseURLS+"/getCallPoliceData").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         _this.policeList = obj.indoorList;
