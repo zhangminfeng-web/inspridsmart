@@ -258,6 +258,8 @@ $(document).ready(function(){
     $(documentEl).on("policeServerMsg",function(e,obj){
         //获取layer实例
         let layerObj = global.getData(global.LAYER_OBJ);
+        //将报警信息添加到全局报警数组中
+        global.CALL_POLICE_LIST.push(obj);
         //展示报警弹框
         layerObj.alert("门牌号: "+obj.alias_name+"</br>"+
                        "报警内容："+obj.police_msg+"</br>"+
