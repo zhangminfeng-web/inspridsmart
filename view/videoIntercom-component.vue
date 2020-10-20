@@ -11,7 +11,7 @@
                     <ul class="clearfix list_all_item" id="house_list_intercom">
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
                         <li @click="endAnswerInfo" port="58888" ip="192.168.5.2">测试机</li>
-                        <li @click="policeMsg">发送报警信息</li>
+                        <li @click="policeMsg" ip="192.168.1.26">发送报警信息</li>
                     </ul>
                 </div>
             </div>
@@ -70,8 +70,13 @@
             localCloseVideo(event){  //客户端挂断可视对讲
                 $(documentJq).trigger("clientPcCloseVideoStream");
             },
-            policeMsg(){
-                $(documentJq).trigger("sendPoliceMsg");
+            policeMsg(event){
+                let El = $(event.currentTarget);
+                let ip = El.attr("ip");
+
+                //设置服务器地址
+                let socket = new WebSocket('ws://'+ip+':58888');
+                $(documentJq).trigger("sendPoliceMsg",[socket]);
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {
