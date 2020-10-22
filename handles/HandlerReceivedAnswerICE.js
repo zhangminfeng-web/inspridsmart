@@ -13,9 +13,13 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
     if(answerPc){
         if(!data.sdpMLineIndex){
             data.sdpMLineIndex = 0;
-            data.sdpMid = "0";
+            data.sdpMid = "audio";
         }
-        await answerPc.addIceCandidate(new RTCIceCandidate(data.candidate));
+        console.log("*******");
+        console.log(data);
+        console.log(data.candidate);
+
+        await answerPc.addIceCandidate(new RTCIceCandidate(data));
     }
 
     console.log("客户端交换ice信息完成了");

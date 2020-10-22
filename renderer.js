@@ -220,6 +220,20 @@ $(document).ready(function(){
                 return false;
             }
 
+            //接收服务端的设备名称和摄像头是否存在的状态
+            if(event.data.indexOf(",0") != -1 || event.data.indexOf(",1") != -1){
+                let index = event.data.indexOf(",");
+                //4.如果没有摄像头,就提示没有摄像头
+                if(event.data.substring(index+1) == "0"){
+                    //获取远程视频标签,并添加封面图片
+                    $(documentEl).find(".video2").attr("poster","./public/img/tishi.png");
+                }else{
+                    //移除封面图片
+                    $(documentEl).find(".video2").removeAttr("poster");
+                }
+
+                return false;
+            }
 
             //调用接收服务器消息的公共函数
             receiveServerMsg(JSON.parse(event.data));
@@ -413,6 +427,7 @@ $(document).ready(function(){
                 $(documentEl).find("#remoteClose").show();
                 //向客户端发送接收了可视对讲的指令  answer
                 websocketServer.sendMsgToClient("answer");
+
             },
             //点击拒绝可视对讲请求
             btn2:function(index){

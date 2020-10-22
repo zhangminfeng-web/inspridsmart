@@ -24,10 +24,24 @@ var server = ws.createServer(function(conn){
                     }
                     //收到客户端设备信息做对应操作
                     $(global.documentJq).trigger("openConfirmBox",[obj]);
+
                 }
 
                 //服务端接收到客户端端已经准备就绪的指令 clientok
                 if(msg == "clientok"){
+                    //向客户端发送门牌号，以及摄像头是否存在的状态
+                    navigator.mediaDevices.enumerateDevices().then(devices => {
+                        //1. 遍历当前设备信息数组,判断有没有摄像头设备
+                        let flag = devices.some(device => {
+                            //判断有没有摄像头设备
+                            return device.kind == "videoinput";
+                        });
+                        //2. flag返回值为true表示有摄像头1，false没有摄像头0
+                        let index = flag?"1":"0";
+                        //3.向服务器发送设备的反馈信息
+                        broadcast(server,"中心管理机设备,"+index);
+                    });
+
                     //初始化发送offer
                     sendLocalMsg();
                 }

@@ -8,6 +8,8 @@ module.exports.receivedOfferICE = async function(data,documentEl,offerPc){
             data.sdpMLineIndex = 0;
             data.sdpMid = "0";
         }
+        console.log("******&&&&");
+        console.log(data);
         await offerPc.addIceCandidate(new RTCIceCandidate(data));
     }
 
