@@ -492,6 +492,7 @@ $(document).ready(function(){
         audioEl.load();
         if(layerConfirm != null){
             layers.close(layerConfirm);
+            console.log(layerConfirm);
         }
     }
 
