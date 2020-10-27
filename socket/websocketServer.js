@@ -29,6 +29,7 @@ var server = ws.createServer(function(conn){
 
                 //服务端接收到客户端端已经准备就绪的指令 clientok
                 if(msg == "clientok"){
+                    console.log(msg);
                     //向客户端发送门牌号，以及摄像头是否存在的状态
                     navigator.mediaDevices.enumerateDevices().then(devices => {
                         //1. 遍历当前设备信息数组,判断有没有摄像头设备
