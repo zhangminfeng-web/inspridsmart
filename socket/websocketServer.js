@@ -43,6 +43,7 @@ var server = ws.createServer(function(conn){
                     });
 
                     //初始化发送offer
+                    console.log("123$$$$$");
                     sendLocalMsg();
                 }
 
@@ -128,6 +129,7 @@ function sendLocalMsg(obj){
             default:
         }
     }else{
+        console.log("$$$$$$1111");
         //触发创建offer事件,并将offer信息发送给客户端
         $(global.documentJq).trigger("sendAnswer");
     }
