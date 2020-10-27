@@ -13,6 +13,7 @@ $(document).ready(function(){
     let localSocket = null;    //本地socket对象
     let removeSocket = null;  //远程socket对象
     let layerConfirm = null;    //layer询问弹框
+    let layerOpen = null;  //layer等待应答弹框
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -127,7 +128,7 @@ $(document).ready(function(){
         let layerObj = global.getData(global.LAYER_OBJ);
 
         //开启等待服务器端回应的加载层
-        let layerOpen = layer.open({
+        layerOpen = layer.open({
             content:"等待对方应答中...",
             btn: ['挂断'],
             yes:function(index){
@@ -179,6 +180,9 @@ $(document).ready(function(){
                     anim:6,
                     time:2000
                 });
+                if(layerOpen != null){
+                    layerObj.close(layerOpen);
+                }
                 //1.获取本地连接对象
                 let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
