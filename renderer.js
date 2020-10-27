@@ -132,8 +132,9 @@ $(document).ready(function(){
             btn: ['挂断'],
             yes:function(index){
                 layer.close(layerOpen);
-                localSocket.close();
-                sendStringText("hangup");
+                sendStringText("hangup",function(){
+                    localSocket.close();
+                });
             },
             cancel:function(index){
                 localSocket.close();
