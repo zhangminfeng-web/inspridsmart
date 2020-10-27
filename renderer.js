@@ -78,7 +78,7 @@ $(document).ready(function(){
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
             try {
-                console.log("向客户端媒体流添加视频轨道");
+                console.log("在服务端添加媒体流轨道");
                 console.log(t);
                 offerPc.addTrack(t);
             }
@@ -94,7 +94,7 @@ $(document).ready(function(){
         //接收服务端端发送过来的媒体流数据
         offerPc.ontrack = e => {
             //将offerPc的媒体流通道，添加到远程媒体流中
-            console.log("接收服务端端发送过来的媒体流数据");
+            console.log("接收客户端发送过来的媒体流轨道");
             console.log(e.track);
             remoteStream.addTrack(e.track);
         };
