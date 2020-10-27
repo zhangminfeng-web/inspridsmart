@@ -490,6 +490,9 @@ $(document).ready(function(){
         layers.close(popupObj);
         audioEl.pause();
         audioEl.load();
+        if(layerConfirm != null){
+            layers.close(layerConfirm);
+        }
     }
 
     //服务端挂断可视对讲时触发
