@@ -181,7 +181,6 @@ $(document).ready(function(){
                     time:2000
                 });
                 if(layerOpen != null){
-                    console.log("*******");
                     layerObj.close(layerOpen);
                 }
                 //1.获取本地连接对象
@@ -233,6 +232,10 @@ $(document).ready(function(){
             if(event.data == "answer"){
                 //关闭加载层
                 layerObj.closeAll("loading");
+                if(layerOpen != null){
+                    console.log("*****");
+                    layerObj.close(layerOpen);
+                }
                 //开打视频通话弹框
                 $(documentEl).find(".intercom_model_bg").show();
                 //显示客户端挂断按钮
