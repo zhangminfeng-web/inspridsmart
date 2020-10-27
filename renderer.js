@@ -496,6 +496,8 @@ $(document).ready(function(){
     $(documentEl).on("serverPcCloseVideoStream",function (e) {
         let layerObj = global.getData(global.LAYER_OBJ);
 
+        console.log("服务端收到挂断信息");
+        console.log(layerConfirm);
         if(layerConfirm != null){
             layerObj.close(layerConfirm);
             return false;
