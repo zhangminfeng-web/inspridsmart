@@ -132,10 +132,10 @@ $(document).ready(function(){
             btn: ['挂断'],
             yes:function(index){
                 layer.close(layerOpen);
-                websocketServer.sendMsgToClient("hangup");
+                sendStringText("hangup");
             },
             cancel:function(index){
-                websocketServer.sendMsgToClient("hangup");
+                sendStringText("hangup");
             }
         });
 
@@ -488,6 +488,7 @@ $(document).ready(function(){
 
         if(layerConfirm != null){
             layerObj.close(layerConfirm);
+            return false;
         }
 
         //1.获取本地连接对象
