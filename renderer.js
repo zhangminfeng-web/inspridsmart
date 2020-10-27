@@ -181,6 +181,7 @@ $(document).ready(function(){
                     time:2000
                 });
                 if(layerOpen != null){
+                    console.log("*******");
                     layerObj.close(layerOpen);
                 }
                 //1.获取本地连接对象
