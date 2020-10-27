@@ -12,6 +12,7 @@ $(document).ready(function(){
     let vueObj = null;
     let localSocket = null;    //本地socket对象
     let removeSocket = null;  //远程socket对象
+    let layerOpen = null;    //layer询问弹框
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -77,8 +78,8 @@ $(document).ready(function(){
         localStream.getTracks().forEach(t => {
             try {
                 console.log("向客户端媒体流添加视频轨道");
-                console.log(t);
                 offerPc.addTrack(t);
+                console.log(offerPc);
             }
             catch (err) {
                 console.log(err);
@@ -126,10 +127,16 @@ $(document).ready(function(){
         let layerObj = global.getData(global.LAYER_OBJ);
 
         //开启等待服务器端回应的加载层
-        layerObj.load(1,{
-            shade: [0.6,'#fff'], //0.1透明度的白色背景
-            shadeClose: false,
-            content: '等待对方应答中...'
+        layerOpen = layer.open({
+            content:"等待对方应答中...",
+            btn: ['挂断'],
+            yes:function(index){
+                layer.close(layerOpen);
+                websocketServer.sendMsgToClient("hangup");
+            },
+            cancel:function(index){
+                websocketServer.sendMsgToClient("hangup");
+            }
         });
 
         //当连接成功触发这个方法
@@ -477,6 +484,12 @@ $(document).ready(function(){
 
     //服务端挂断可视对讲时触发
     $(documentEl).on("serverPcCloseVideoStream",function (e) {
+        let layerObj = global.getData(global.LAYER_OBJ);
+
+        if(layerOpen != null){
+            layerObj.close(layerOpen);
+        }
+
         //1.获取本地连接对象
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
