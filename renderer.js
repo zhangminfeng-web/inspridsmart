@@ -79,6 +79,7 @@ $(document).ready(function(){
 
         localStream.getTracks().forEach((t,i) => {
             try {
+                console.log(i);
                 if(i == "0" || i == "1"){
                     console.log("在服务端添加媒体流轨道");
                     console.log(t);
