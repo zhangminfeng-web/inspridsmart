@@ -138,7 +138,9 @@ $(document).ready(function(){
             },
             cancel:function(index){
                 localSocket.close();
-                sendStringText("hangup");
+                sendStringText("hangup",function () {
+                    localSocket.close();
+                });
             }
         });
 
