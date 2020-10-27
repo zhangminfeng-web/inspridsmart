@@ -12,7 +12,7 @@ $(document).ready(function(){
     let vueObj = null;
     let localSocket = null;    //本地socket对象
     let removeSocket = null;  //远程socket对象
-    let layerOpen = null;    //layer询问弹框
+    let layerConfirm = null;    //layer询问弹框
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -127,7 +127,7 @@ $(document).ready(function(){
         let layerObj = global.getData(global.LAYER_OBJ);
 
         //开启等待服务器端回应的加载层
-        layer.open({
+        let layerOpen = layer.open({
             content:"等待对方应答中...",
             btn: ['挂断'],
             yes:function(index){
@@ -425,7 +425,7 @@ $(document).ready(function(){
         audioEl.play();
 
         //3.询问是否接收可视对讲请求
-        layerOpen = layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
+        layerConfirm = layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
             btn: ['接收','拒绝'], //按钮
             title:options.deviceName+"的请求!",
             //点击接受可视对讲请求
@@ -486,8 +486,8 @@ $(document).ready(function(){
     $(documentEl).on("serverPcCloseVideoStream",function (e) {
         let layerObj = global.getData(global.LAYER_OBJ);
 
-        if(layerOpen != null){
-            layerObj.close(layerOpen);
+        if(layerConfirm != null){
+            layerObj.close(layerConfirm);
         }
 
         //1.获取本地连接对象
