@@ -496,16 +496,21 @@ $(document).ready(function(){
         }
     }
 
-    //服务端挂断可视对讲时触发
-    $(documentEl).on("serverPcCloseVideoStream",function (e) {
+    //关闭弹框
+    $(documentEl).on("closeServerConnection",function(e){
         let layerObj = global.getData(global.LAYER_OBJ);
-
         console.log("服务端收到挂断信息");
         console.log(layerConfirm);
         if(layerConfirm != null){
             layerObj.close(layerConfirm);
+            layerConfirm = null;
             return false;
         }
+    });
+
+    //服务端挂断可视对讲时触发
+    $(documentEl).on("serverPcCloseVideoStream",function (e) {
+
 
         //1.获取本地连接对象
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
