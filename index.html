@@ -56,6 +56,37 @@
         <audio id="police-player" loop="loop" hidden="true">
             <source src="./public/audio/baojing.mp3" type="audio/mpeg">
         </audio>
+
+        <!--login弹框-->
+        <!--<div class="Intercom_box_bg">
+            <div class="Intercom_box_main">
+                <div class="Intercom_big_title">
+                    思悦可视对讲管理系统
+                </div>
+                <div class="Intercom_content_box">
+                    <div class="Intercom_header_title">登录</div>
+                    <div class="Intercom_body_main">
+                        <form class="form-horizontal" id="loginForm">
+                            <div class="form-group">
+                                <label class="col-sm-offset-1 col-sm-2 control-label">账号</label>
+                                <div class="col-sm-6">
+                                    <input type="text" v-model="loginInfo.admin" name="admin" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group marginTop_Intercom">
+                                <label class="col-sm-offset-1 col-sm-2 control-label">密码</label>
+                                <div class="col-sm-6">
+                                    <input type="text" v-model="loginInfo.password" name="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success self_btn">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>-->
     </div>
 
     <script>window.$ = window.jQuery = require('./public/js/jquery.js');</script>
@@ -88,6 +119,10 @@
                 },
                 data:{
                     showComponentValue:1,
+                    loginInfo:{
+                        admin:"",
+                        password:"",
+                    }
                 },
                 async mounted(){
                     //传递给sendMediaStream函数

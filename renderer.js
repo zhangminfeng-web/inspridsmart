@@ -69,21 +69,20 @@ $(document).ready(function(){
 
         let offerPc = global.KEY_OFFER_PEER_CONNECTION;
 
-        //当dataChannel通道打开后,监听网路信息事件,获取网路信息
-        //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-        offerPc.onicecandidate = e => {
-            if(e.candidate){
-                websocketServer.sendMsgToClient(JSON.stringify(e.candidate));
-            }
-        };
-
         //3.获取本地数据流
         const localStream = global.getData(global.KEY_LOCAL_MEDIA_STREAM);
 
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
         localStream.getTracks().forEach(t => {
-            offerPc.addTrack(t);
+            try {
+                console.log("向客户端媒体流添加视频轨道");
+                console.log(t);
+                offerPc.addTrack(t);
+            }
+            catch (err) {
+                console.log(err);
+            }
         });
 
 
@@ -105,7 +104,15 @@ $(document).ready(function(){
         await offerPc.setLocalDescription(new RTCSessionDescription(offer));
 
         //向客户端发送offer信息
-        websocketServer.sendMsgToClient(JSON.stringify(offer));
+        websocketServer.sendMsgToClient(JSON.stringify(offer),function(){
+            //当dataChannel通道打开后,监听网路信息事件,获取网路信息
+            //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
+            offerPc.onicecandidate = e => {
+                if(e.candidate){
+                    websocketServer.sendMsgToClient(JSON.stringify(e.candidate));
+                }
+            };
+        });
 
 
     });

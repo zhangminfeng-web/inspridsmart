@@ -82,9 +82,15 @@ var server = ws.createServer(function(conn){
 });
 
 //向客户端发送消息的公共函数
-exports.sendMsgToClient = function(msg){
+exports.sendMsgToClient = function(msg,callback){
     //调用广播函数
     broadcast(server,msg);
+    if(callback){
+        let t= setTimeout(function(){
+            callback();
+            clearTimeout(t);
+        },50);
+    }
 };
 
 //处理报警信息的公共函数
