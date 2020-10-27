@@ -78,12 +78,14 @@ $(document).ready(function(){
         //再通过addTrack()将每一个轨道添加到peerConnection中
 
         localStream.getTracks().forEach((t,i) => {
+            console.log(i);
             try {
                 if(i == 0 || i == 1){
                     console.log("在服务端添加媒体流轨道");
                     console.log(t);
                     offerPc.addTrack(t);
                 }
+
             }
             catch (err) {
                 console.log(err);
