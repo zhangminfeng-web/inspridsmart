@@ -169,7 +169,9 @@ $(document).ready(function(){
             //收到服务端的挂断指令
             if(event.data == "hangup"){
                 //关闭加载层
-                layerObj.closeAll("loading");
+                if(layerOpen != null){
+                    layerObj.close(layerOpen);
+                }
                 //关闭本地视频弹框
                 $(documentEl).find(".intercom_model_bg").hide();
                 //关闭连接
@@ -180,9 +182,6 @@ $(document).ready(function(){
                     anim:6,
                     time:2000
                 });
-                if(layerOpen != null){
-                    layerObj.close(layerOpen);
-                }
                 //1.获取本地连接对象
                 let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
@@ -230,10 +229,7 @@ $(document).ready(function(){
 
             //服务器端接收了可视对讲请求，并返回了answer
             if(event.data == "answer"){
-                //关闭加载层
-                layerObj.closeAll("loading");
                 if(layerOpen != null){
-                    console.log("*****");
                     layerObj.close(layerOpen);
                 }
                 //开打视频通话弹框
@@ -268,7 +264,9 @@ $(document).ready(function(){
 
         //当断开连接触发方法
         localSocket.addEventListener('close',function () {
-            layerObj.closeAll("loading");
+            if(layerOpen != null){
+                layerObj.close(layerOpen);
+            }
             console.log("weblocalSocket连接已经关闭");
         });
 
