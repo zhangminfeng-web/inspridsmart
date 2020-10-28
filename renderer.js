@@ -14,6 +14,7 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
     let layerConfirm = null;    //layer询问弹框
     let layerOpen = null;  //layer等待应答弹框
+    let flagStatus = true;
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -394,8 +395,11 @@ $(document).ready(function(){
         console.log("--由服务端发送给客户端candidate信息---");
         console.log(obj);
 
-        //服务端向客服端发送ice信息
-        websocketServer.sendMsgToClient(JSON.stringify(obj));
+        if(flagStatus){
+            //服务端向客服端发送ice信息
+            websocketServer.sendMsgToClient(JSON.stringify(obj));
+            flagStatus = false;
+        }
     });
 
     //服务端处理客户端发送的ice信息
