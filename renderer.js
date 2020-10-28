@@ -392,10 +392,9 @@ $(document).ready(function(){
             delete  obj.toJSON;
         }
 
-        console.log("--由服务端发送给客户端candidate信息---");
-        console.log(obj);
-
         if(flagStatus){
+            console.log("--由服务端发送给客户端candidate信息---");
+            console.log(obj);
             //服务端向客服端发送ice信息
             websocketServer.sendMsgToClient(JSON.stringify(obj));
             flagStatus = false;
