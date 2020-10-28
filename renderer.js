@@ -314,12 +314,13 @@ $(document).ready(function(){
     }
 
     //公共发送消息的函数
-    function allSendMsg(msg){
+    function allSendMsg(msg,callback){
         let t = setInterval(function(){
             //offerPc发送消息的公共方法
             let status = answerSendMsg(JSON.stringify(msg));
             if(status){
                 window.clearInterval(t);
+                callback && callback();
             }
         },100);
     }
@@ -351,9 +352,11 @@ $(document).ready(function(){
     }
 
     //客户端发送answer信息给服务端
-    $(documentEl).on("sendAnswerMsgClient",function(e,data){
+    $(documentEl).on("sendAnswerMsgClient",function(e,data,callback){
         console.log("客户端即将发送answer信息给服务端");
-        allSendMsg(data);
+        allSendMsg(data,function(){
+            callback();
+        });
     });
 
     //answerPc端收到offerPc端的信息了

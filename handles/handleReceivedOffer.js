@@ -28,14 +28,25 @@ module.exports.receivedOffer = async function(data,documentEl){
         answerPc.addTrack(t);
     });
 
+    //设置远端与连接关联的描述信息
+    await answerPc.setRemoteDescription(new RTCSessionDescription(data));
 
-    //监听网路信息事件,获取网路信息
-    //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
-    answerPc.onicecandidate = e => {
-        if(e.candidate){
-            sendIceToOfferPc(e.candidate);
+    //创建answer对象
+    let answer = await answerPc.createAnswer();
+
+    //设置本地与连接关联的描述信息
+    await answerPc.setLocalDescription(new RTCSessionDescription(answer));
+
+    //通过事件派发机制，发送answer信息
+    $(documentEl).trigger("sendAnswerMsgClient",[answer,function(){
+        //监听网路信息事件,获取网路信息
+        //当获取到answerPc端的网络信息之后，需要把信息传输给offerPc端
+        answerPc.onicecandidate = e => {
+            if(e.candidate){
+                sendIceToOfferPc(e.candidate);
+            }
         }
-    }
+    }]);
 
     //客户端向服务端发送ice信息
     function sendIceToOfferPc(data){
@@ -55,17 +66,5 @@ module.exports.receivedOffer = async function(data,documentEl){
         //offerPc端向answer服务端发送ice信息
         $(documentEl).trigger("client_send_ice",[obj]);
     }
-
-    //设置远端与连接关联的描述信息
-    await answerPc.setRemoteDescription(new RTCSessionDescription(data));
-
-    //创建answer对象
-    let answer = await answerPc.createAnswer();
-
-    //设置本地与连接关联的描述信息
-    await answerPc.setLocalDescription(new RTCSessionDescription(answer));
-
-    //通过事件派发机制，发送answer信息
-    $(documentEl).trigger("sendAnswerMsgClient",[answer]);
 
 };
