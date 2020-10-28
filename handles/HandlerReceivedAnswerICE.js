@@ -15,12 +15,13 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
             data.sdpMLineIndex = 0;
             data.sdpMid = "audio";
         }
+
         console.log("*******");
         console.log(data);
         console.log(data.candidate);
 
-        setTimeout(function(){
-            answerPc.addIceCandidate(new RTCIceCandidate(data));
+        setTimeout(async function(){
+            await answerPc.addIceCandidate(new RTCIceCandidate(data));
         })
 
     }

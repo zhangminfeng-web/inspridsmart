@@ -24,7 +24,6 @@ var server = ws.createServer(function(conn){
                     }
                     //收到客户端设备信息做对应操作
                     $(global.documentJq).trigger("openConfirmBox",[obj]);
-
                 }
 
                 //服务端接收到客户端端已经准备就绪的指令 clientok
