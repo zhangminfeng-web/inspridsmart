@@ -20,9 +20,14 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         console.log(data);
         console.log(data.candidate);
 
-        setTimeout(function(){
-            answerPc.addIceCandidate(new RTCIceCandidate(data));
-        },50)
+        try {
+            await answerPc.addIceCandidate(new RTCIceCandidate(data));
+        }
+        catch (err) {
+            
+        }
+           
+        
     }
     console.log("客户端交换ice信息完成了");
 };
