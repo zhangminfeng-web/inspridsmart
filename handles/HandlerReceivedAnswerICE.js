@@ -1,6 +1,6 @@
 const global = require("../global/globalFile");
 
-module.exports.receivedAnswerICE = async function(data,documentEl){
+module.exports.receivedAnswerICE = function(data,documentEl){
 
     //获取answerPc连接对象
     let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
@@ -19,7 +19,10 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         console.log(data);
         console.log(data.candidate);
 
-        await answerPc.addIceCandidate(new RTCIceCandidate(data));
+        setTimeout(function(){
+            answerPc.addIceCandidate(new RTCIceCandidate(data));
+        })
+
     }
 
     console.log("客户端交换ice信息完成了");

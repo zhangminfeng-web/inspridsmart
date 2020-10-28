@@ -80,7 +80,12 @@ $(document).ready(function(){
         localStream.getTracks().forEach(t => {
             console.log("在服务端添加媒体流轨道");
             console.log(t);
-            offerPc.addTrack(t);
+            try {
+                offerPc.addTrack(t);
+            }
+            catch (err) {
+
+            }
         });
 
         //获取到远程媒体流对象
