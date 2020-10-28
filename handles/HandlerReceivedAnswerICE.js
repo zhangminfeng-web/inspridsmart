@@ -5,9 +5,9 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
     //获取answerPc连接对象
     let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
-    console.log(answerPc);
+    /*console.log(answerPc);
     console.log("客户端处理服务端发送来的ice信息");
-    console.log(data);
+    console.log(data);*/
 
     //客户端接收answer_ice消息
     if(answerPc){
@@ -20,12 +20,9 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         console.log(data);
         console.log(data.candidate);
 
-        setTimeout(function(){
-            answerPc.addIceCandidate(new RTCIceCandidate(data));
-        })
-
-
+        setTimeout(async function(){
+            await answerPc.addIceCandidate(new RTCIceCandidate(data));
+        },50)
     }
-
     console.log("客户端交换ice信息完成了");
 };
