@@ -199,7 +199,12 @@ $(document).ready(function(){
                     //9.关闭监听添加媒体流函数
                     answerPc.onaddstream = null;
 
-                    //10.重置初始化方法
+                    //10.改变candidate信息的判断状态
+                    if(!flagStatus){
+                        flagStatus = true;
+                    }
+
+                    //11.重置初始化方法
                     $(documentEl).trigger("sendMediaStreamObj",[
                         vueObj,
                         global.getData(global.LAYER_OBJ)
@@ -552,7 +557,12 @@ $(document).ready(function(){
         //9.关闭监听添加媒体流函数
         offerPc.onaddstream = null;
 
-        //10.重置初始化方法
+        //10.改变candidate信息的判断状态
+        if(!flagStatus){
+            flagStatus = true;
+        }
+
+        //11.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)
@@ -594,7 +604,12 @@ $(document).ready(function(){
         //10.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
 
-        //11.重置初始化方法
+        //11.改变candidate信息的判断状态
+        if(!flagStatus){
+            flagStatus = true;
+        }
+
+        //12.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)
