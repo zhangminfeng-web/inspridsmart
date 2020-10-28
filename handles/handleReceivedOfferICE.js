@@ -1,6 +1,6 @@
 let global = require("../global/globalFile");
 
-module.exports.receivedOfferICE = function(data,documentEl,offerPc){
+module.exports.receivedOfferICE = async function(data,documentEl,offerPc){
     //添加远端发送过来的offer_ice信息,
     //通过这种方式就将answer端的icecandidate添加上了
     if(offerPc){
@@ -10,9 +10,9 @@ module.exports.receivedOfferICE = function(data,documentEl,offerPc){
         }
         console.log("******&&&&");
         console.log(data);
-        setTimeout(function(){
-            offerPc.addIceCandidate(new RTCIceCandidate(data));
-        })
+
+        await offerPc.addIceCandidate(new RTCIceCandidate(data));
+
 
     }
 
