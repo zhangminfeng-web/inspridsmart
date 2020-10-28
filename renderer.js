@@ -14,7 +14,6 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
     let layerConfirm = null;    //layer询问弹框
     let layerOpen = null;  //layer等待应答弹框
-    let flagStatus = true;
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -199,12 +198,7 @@ $(document).ready(function(){
                     //9.关闭监听添加媒体流函数
                     answerPc.onaddstream = null;
 
-                    //10.改变candidate信息的判断状态
-                    if(!flagStatus){
-                        flagStatus = true;
-                    }
-
-                    //11.重置初始化方法
+                    //10.重置初始化方法
                     $(documentEl).trigger("sendMediaStreamObj",[
                         vueObj,
                         global.getData(global.LAYER_OBJ)
@@ -397,13 +391,8 @@ $(document).ready(function(){
             delete  obj.toJSON;
         }
 
-        if(flagStatus){
-            console.log("--由服务端发送给客户端candidate信息---");
-            console.log(obj);
-            //服务端向客服端发送ice信息
-            websocketServer.sendMsgToClient(JSON.stringify(obj));
-            flagStatus = false;
-        }
+        //服务端向客服端发送ice信息
+        websocketServer.sendMsgToClient(JSON.stringify(obj));
     });
 
     //服务端处理客户端发送的ice信息
@@ -557,12 +546,7 @@ $(document).ready(function(){
         //9.关闭监听添加媒体流函数
         offerPc.onaddstream = null;
 
-        //10.改变candidate信息的判断状态
-        if(!flagStatus){
-            flagStatus = true;
-        }
-
-        //11.重置初始化方法
+        //10.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)
@@ -604,12 +588,7 @@ $(document).ready(function(){
         //10.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
 
-        //11.改变candidate信息的判断状态
-        if(!flagStatus){
-            flagStatus = true;
-        }
-
-        //12.重置初始化方法
+        //11.重置初始化方法
         $(documentEl).trigger("sendMediaStreamObj",[
             vueObj,
             global.getData(global.LAYER_OBJ)

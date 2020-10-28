@@ -6,8 +6,9 @@ module.exports.receivedOfferICE = async function(data,documentEl,offerPc){
     if(offerPc){
         if(!data.sdpMLineIndex){
             data.sdpMLineIndex = 0;
-            data.sdpMid = "audio";
+            data.sdpMid = "0";
         }
+
         console.log("******&&&&");
         console.log(data);
 
