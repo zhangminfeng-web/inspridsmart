@@ -13,7 +13,7 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
     if(answerPc){
         if(!data.sdpMLineIndex){
             data.sdpMLineIndex = 0;
-            data.sdpMid = "audio";
+            data.sdpMid = "0";
         }
         console.log("*******");
         console.log(data);

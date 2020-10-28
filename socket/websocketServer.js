@@ -44,13 +44,11 @@ var server = ws.createServer(function(conn){
                     });
 
                     //初始化发送offer
-                    console.log("123$$$$$");
                     sendLocalMsg();
                 }
 
                 //服务端收到客户端的挂断指令
                 if(msg == "hangup"){
-                    console.log(msg);
                     //服务端执行挂断逻辑
                     $(global.documentJq).trigger("serverPcCloseVideoStream");
                 }
@@ -86,15 +84,9 @@ var server = ws.createServer(function(conn){
 });
 
 //向客户端发送消息的公共函数
-exports.sendMsgToClient = function(msg,callback){
+exports.sendMsgToClient = function(msg){
     //调用广播函数
     broadcast(server,msg);
-    if(callback){
-        let t= setTimeout(function(){
-            callback();
-            clearTimeout(t);
-        },50);
-    }
 };
 
 //处理报警信息的公共函数
@@ -130,7 +122,6 @@ function sendLocalMsg(obj){
             default:
         }
     }else{
-        console.log("$$$$$$1111");
         //触发创建offer事件,并将offer信息发送给客户端
         $(global.documentJq).trigger("sendAnswer");
     }

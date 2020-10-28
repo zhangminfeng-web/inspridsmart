@@ -77,21 +77,11 @@ $(document).ready(function(){
         //通过getTracks()方法获取到媒体流设备轨道
         //再通过addTrack()将每一个轨道添加到peerConnection中
 
-        localStream.getTracks().forEach((t,i) => {
-            try {
-                console.log(i);
-                if(i == "0" || i == "1"){
-                    console.log("在服务端添加媒体流轨道");
-                    console.log(t);
-                    offerPc.addTrack(t);
-                }
-
-            }
-            catch (err) {
-                console.log(err);
-            }
+        localStream.getTracks().forEach(t => {
+            console.log("在服务端添加媒体流轨道");
+            console.log(t);
+            offerPc.addTrack(t);
         });
-
 
         //获取到远程媒体流对象
         const remoteStream = global.getData(global.KEY_REMOTE_MEDIA_STREAM);
@@ -111,15 +101,15 @@ $(document).ready(function(){
         await offerPc.setLocalDescription(new RTCSessionDescription(offer));
 
         //向客户端发送offer信息
-        websocketServer.sendMsgToClient(JSON.stringify(offer),function(){
-            //当dataChannel通道打开后,监听网路信息事件,获取网路信息
-            //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
-            offerPc.onicecandidate = e => {
-                if(e.candidate){
-                    websocketServer.sendMsgToClient(JSON.stringify(e.candidate));
-                }
-            };
-        });
+        websocketServer.sendMsgToClient(JSON.stringify(offer));
+
+        //当dataChannel通道打开后,监听网路信息事件,获取网路信息
+        //当获取到offerPc端的网络信息之后，需要把信息传输给answerPc端
+        offerPc.onicecandidate = e => {
+            if(e.candidate){
+                $(documentEl).trigger("offer_ice",[e.candidate]);
+            }
+        };
 
 
     });
@@ -377,6 +367,11 @@ $(document).ready(function(){
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 
+    //客户端向服务端发送ice信息
+    $(documentEl).on("client_send_ice",function (e,data) {
+        allSendMsg(data);
+    });
+
     //客户端处理服务端发送来的ice消息
     $(documentEl).on("offer_ice",function(e,data){
         let obj = {};
@@ -391,8 +386,8 @@ $(document).ready(function(){
             delete  obj.toJSON;
         }
 
-        //offerPc端向answer服务端发送ice信息
-        allSendMsg(obj);
+        //服务端向客服端发送ice信息
+        websocketServer.sendMsgToClient(JSON.stringify(obj));
     });
 
     //服务端处理客户端发送的ice信息
@@ -504,8 +499,13 @@ $(document).ready(function(){
     //关闭弹框
     $(documentEl).on("closeServerConnection",function(e){
         let layerObj = global.getData(global.LAYER_OBJ);
+        let audioEl = document.getElementById("audio-player");
         if(layerConfirm != null){
             layerObj.close(layerConfirm);
+            if(audioEl){
+                audioEl.pause();
+                audioEl.load();
+            }
             layerConfirm = null;
             return false;
         }

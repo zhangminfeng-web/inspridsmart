@@ -53,7 +53,7 @@ module.exports.receivedOffer = async function(data,documentEl){
         }
 
         //offerPc端向answer服务端发送ice信息
-        $(documentEl).trigger("offer_ice",[obj]);
+        $(documentEl).trigger("client_send_ice",[obj]);
     }
 
     //设置远端与连接关联的描述信息
