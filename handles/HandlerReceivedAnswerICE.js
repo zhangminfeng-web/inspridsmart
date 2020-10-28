@@ -20,9 +20,10 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         console.log(data);
         console.log(data.candidate);
 
-        /*setTimeout(function(){
-        })*/
-        await answerPc.addIceCandidate(new RTCIceCandidate(data));
+        setTimeout(function(){
+            answerPc.addIceCandidate(new RTCIceCandidate(data));
+        })
+
 
     }
 
