@@ -361,9 +361,9 @@ $(document).ready(function(){
         handleReceivedOffer.receivedOffer(data,documentEl);
     });
 
-    //服务端处理客户端发送来的answer信息
+    //客户端处理服务端发送来的answer信息
     $(documentEl).on("serverAnswer",function(e,data){
-        //服务端处理接收answer信息
+        //客户端处理接收answer信息
         handleReceivedAnswer.receivedAnswer(data,documentEl);
     });
 

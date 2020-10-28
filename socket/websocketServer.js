@@ -109,7 +109,12 @@ function broadcast(server, msg) {
 
 function sendLocalMsg(obj){
     if(obj){
+        console.log("********");
+        console.log(obj);
         switch(obj.type) {
+            case "offer":
+                console.log("收到服务端发送的offer信息了");
+                break;
             //处理客户端发送过来的answer消息
             case "answer":
                 //将消息通过事件派发，发送给本地处理

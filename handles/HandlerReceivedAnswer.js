@@ -4,10 +4,6 @@ module.exports.receivedAnswer = async function(data,documentEl){
 
     console.log("服务端接收到answer信息");
 
-    /*for(let k in data){
-        console.log(data[k]);
-    }*/
-
     //设置远端与连接关联的描述信息
     await global.KEY_OFFER_PEER_CONNECTION.setRemoteDescription(new RTCSessionDescription(data));
 
