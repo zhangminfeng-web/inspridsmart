@@ -11,14 +11,9 @@ module.exports.receivedOfferICE = async function(data,documentEl,offerPc){
 
         console.log("******&&&&");
         console.log(data);
-        await offerPc.addIceCandidate(new RTCIceCandidate(data));
-
-        /*try {
+        setTimeout(async function(){
             await offerPc.addIceCandidate(new RTCIceCandidate(data));
-        }
-        catch (err) {
-
-        }*/
+        },600);
 
     }
 
