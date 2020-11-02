@@ -39,6 +39,7 @@
                         <li :class="showComponentValue==3?'active':''" @click="toggleComponent" value="3"><a><i class="iconfont icon-duijiangjiankong"></i>可视对讲</a></li>
                         <li :class="showComponentValue==4?'active':''" @click="toggleComponent" value="4"><a><i class="iconfont icon-baojing"></i>报警查询</a></li>
                         <li :class="showComponentValue==5?'active':''" @click="toggleComponent" value="5"><a><i class="iconfont icon-shebei"></i>在线设备</a></li>
+                        <li :class="showComponentValue==6?'active':''" @click="toggleComponent" value="6"><a><i class="iconfont icon-loumian"></i>预约门禁</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -47,6 +48,7 @@
                     <intercom-component v-show="showComponentValue==3"></intercom-component>
                     <call-police-component v-show="showComponentValue==4"></call-police-component>
                     <all-online-component v-show="showComponentValue==5"></all-online-component>
+                    <appointment-access v-show="showComponentValue==6"></appointment-access>
                 </div>
             </div>
         </div>
@@ -99,6 +101,7 @@
     <script src="./renderer.js"></script>
     <script src="./public/js/vue.js"></script>
     <script src="./public/js/http-vue-loader.js"></script>
+    <script src="./public/js/qrcode.min.js"></script>
     <script src="./node_modules/axios/dist/axios.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/layui-src/dist/layui.js"></script>
@@ -116,6 +119,7 @@
                     'intercom-component':'url:./view/videoIntercom-component.vue',
                     'call-police-component':'url:./view/call-police-component.vue',
                     'all-online-component':'url:./view/online-component.vue',
+                    'appointment-access':'url:./view/appointment-access.vue',
                 },
                 data:{
                     showComponentValue:1,
