@@ -3,6 +3,8 @@ let handleReceivedAnswer = require("./handles/HandlerReceivedAnswer");
 let handleReceivedOfferICE = require("./handles/handleReceivedOfferICE");
 let HandlerReceivedAnswerICE = require("./handles/HandlerReceivedAnswerICE");
 let websocketServer = require('./socket/websocketServer');
+let localhostUdpServer = require('./udp/localhostUdpServer');
+let propleFaceSend = require('./udp/propleFaceSend');
 let global = require("./global/globalFile");
 
 $(document).ready(function(){
@@ -594,6 +596,33 @@ $(document).ready(function(){
             global.getData(global.LAYER_OBJ)
         ]);
 
+    });
+
+    //发送二维码，预约门禁
+    $(documentEl).on("sendQRcodeNumber",function(e,senderName,code){
+        localhostUdpServer.sendQrcode(senderName,code,function(){
+            //获取layer实例
+            let layerObj = global.getData(global.LAYER_OBJ);
+            layerObj.msg("通知设备接收二维码成功！",{time:2000, icon:6, shift:5});
+        });
+    })
+
+    //发送密码，预约门禁
+    $(documentEl).on("sendPasswordNumber",function(e,senderName,code){
+        localhostUdpServer.sendPassword(senderName,code,function(){
+            //获取layer实例
+            let layerObj = global.getData(global.LAYER_OBJ);
+            layerObj.msg("通知设备接收密码成功！",{time:1000, icon:6, shift:5});
+        });
+    });
+
+    //发送人脸识别图片数据
+    $(documentEl).on("sendPeopleFaceData",function(e,arrayBuffer){
+        propleFaceSend.sendPeopleSendImg(arrayBuffer,function(){
+            //获取layer实例
+            let layerObj = global.getData(global.LAYER_OBJ);
+            layerObj.msg("通知设备接收人脸数据成功！",{time:3000, icon:6, shift:5});
+        });
     });
 
 });

@@ -32,6 +32,31 @@
             <button class="btn btn-success" @click="open_password_str">密码预约门禁</button>
         </div>
 
+        <!--人脸预约门禁-->
+        <div class="appointment_model_bg" style="display:none;">
+            <div class="appointment_model_content">
+                <div class="appointment_model_header">
+                    <span class="appointment_model_title" id="model_title">人脸预约门禁</span>
+                    <span class="appointment_model_close" @click="closeModelAppointment">×</span>
+                </div>
+                <div class="appointment_model_mains">
+                    <div class="video_show_box_appointment">
+                        <video ref="video" id="videoFaceEl" class="videoFace" autoplay></video>
+                        <div class="btn_appointment_box">
+                            <button type="button" @click="clickPhotograph" class="btn btn-danger">拍照</button>
+                        </div>
+                    </div>
+                    <div class="img_box_appointment">
+                        <img :src="imgDateAppointment" ref="img" class="image_show_area" width="100%" height="330">
+                        <canvas ref="canvas" width="380" height="330" hidden></canvas>
+                        <div class="btn_appointment_box">
+                            <button type="button" v-if="imgDateAppointment" @click="sendFaceImg" class="btn btn-danger">发送图片预约门禁</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -41,15 +66,23 @@
             return {
                 QRCODE:"",  //二维码门禁参数
                 sixNumberPassword:"",  //门禁密码
+                imgDateAppointment:'',  //图片数据
             }
         },
         methods:{
+            async _initVideo(){  //初始化函数
+                this.$refs.video.srcObject = await navigator.mediaDevices.getUserMedia({
+                    video:true,
+                    audio:false
+                });
+                this._canvas2d = this.$refs.canvas.getContext("2d");
+            },
             open_QR_code(){  //二维码预约门禁
                 let that = this;
                 this.confirmLaert("确定预约二维码门禁吗？",function(){
                     that.QRCODE = "";
                     layer.open({
-                        title:"门禁二维码--请截图",
+                        title:"门禁二维码--请保留",
                         type: 1,
                         skin: 'layui-layer-rim', //加上边框
                         area: ['450px', '300px'], //宽高
@@ -64,27 +97,82 @@
                         width: 200,
                         height: 200,
                         colorDark: "#fff",
-                        colorLight: "#14AEFF",
+                        colorLight: "#000",
                     });
 
-                    qrcode.makeCode(that.QRCODE);
+                    qrcode.makeCode("qrcode="+that.QRCODE);
+
+                    //发送二维码
+                    $(document).trigger("sendQRcodeNumber",["qrcode="+that.QRCODE,that.QRCODE])
                 });
             },
             open_Face_img(){  //人脸识别预约门禁
-
+                let model = $(".appointment_model_bg");
+                model.show("slow");
+                this._initVideo();
             },
             open_password_str(){  //密码预约门禁
                 let that = this;
                 this.sixNumberPassword = this.createNumberSix();
                 this.confirmLaert("确定使用密码预约门禁吗？",function(){
                     layer.open({
-                        title:"门禁密码--请截图",
+                        title:"门禁密码--请保留",
                         type: 1,
                         skin: 'layui-layer-rim', //加上边框
                         area: ['320px', '140px'], //宽高
                         content: '<div class="show_dool_password">门禁密码为：'+that.sixNumberPassword+'</div>'
                     });
+
+                    //发送门禁密码
+                    $(document).trigger("sendPasswordNumber",["password="+that.sixNumberPassword,that.sixNumberPassword]);
                 });
+
+            },
+            clickPhotograph(){   //拍照
+                this._canvas2d.drawImage(this.$refs.video,0,0,390,330);
+                let oldImg = this._canvas2d.getImageData(0,0,390,330);
+                //将截图内容转化为base64
+                let newImg = this.createNewCanvas(oldImg,390,330);
+                this.imgDateAppointment = newImg;
+            },
+            sendFaceImg(){      //发送图片预约门禁
+                if(this.imgDateAppointment){
+                    let str = this.imgDateAppointment.substring("data:image/jpeg;base64,".length);
+                    let arrBuffer = this.base64ToUint8Array(str);
+                    this.closeModelAppointment();
+
+                    //发送人脸识别数据arrayBuffer
+                    $(document).trigger("sendPeopleFaceData",[arrBuffer]);
+                }else{
+                    layer.msg("请先拍照！");
+                }
+            },
+            base64ToUint8Array(base64String){
+                const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                const base64 = (base64String + padding)
+                    .replace(/\-/g, '+')
+                    .replace(/_/g, '/');
+
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            },
+            createNewCanvas(content,width,height){ //将截图内容转化为base64
+                let nCanvas = document.createElement('canvas');
+                let nCtx = nCanvas.getContext('2d');
+                nCanvas.width = width;
+                nCanvas.height = height;
+                nCtx.putImageData(content,0,0);
+                return nCanvas.toDataURL('image/jpeg');
+            },
+            closeModelAppointment(){  //关闭弹框
+                let model = $(".appointment_model_bg");
+                model.hide("slow");
+                this.imgDateAppointment = "";
             },
             createNumberSix(){  //随机生成六位数密码
                 let numbers = "";
@@ -129,6 +217,98 @@
         margin-top:23px;
         font-weight:600;
         font-size:26px;
+    }
+
+    /*弹框样式*/
+    .appointment_model_bg{
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,.5);
+        position:fixed;
+        z-index: 10000;
+        top:0;
+        left:0;
+    }
+
+    .appointment_model_content{
+        width:800px;
+        height:440px;
+        border:1px solid #ddd;
+        border-radius:5px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin-left:-400px;
+        margin-top:-220px;
+        background:#fff;
+    }
+
+    .appointment_model_header{
+        width:100%;
+        height:40px;
+        padding:0 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom:1px solid #ddd;
+    }
+
+    .appointment_model_title{
+        font-size: 18px;
+        font-family: MicrosoftYaHei;
+        color: rgba(0, 0, 0, 0.85);
+    }
+
+    .appointment_model_close{
+        font-size: 30px;
+        font-weight: 500;
+        line-height: 1;
+        color: #333;
+        text-shadow: 0 1px 0 #fff;
+        cursor: pointer;
+    }
+
+    .appointment_model_close:hover{
+        opacity: .6;
+    }
+
+    .appointment_model_mains{
+        width:100%;
+        height:400px;
+        padding:10px 10px;
+    }
+
+    .video_show_box_appointment{
+        height:380px;
+        width:49%;
+        float:left;
+        border:1px solid #ddd;
+    }
+
+    .video_show_box_appointment>.videoFace{
+        width:100%;
+        height:330px;
+        object-fit: fill;
+    }
+
+    .img_box_appointment{
+        height:380px;
+        width:49%;
+        float:right;
+        border:1px solid #ddd;
+    }
+
+    .image_show_area{
+        width:100%;
+        height:330px;
+    }
+
+    .btn_appointment_box{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:100%;
+        height:50px;
     }
 
 </style>

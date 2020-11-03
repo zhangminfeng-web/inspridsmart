@@ -5,6 +5,7 @@ module.exports = {
     CLOUD_IP:"",
     VIDEO_PORT:"42839",
     INTERCOM_PORT:"58888",
+    PEOPLEFACE_PORT:"42888",  //udp发送人脸识别图片端口
     OFFERPC_IP:"",
     receivedIp:"",
     localhostIp:"",
