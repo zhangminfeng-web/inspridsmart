@@ -20,12 +20,12 @@ module.exports.localhostUdpServer = function(){
 }
 
 //发送二维码
-module.exports.sendQrcode = function(qrcode,code,callback){
+module.exports.sendQrcode = function(qrcode,code,ip,callback){
     //注意：senderName:必须包含“中心管理机”这几个字
     let SendBuff = global.getJsonMsg({senderName:"中心管理机设备",msg:qrcode,type:5,code:code});
 
     //发送消息
-    udp_client.send(SendBuff,0,SendBuff.length,42836, '255.255.255.255', function(err, bytes) {
+    udp_client.send(SendBuff,0,SendBuff.length,42836,ip,function(err, bytes) {
         callback();
         if(err != null){
             console.log(err);
@@ -34,15 +34,26 @@ module.exports.sendQrcode = function(qrcode,code,callback){
 }
 
 //发送预约门禁密码
-module.exports.sendPassword = function(qrcode,code,callback){
+module.exports.sendPassword = function(qrcode,code,ip,callback){
     let SendBuff = global.getJsonMsg({senderName:"中心管理机设备",msg:qrcode,type:6,code:code});
 
     //发送消息
-    udp_client.send(SendBuff,0,SendBuff.length,42836, '255.255.255.255', function(err, bytes) {
+    udp_client.send(SendBuff,0,SendBuff.length,42836,ip,function(err, bytes) {
         callback();
         if(err != null){
             console.log(err);
         }
     });
 
+}
+
+module.exports.sendPeopleSendImg = function(arrayBuffer,callback){
+    console.log(arrayBuffer);
+    /*udp_client.send(arrayBuffer,42888, '255.255.255.255',(err) => {
+        console.log(err);
+        callback();
+        if(err != null){  //Uint8Array
+            console.log(err);
+        }
+    });*/
 }

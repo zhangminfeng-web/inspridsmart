@@ -23,6 +23,9 @@
                 </b>
             </div>
         </div>
+        <div class="clearfix appointment_Equipment_box">
+            <div class="single_trigger" @click="toggleActiveStatus" v-for="(item) in allEquipmentlist" :ip="item.ip">{{item.senderName}}</div>
+        </div>
         <div class="btn-group-appointment">
             <div class="floor_title margin_appointment text-center">
                 <span class="title_index">请点击预约</span>
@@ -67,9 +70,25 @@
                 QRCODE:"",  //二维码门禁参数
                 sixNumberPassword:"",  //门禁密码
                 imgDateAppointment:'',  //图片数据
+                allEquipmentlist:[],   //所有设备信息数组
+                baseURLS:"http://localhost:43839",    //全局网址
             }
         },
+        mounted(){
+            let _this = this;
+            setInterval(function(){
+                _this.initData();
+            },5000);
+        },
         methods:{
+            initData(){
+                axios.get(this.baseURLS+"/videoWatch").then(res => {
+                    let obj = res.data;
+                    if(obj.code == 0){
+                        this.allEquipmentlist = obj.doorwayList;
+                    }
+                });
+            },
             async _initVideo(){  //初始化函数
                 this.$refs.video.srcObject = await navigator.mediaDevices.getUserMedia({
                     video:true,
@@ -77,55 +96,82 @@
                 });
                 this._canvas2d = this.$refs.canvas.getContext("2d");
             },
+            toggleActiveStatus(event){
+                let liEl = $(event.currentTarget);
+                liEl.parent().find(".active").removeClass('active');
+                liEl.addClass('active');
+            },
             open_QR_code(){  //二维码预约门禁
                 let that = this;
-                this.confirmLaert("确定预约二维码门禁吗？",function(){
-                    that.QRCODE = "";
-                    layer.open({
-                        title:"门禁二维码--请保留",
-                        type: 1,
-                        skin: 'layui-layer-rim', //加上边框
-                        area: ['450px', '300px'], //宽高
-                        content: '<div class="QR_code_box">' +
-                            '<div id="qrcode"></div>' +
-                            '</div>'
+                let arr = $(".appointment_Equipment_box").find(".active");
+                let ip = arr.attr("ip");
+                if(arr.length != 0){
+                    this.confirmLaert("确定预约二维码门禁吗？",function(){
+                        that.QRCODE = "";
+                        layer.open({
+                            title:"门禁二维码--请保留",
+                            type: 1,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['450px', '360px'], //宽高
+                            content: '<div class="QR_code_box">' +
+                                '<div id="qrcode"></div>' +
+                                '</div>'
+                        });
+                        let qrcodeEl = document.getElementById('qrcode');
+                        that.QRCODE = that.createNumberSix();
+                        qrcodeEl.innerHTML = "";
+                        new QRCode(document.getElementById('qrcode'), "qrcode="+that.QRCODE);
+                        //发送二维码
+                        $(document).trigger("sendQRcodeNumber",["qrcode="+that.QRCODE,that.QRCODE,ip]);
                     });
-                    let qrcodeEl = document.getElementById("qrcode");
-                    that.QRCODE = that.createNumberSix();
-                    qrcodeEl.innerHTML = "";
-                    var qrcode = new QRCode(qrcodeEl, {
-                        width: 200,
-                        height: 200,
-                        colorDark: "#fff",
-                        colorLight: "#000",
+                }else{
+                    layer.msg("请先选择对应设备,再发送二维码！",{
+                        time:3000,
+                        icon: 5,
+                        shift:6
                     });
-
-                    qrcode.makeCode("qrcode="+that.QRCODE);
-
-                    //发送二维码
-                    $(document).trigger("sendQRcodeNumber",["qrcode="+that.QRCODE,that.QRCODE])
-                });
+                }
             },
             open_Face_img(){  //人脸识别预约门禁
-                let model = $(".appointment_model_bg");
-                model.show("slow");
-                this._initVideo();
+                let arr = $(".appointment_Equipment_box").find(".active");
+                let ip = arr.attr("ip");
+                if(arr.length != 0){
+                    let model = $(".appointment_model_bg");
+                    model.show("slow");
+                    this._initVideo();
+                }else{
+                    layer.msg("请先选择对应设备,再点击人脸预约门禁按钮！",{
+                        time:3000,
+                        icon: 5,
+                        shift:6
+                    });
+                }
             },
             open_password_str(){  //密码预约门禁
                 let that = this;
-                this.sixNumberPassword = this.createNumberSix();
-                this.confirmLaert("确定使用密码预约门禁吗？",function(){
-                    layer.open({
-                        title:"门禁密码--请保留",
-                        type: 1,
-                        skin: 'layui-layer-rim', //加上边框
-                        area: ['320px', '140px'], //宽高
-                        content: '<div class="show_dool_password">门禁密码为：'+that.sixNumberPassword+'</div>'
-                    });
+                let arr = $(".appointment_Equipment_box").find(".active");
+                let ip = arr.attr("ip");
+                if(arr.length != 0){
+                    this.sixNumberPassword = this.createNumberSix();
+                    this.confirmLaert("确定使用密码预约门禁吗？",function(){
+                        layer.open({
+                            title:"门禁密码--请保留",
+                            type: 1,
+                            skin: 'layui-layer-rim', //加上边框
+                            area: ['320px', '140px'], //宽高
+                            content: '<div class="show_dool_password">门禁密码为：'+that.sixNumberPassword+'</div>'
+                        });
 
-                    //发送门禁密码
-                    $(document).trigger("sendPasswordNumber",["password="+that.sixNumberPassword,that.sixNumberPassword]);
-                });
+                        //发送门禁密码
+                        $(document).trigger("sendPasswordNumber",["password="+that.sixNumberPassword,that.sixNumberPassword,ip]);
+                    });
+                }else{
+                    layer.msg("请先选择对应设备,再发送门禁密码！",{
+                        time:3000,
+                        icon: 5,
+                        shift:6
+                    });
+                }
 
             },
             clickPhotograph(){   //拍照
@@ -136,16 +182,28 @@
                 this.imgDateAppointment = newImg;
             },
             sendFaceImg(){      //发送图片预约门禁
-                if(this.imgDateAppointment){
-                    let str = this.imgDateAppointment.substring("data:image/jpeg;base64,".length);
-                    let arrBuffer = this.base64ToUint8Array(str);
-                    this.closeModelAppointment();
+                let that = this;
+                let arr = $(".appointment_Equipment_box").find(".active");
+                let ip = arr.attr("ip");
+                if(arr.length != 0){
+                    if(this.imgDateAppointment){
+                        let str = this.imgDateAppointment.substring("data:image/jpeg;base64,".length);
+                        let arrBuffer = this.base64ToUint8Array(str);
+                        this.closeModelAppointment();
 
-                    //发送人脸识别数据arrayBuffer
-                    $(document).trigger("sendPeopleFaceData",[arrBuffer]);
+                        //发送人脸识别数据arrayBuffer
+                        $(document).trigger("sendPeopleFaceData",[arrBuffer,ip]);
+                    }else{
+                        layer.msg("请先拍照！");
+                    }
                 }else{
-                    layer.msg("请先拍照！");
+                    layer.msg("请先选择对应设备,再发送人脸图片信息！",{
+                        time:3000,
+                        icon: 5,
+                        shift:6
+                    });
                 }
+
             },
             base64ToUint8Array(base64String){
                 const padding = '='.repeat((4 - base64String.length % 4) % 4);
@@ -197,6 +255,39 @@
 </script>
 
 <style>
+    .appointment_Equipment_box{
+        width:100%;
+        height:160px;
+        overflow: hidden;
+        overflow-y: auto;
+        border:1px solid #ddd;
+        margin:20px 0;
+        padding:10px;
+    }
+
+    .appointment_Equipment_box>.single_trigger{
+        width:150px;
+        height:40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius:20px;
+        font-size: 18px;
+        font-family: MicrosoftYaHei;
+        color: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        margin-right:10px;
+        margin-bottom:10px;
+        float:left;
+        cursor: pointer;
+    }
+
+    .appointment_Equipment_box>.single_trigger.active,
+    .appointment_Equipment_box>.single_trigger:hover{
+        border:1px solid #E41612;
+        background:rgba(252,231,231,.6);
+        color:#E41612;
+    }
+
     .margin_appointment{
         margin:20px 0 !important;
     }
