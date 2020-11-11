@@ -4,7 +4,6 @@ let client= new net.Socket();
 
 
 module.exports.sendFaceData = function(imgData,ip,callback){
-    console.log("发送人脸数据");
     //创建socket客户端
     client.setEncoding('binary');
 
@@ -16,7 +15,6 @@ module.exports.sendFaceData = function(imgData,ip,callback){
             client.destroy();
             clearTimeout(t);
         },500);
-
     });
 
     // 为客户端添加“data”事件处理函数
@@ -28,7 +26,7 @@ module.exports.sendFaceData = function(imgData,ip,callback){
     //错误出现之后关闭连接
     client.on('error',function(error){
         console.log('error:'+error);
-        client.destory();
+        client.destroy();
     });
 
     // 为客户端添加“close”事件处理函数

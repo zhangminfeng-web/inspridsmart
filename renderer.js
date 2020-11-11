@@ -287,12 +287,12 @@ $(document).ready(function(){
         //打开报警音乐
         let audioEl = document.getElementById("police-player");
         audioEl.play();
-        //6秒之后关闭报警音乐
+        //10秒之后关闭报警音乐
         let t = setTimeout(function(){
             clearTimeout(t);
             audioEl.pause();
             audioEl.load();
-        },6000);
+        },10000);
     });
 
     function receiveServerMsg(obj){
