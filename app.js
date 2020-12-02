@@ -36,5 +36,4 @@ app.listen(global.LOCALHOST_PORT, function(){
     //启动websocket服务
     require("./socket/websocketServer");
 
-    console.log("running....");
 });

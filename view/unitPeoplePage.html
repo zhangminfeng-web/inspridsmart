@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>思悦智能社区管理系统</title>
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/font/iconfont.css">
+    <link rel="icon" href="../public/img/icon.png">
+    <link rel="stylesheet" href="../node_modules/layui-src/dist/css/layui.css">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <link rel="stylesheet" href="../public/css/unitPeoplePage.css">
+</head>
+<body>
+    <div id="appPeopleBox">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="table-search-fieldset">
+                                <span class="search_box_number"><span class="tung_color_font">{{floorName}}</span>下搜索门牌号</span>
+                                <div class="fromSearch">
+                                    <form class="form-horizontal row">
+                                        <div class="form-group col-xs-3">
+                                            <label class="col-sm-4 control-label padding_left_right">单元门</label>
+                                            <div class="col-sm-8">
+                                                <select name="unit_id" v-model="searchObj.currentUnit" id="element_tung" class="form-control">
+                                                    <option v-for="(item,index) in listSearchUnit" :selected="index==0?'true':''"  :value="item.id">{{item.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-xs-4">
+                                            <label class="col-sm-3 control-label padding_left_right">门牌号</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" v-model="searchObj.currentHouse" name="home_number" autocomplete="off" class="form-control"
+                                                       placeholder="请按照‘1001’格式进行搜索。">
+                                            </div>
+                                        </div>
+                                        <div class="form-group btn_block_box_submit col-xs-2">
+                                            <button type="button" @click="searchResult" class="layui-btn btn-search-style">搜索</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row placeholders">
+                                <div class="col-xs-12 col-sm-12 placeholder">
+                                    <!--单元门-->
+                                    <div class="title_row_style clearfix">
+                                        <div class="floor_title">
+                                            <i class="iconfont icon-8"></i>
+                                            <span class="title_index">单元门</span>
+                                        </div>
+                                        <ul class="clearfix list_all_item" id="select_unit_all">
+                                            <li @click="showHouse" v-for="(item,index) in listSearchUnit" :id="item.id" :class="index==0?'active':''">{{item.name}}</li>
+                                        </ul>
+                                    </div>
+                                    <!--门牌号-->
+                                    <div class="title_row_style clearfix">
+                                        <div class="floor_title">
+                                            <i class="iconfont icon-fl-jia"></i>
+                                            <span class="title_index">门牌号</span>
+                                        </div>
+                                        <ul class="clearfix list_all_item scroll_ul" id="house_list">
+                                            <li v-for="(item,index) in listHouse">
+                                                <span @click="navigatorDetail(item.id)">
+                                                    {{item.house_number}}
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../public/js/jquery.js"></script>
+    <script>window.$</script>
+    <script src="../public/js/vue.js"></script>
+    <script src="../node_modules/axios/dist/axios.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/layui-src/dist/layui.js"></script>
+    <script>
+        layui.use(['layer', 'form'],function() {
+            let layer = layui.layer,
+                form = layui.form;
+
+            new Vue({
+                el: "#appPeopleBox",
+                data: {
+                    floorName:"",   //楼栋名称
+                    floorId:null,   //楼栋id
+                    listSearchUnit:[   //单元门数组
+                        {id:1,tung_id:1,name:"1单元"},
+                        {id:2,tung_id:1,name:"2单元"},
+                        {id:3,tung_id:1,name:"3单元"},
+                        {id:4,tung_id:1,name:"4单元"}
+                    ],
+                    listHouse:[ //门牌号数组
+                        {id:1,tung_id:1,unit_id:1,house_number:"1-1-201"},
+                        {id:2,tung_id:1,unit_id:1,house_number:"1-1-202"},
+                        {id:3,tung_id:1,unit_id:1,house_number:"1-1-203"},
+                        {id:4,tung_id:1,unit_id:1,house_number:"1-1-204"},
+                    ],
+                    searchObj:{
+                        currentUnit:null,   //当前选中的单元
+                        currentHouse:null,  //当前选中的门牌号
+                    },
+                },
+                created(){
+                    this.floorName = decodeURIComponent(this.getQueryVariable("name"));
+                    this.floorId = decodeURIComponent(this.getQueryVariable("id"));
+                    this.init();
+                },
+                methods:{
+                    init(){
+
+                    },
+                    showHouse(){    //展示单元门下的所有门牌号
+
+                    },
+                    navigatorDetail(id){  //打开住户详情弹框
+                        var index = layer.open({
+                            title: '住户详情',
+                            type: 2,
+                            shade: 0.2,
+                            maxmin:true,
+                            shadeClose: true,
+                            area: ['90%', '90%'],
+                            content:"./userdetail.html?id="+id,
+                        });
+                    },
+                    searchResult(){  //搜索门牌号
+                        let _that = this;
+                        if(this.searchObj.currentHouse != null){
+                            let obj = {
+                                unit_id:_that.searchObj.currentUnit,
+                                home_number:_that.searchObj.currentHouse
+                            };
+
+                            //请求搜索门牌号
+                            console.log(obj);
+
+                        }else{
+                            layer.msg("门牌号不能为空！", {icon: 5, time: 2000, anim: 6})
+                        }
+                    },
+                    getQueryVariable(variable){
+                        var query = window.location.search.substring(1);
+                        var vars = query.split("&");
+                        for (var i=0;i<vars.length;i++) {
+                            var pair = vars[i].split("=");
+                            if(pair[0] == variable){return pair[1];}
+                        }
+                        return(false);
+                    },
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -43,6 +43,10 @@
     color: #666;
 }
 
+body{
+    padding-top:0;
+}
+
 .title-base-info{
     padding:0 30px 0 15px;
 }

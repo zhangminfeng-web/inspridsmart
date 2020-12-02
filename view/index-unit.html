@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>思悦智能社区管理系统</title>
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/font/iconfont.css">
+    <link rel="icon" href="../public/img/icon.png">
+    <link rel="stylesheet" href="../node_modules/layui-src/dist/css/layui.css">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <link rel="stylesheet" href="../public/css/index-unit.css">
+</head>
+<body>
+    <div id="appUnit">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="layout_block_box mt-30">
+                                <div class="row home_info_block clearfix">
+                                    <div class="clearfix title-base-info">
+                                        <div class="base_info_title" style="margin-bottom:0;">编辑楼栋名称:</div>
+                                        <div class="floor_input_show marginTop20">
+                                            <input v-model="floorValue" class="form-control form-input-style" type="text" placeholder="请输入楼栋名称">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button @click="saveFloorName" class="btn btn-success btn-sm save-btn-style">保存</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layout_block_box mt-30">
+                                <div class="row home_info_block clearfix">
+                                    <div class="clearfix title-base-info">
+                                        <div class="base_info_title pull-left">楼栋下的单元门:</div>
+                                        <button class="btn btn-success btn-sm pull-right" @click="editUnitBtn">编辑</button>
+                                        <div class="pull-right">&nbsp;&nbsp;</div>
+                                        <button class="btn btn-info btn-sm pull-right" @click="addUnitNumber">添加</button>
+                                    </div>
+                                    <ul class="floor_box_all floor_set_up unit_box_ul">
+                                        <li v-for="item in unitArray" @click="toggleUnitNumber" :id="item.id" :name="item.name">
+                                            <span>{{item.name}}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="layout_block_box mt-30">
+                                <div class="row home_info_block clearfix">
+                                    <div class="clearfix title-base-info">
+                                        <div class="base_info_title pull-left">单元门下门牌号:</div>
+                                        <button class="btn btn-success btn-sm pull-right" @click="editHouseBtn">编辑</button>
+                                        <div class="pull-right">&nbsp;&nbsp;</div>
+                                        <button class="btn btn-info btn-sm pull-right" @click="addHouseNumber">添加</button>
+                                    </div>
+                                    <ul class="house_box_all house_box_ul">
+                                        <li v-for="(item,index) in houseArray" @click="toggleMenNumber" :id="item.id" :name="item.house_number">
+                                            <span class="house_number_font">{{item.house_number}}</span>
+                                            <span class="closeIcon" :ids="item.id" @click.stop="deleteHouseNumber">×</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--编辑单元门名称弹框-->
+        <div class="modal fade" id="editUnitName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">编辑单元门名称</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">单元门名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" v-model="unitName" placeholder="请输入单元门名称" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" @click="saveUnitNameInfo" class="btn btn-success">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--编辑门牌号名称弹框-->
+        <div class="modal fade" id="editHouseName" tabindex="-1" role="dialog" aria-labelledby="myModalLabelHouse">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabelHouse">编辑门牌号名称</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">门牌号名称</label>
+                                <div class="col-sm-8">
+                                    <input type="text" v-model="houseName" placeholder="请输入门牌号名称" class="form-control">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" @click="saveHouseNameInfo" class="btn btn-success">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <script src="../public/js/jquery.js"></script>
+    <script>window.$</script>
+    <script src="../public/js/vue.js"></script>
+    <script src="../node_modules/axios/dist/axios.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/layui-src/dist/layui.js"></script>
+    <script>
+        layui.use(['layer', 'form'],function(){
+            let layer = layui.layer,
+                form = layui.form;
+
+            new Vue({
+                el:"#appUnit",
+                data:{
+                    baseURL:"http://localhost:43839", //全局网址
+                    floorValue:"",      //楼栋名称
+                    floorId:null,       //楼栋id
+                    unitName:"",        //当前选中单元门名称
+                    unitId:null,        //当前选中单元门id
+                    houseName:"",       //当前选中门牌号名称
+                    houseId:"",         //当前选中门牌号id
+                    floorArray:[],      //楼栋数组
+                    unitArray:[],       //单元门数组
+                    houseArray:[],      //门牌号数组
+                },
+                created(){
+                    this.floorValue = decodeURIComponent(this.getQueryVariable("name"));
+                    this.floorId = decodeURIComponent(this.getQueryVariable("id"));
+                    this.init(this.floorId);
+                },
+                methods:{
+                    saveFloorName(){   //修改楼栋名称
+                        let _that = this;
+                        let status = _that.floorArray.some((item)=>{
+                            return item.name == _that.floorValue;
+                        });
+                        if(!status){
+                            axios.post(this.baseURL+"/updateFloorName",{name:_that.floorValue,id:_that.floorId}).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0){
+                                    layer.msg(obj.msg,{icon:6,item:2000});
+                                }
+                            })
+                        }else{
+                            layer.msg("楼栋名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                        }
+                    },
+                    addUnitNumber(){  //添加单元门信息
+                        let _that = this;
+                        layer.prompt(
+                            {title:'添加单元门信息',formType:3},
+                            function(pass,index){
+                                let status = _that.unitArray.some((item)=>{
+                                    return item.name == pass;
+                                });
+                                if(!status){
+                                    axios.post(_that.baseURL+"/addUnitName",{tung_id:_that.floorId,name:pass}).then(res => {
+                                        let obj = res.data;
+                                        if(obj.code == 0){
+                                            _that.unitArray.push({tung_id:_that.floorId,id:obj.id,name:pass});
+                                            layer.close(index);
+                                            layer.msg(obj.msg,{item:2000,icon:6});
+                                        }
+                                    });
+                                }else{
+                                    layer.msg("单元门名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                                }
+                            }
+                        );
+                    },
+                    addHouseNumber(){  //添加门牌号
+                        let _that = this;
+                        if(_that.unitId == null){
+                            layer.msg("请先选择单元门号,才能添加门牌号！",{icon:5,item:200,shift:6});
+                        }else{
+                            layer.prompt(
+                                {title:'添加门牌号信息',formType:3},
+                                function(pass,index){
+                                    let status = _that.houseArray.some((item)=>{
+                                        return item.house_number == pass;
+                                    });
+                                    if(!status){
+                                        let options = {tung_id:_that.floorId,unit_id:_that.unitId,house_number:pass};
+                                        axios.post(_that.baseURL+"/addHouseName",options).then(res => {
+                                            let obj = res.data;
+                                            if(obj.code == 0){
+                                                options.id = obj.id;
+                                                _that.houseArray.push(options);
+                                                layer.close(index);
+                                                layer.msg(obj.msg,{item:2000,icon:6});
+                                            }
+                                        });
+
+                                    }else{
+                                        layer.msg("门牌号名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                                    }
+                                }
+                            );
+                        }
+
+                    },
+                    toggleUnitNumber(event){ //切换单元门号
+                        let _that = this;
+                        let liEl = $(event.currentTarget);
+                        liEl.parent().find(".active").removeClass('active');
+                        liEl.addClass('active');
+                        _that.unitName = liEl.parent().find(".active").attr("name");
+                        _that.unitId = liEl.parent().find(".active").attr("id");
+                        axios.get(_that.baseURL+"/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
+                            let obj = res.data;
+                            if(obj.code == 0){
+                                _that.houseArray = obj.houseAllList;
+                            }
+                        });
+                    },
+                    editUnitBtn(){  //点击编辑单元门按钮，打开编辑弹框
+                        let _that = this;
+                        let parentEl = $(".unit_box_ul");
+                        let arr = parentEl.find(".active");
+                        _that.unitName = parentEl.find(".active").attr('name');
+                        _that.unitId = parentEl.find(".active").attr('id');
+                        if(arr.length != 0){
+                            //打开弹框
+                            $("#editUnitName").modal('show');
+                        }else{
+                            layer.msg("请先选择单元门",{time:3000, icon: 5, shift:6});
+                        }
+                    },
+                    saveUnitNameInfo(){  //保存单元门名称
+                        let _that = this;
+                        let status = _that.unitArray.some((item)=>{
+                            return item.name == _that.unitName;
+                        });
+                        if(!status){
+                            let objParam = {id:_that.unitId,name:_that.unitName};
+                            axios.post(_that.baseURL+"/renameUnitOne",objParam).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0){
+                                    let index = _that.unitArray.findIndex((item) => {
+                                        return item.id == _that.unitId;
+                                    });
+                                    _that.unitArray[index].name = _that.unitName;
+                                    $('#editUnitName').modal('hide');
+                                    layer.msg(obj.msg,{item:2000,icon:6});
+                                }
+                            });
+                        }else{
+                            layer.msg("单元门名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                        }
+                    },
+                    editHouseBtn(){   //点击编辑门牌号按钮，打开编辑弹框
+                        let _that = this;
+                        let parentEl = $(".house_box_ul");
+                        let arr = parentEl.find(".active");
+                        _that.houseName = parentEl.find(".active").attr('name');
+                        _that.houseId = parentEl.find(".active").attr('id');
+                        if(arr.length != 0){
+                            //打开弹框
+                            $("#editHouseName").modal('show');
+                        }else{
+                            layer.msg("请先选择单元门",{time:3000, icon: 5, shift:6});
+                        }
+                    },
+                    saveHouseNameInfo(){   //保存门牌号名称
+                        let _that = this;
+                        let status = _that.houseArray.some((item)=>{
+                            return item.house_number == _that.houseName;
+                        });
+                        if(!status){
+                            let options = {id:_that.houseId,house_number:_that.houseName};
+                            let index = _that.houseArray.findIndex((item) => {
+                                return item.id == _that.houseId;
+                            });
+                            axios.post(_that.baseURL+"/renameHouseOne",options).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0){
+                                    _that.houseArray[index].house_number = _that.houseName;
+                                    $('#editHouseName').modal('hide');
+                                    layer.msg(obj.msg,{item:2000,icon:6});
+                                }
+                            });
+
+                        }else{
+                            layer.msg("门牌号名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                        }
+                    },
+                    toggleMenNumber(event){ //切换门牌号
+                        let liEl = $(event.currentTarget);
+                        liEl.parent().find(".active").removeClass('active');
+                        liEl.addClass('active');
+                    },
+                    deleteHouseNumber(event){   //删除门牌号
+                        let _that = this;
+                        let liEl = $(event.currentTarget);
+                        let id = liEl.attr("ids");
+                        let i = _that.houseArray.findIndex((item) => {
+                            return item.id == id;
+                        });
+                        layer.confirm('删除当前门牌号,会连带删除对应门牌号下的人员信息，确定删除吗？', {
+                            btn: ['确定','取消'],
+                            title:"删除门牌号",
+                            icon:3,
+                        }, function(index){
+                            let options = {id:id,tung_id:_that.floorId,unit_id:_that.unitId};
+                            axios.post(_that.baseURL+"/deleteHouseNumber",options).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0){
+                                    layer.close(index);
+                                    _that.houseArray.splice(i,1);
+                                    layer.msg(obj.msg,{icon:6,item:2000});
+                                }
+                            });
+
+                        });
+                    },
+                    getQueryVariable(variable){
+                        var query = window.location.search.substring(1);
+                        var vars = query.split("&");
+                        for (var i=0;i<vars.length;i++) {
+                            var pair = vars[i].split("=");
+                            if(pair[0] == variable){return pair[1];}
+                        }
+                        return(false);
+                    },
+                    init(id){
+                        let _that = this;
+                        //获取楼栋信息 和 获取楼栋下对应单元门信息
+                        axios.get(this.baseURL+"/getFloorAndUnitArr/?tung_id="+id).then(res => {
+                            let obj = res.data;
+                            if(obj.code == 0){
+                                _that.floorArray = obj.listTung;
+                                _that.unitArray = obj.unitList;
+                            }
+                        });
+                    }
+                },
+            });
+        });
+    </script>
+</body>
+</html>

@@ -204,7 +204,7 @@ $(document).ready(function(){
                     $(documentEl).trigger("sendMediaStreamObj",[
                         vueObj,
                         global.getData(global.LAYER_OBJ)
-                    ])
+                    ]);
 
                 }
 

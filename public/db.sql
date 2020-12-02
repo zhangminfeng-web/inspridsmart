@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS `unit`(
     PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# 门牌号表
-CREATE TABLE IF NOT EXISTS `house`(
+# 门牌号详情信息表
+CREATE TABLE IF NOT EXISTS `house_info`(
     `id` INT UNSIGNED AUTO_INCREMENT,
     `tung_id` int UNSIGNED NOT NULL,
     `unit_id` int UNSIGNED NOT NULL,
@@ -25,6 +25,26 @@ CREATE TABLE IF NOT EXISTS `house`(
     `check_date` varchar(30) NOT NULL,
     `home_measure` varchar(20) NOT NULL,
     `remarks_msg` varchar(20) NOT NULL,
+    PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+# 门牌号表
+CREATE TABLE IF NOT EXISTS `house`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `tung_id` int UNSIGNED NOT NULL,
+    `unit_id` int UNSIGNED NOT NULL,
+    `home_number` varchar(20) NOT NULL,
+    PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#小区总体信息表
+CREATE TABLE IF NOT EXISTS `area_info`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `green_area` int UNSIGNED NOT NULL,
+    `total_area` int UNSIGNED NOT NULL,
+    `area_name` varchar(50) NOT NULL,
+    `area_address` varchar(100) NOT NULL,
+    `area_msg` varchar(200) NOT NULL,
     PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

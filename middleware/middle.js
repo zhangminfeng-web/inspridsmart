@@ -2,6 +2,16 @@ const db = require("../model/db");
 const DB = new db();
 
 module.exports = {
+    //获取小区基本信息
+    getAreaInfo:(req,res,next) => {
+        let sql = "SELECT * FROM `area_info`";
+        DB.query(sql).then(result => {
+            res.getAreaInfo = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
     //获取楼栋列表
     getTung:(req,res,next) => {
         let sqlTung ="SELECT * FROM `tung`";
@@ -11,6 +21,51 @@ module.exports = {
         }).catch(err => {
             next(err);
         })
+    },
+    //提交小区基本信息
+    submitAreaInfo:(req,res,next) => {
+        let obj = req.body;
+        let sql = "UPDATE `area_info` SET area_address=?,area_name=?,green_area=?,total_area=?,area_introduction=? WHERE id=?";
+        DB.update(sql,[obj.area_address,obj.area_name,obj.green_area,obj.total_area,obj.area_introduction,obj.id]).then((result) =>{
+            res.result = result;
+            next();
+        }).catch(err =>{
+            next(err);
+        })
+    },
+    //添加楼栋信息
+    addFloorNumber:(req,res,next) => {
+        let obj = req.body;
+        let sql = "INSERT INTO `tung`(name) VALUES (?)";
+        DB.add(sql,[obj.name]).then(result => {
+            res.id = result.insertId;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //添加单元门
+    addUnitNameInfo:(req,res,next) => {
+        let obj = req.body;
+        let sql = "INSERT INTO `unit`(name,tung_id) VALUES (?,?)";
+        DB.add(sql,[obj.name,obj.tung_id]).then(result => {
+            res.id = result.insertId;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //添加门牌号
+    addHouseNameInfo:(req,res,next) => {
+        let obj = req.body;
+        console.log(obj);
+        let sql = "INSERT INTO `house`(house_number,tung_id,unit_id) VALUES (?,?,?)";
+        DB.add(sql,[obj.house_number,obj.tung_id,obj.unit_id]).then(result => {
+            res.id = result.insertId;
+            next();
+        }).catch(err => {
+            next(err);
+        });
     },
     //获取单元门列表
     getUnit:(req,res,next) => {
@@ -23,6 +78,39 @@ module.exports = {
             res.listUnit = result;
             next();
         }).catch(err => {
+            next(err);
+        })
+    },
+    //修改楼栋名称
+    updateFloorName:(req,res,next) => {
+        let obj = req.body;
+        let sql = "UPDATE `tung` SET name=? WHERE id=?";
+        DB.update(sql,[obj.name,obj.id]).then((result) =>{
+            res.result = result;
+            next();
+        }).catch(err =>{
+            next(err);
+        })
+    },
+    //修改单元门名称
+    renameUnitOne:(req,res,next) => {
+        let obj = req.body;
+        let sql = "UPDATE `unit` SET name=? WHERE id=?";
+        DB.update(sql,[obj.name,obj.id]).then((result) =>{
+            res.result = result;
+            next();
+        }).catch(err =>{
+            next(err);
+        })
+    },
+    //修改门牌号名称
+    renameHouseOne:(req,res,next) => {
+        let obj = req.body;
+        let sql = "UPDATE `house` SET house_number=? WHERE id=?";
+        DB.update(sql,[obj.house_number,obj.id]).then((result) =>{
+            res.result = result;
+            next();
+        }).catch(err =>{
             next(err);
         })
     },
@@ -40,9 +128,41 @@ module.exports = {
             next(err);
         })
     },
+    //删除门牌号
+    deleteHouse:(req,res,next) => {
+        let obj = req.body;
+        let sql = "DELETE FROM `house` WHERE id = ?";
+        DB.delete(sql,[obj.id]).then(result => {
+            res.result = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //删除门牌号详情信息
+    deleteHouseDetail:(req,res,next) => {
+        let obj = req.body;
+        let sql = "DELETE FROM `house_info` WHERE house_id = ?";
+        DB.delete(sql,[obj.id]).then(result => {
+            res.result = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //删除门牌号对应的人员信息
+    deleteHousePeople:(req,res,next) => {
+        let obj = req.body;
+        let sql = "DELETE FROM `personnel` WHERE house_id = ?";
+        DB.delete(sql,[obj.id]).then(result => {
+            res.result = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
     //通过楼栋选择获取对应的单元门
     selectGetUnit:(req,res,next) => {
-        console.log(req.query.tung_id);
         let tung_id = req.query.tung_id;
         let sql = "SELECT * FROM `unit` WHERE tung_id = ?";
         DB.query(sql,tung_id).then(result => {
@@ -66,7 +186,7 @@ module.exports = {
     //查询楼栋->单元门->门牌号的数组集合
     getHouseAll:(req,res,next) => {
         let obj = req.query;
-        let sql = "SELECT id,alias_name FROM `house` WHERE tung_id = ? AND unit_id = ?";
+        let sql = "SELECT * FROM `house` WHERE tung_id = ? AND unit_id = ? ORDER BY convert(`house_number`  using gbk)  asc";
         DB.query(sql,[obj.tung_id,obj.unit_id]).then(result => {
             res.houseAllList = result;
             next();

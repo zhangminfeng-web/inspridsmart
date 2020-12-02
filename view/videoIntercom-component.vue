@@ -12,12 +12,10 @@
                         <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
                         <!--<li @click="endAnswerInfo" port="58888" ip="192.168.1.104">测试1</li>
                         <li @click="endAnswerInfo" port="58888" ip="192.168.1.105">测试2</li>-->
-
                     </ul>
                 </div>
             </div>
         </div>
-
 
         <!--弹框-->
         <div class="intercom_model_bg" style="display:none;">
@@ -236,7 +234,7 @@
         width:30%;
         float:left;
         border:1px solid #ddd;
-        object-fit: fill;
+        object-fit:fill;
     }
 
     .model_mains>.video2{

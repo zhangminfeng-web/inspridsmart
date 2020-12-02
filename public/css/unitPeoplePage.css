@@ -1,0 +1,124 @@
+.table-search-fieldset{
+    margin-bottom: 30px;
+    border: 1px solid #e6e6e6;
+    padding: 10px 20px 5px 20px;
+    color: #6b6b6b;
+    position:relative;
+}
+
+.search_box_number{
+    position:absolute;
+    padding:3px 10px;
+    background:#fff;
+    z-index:2;
+    top:-15px;
+    left:15px;
+    font-size:16px;
+}
+
+.fromSearch{
+    width:100%;
+    position: relative;
+    margin:20px 0;
+}
+
+.fromSearch>i{
+    display: block;
+    position: absolute;
+    right:0;
+    top:0;
+    padding:6px 8px;
+    cursor:pointer;
+    font-size:20px;
+    color:#C0C0C0;
+}
+
+.fromSearch>i:hover{
+    opacity: .8;
+}
+
+.padding_left_right{
+    padding-left:5px;
+    padding-right:5px;
+}
+
+.btn_block_box_submit{
+    position: relative;
+    top:-4px;
+}
+
+.btn-search-style{
+    height:34px;
+    line-height:34px;
+    position:relative;
+    top:4px;
+}
+
+.tung_color_font{
+    font-weight:600;
+    color:#009688;
+    font-size:20px;
+}
+
+.title_row_style{
+    margin-bottom:30px;
+}
+
+.floor_title{
+    margin-bottom:15px;
+}
+
+.floor_title>i{
+    font-size:24px;
+    color:#000;
+}
+
+.title_index{
+    font-size: 20px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: #000000;
+}
+
+.list_all_item>li{
+    width:150px;
+    height:40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius:20px;
+    font-size: 18px;
+    font-family: MicrosoftYaHei;
+    color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    margin-right:10px;
+    margin-bottom:10px;
+    float:left;
+    cursor: pointer;
+}
+
+.list_all_item>li.active,
+.list_all_item>li:hover{
+    border:1px solid #E41612;
+    background:rgba(252,231,231,.6);
+    color:#E41612;
+}
+
+.scroll_ul>li>a{
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.scroll_ul>li:hover>a{
+    color:#E41612;
+    text-decoration:none;
+}
+
+.scroll_ul{
+    height:400px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.list_all_item{
+    padding:10px;
+    background:#F5F5F5;
+}

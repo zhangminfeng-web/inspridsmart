@@ -12,32 +12,12 @@
 </head>
 <body>
     <div id="appDetail">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">
-                        <img src="../public/img/logo.png" width="150" height="24" alt="">
-                    </a>
-                    <span class="header_title">&emsp;|&emsp;可视对讲机系统</span>
-                </div>
-                <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right"></ul>
-                </div>
-            </div>
-        </nav>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12 col-md-12 main">
                     <div class="row headerBgColor">
                         <div class="col-sm-12">
-
-                            <span class="user_munber">门牌号：{{houseInfo.alias_name}}</span>
+                            <span class="user_munber">门牌号：{{houseInfo.house_number}}</span>
                             <div class="layout_block_box">
                                 <div class="row home_info_block clearfix">
                                     <div class="clearfix title-base-info">
@@ -46,11 +26,11 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">房号：</span>
-                                        <span class="value_style">{{houseInfo.alias_name}}</span>
+                                        <span class="value_style">{{houseInfo.house_number}}</span>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">小区名称：</span>
-                                        <span class="value_style">{{houseInfo.area_name}}</span>
+                                        <span class="value_style">成都罗马春天--</span>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">入住人数：</span>
@@ -68,14 +48,10 @@
                                         </span>
                                         <span v-else class="value_style">暂无</span>
                                     </div>
-                                    <div class="col-sm-6 col-md-3 mb-20">
-                                        <span class="label_style">房屋属性：</span>
-                                        <span class="value_style">{{houseInfo.home_attr}}</span>
-                                    </div>
                                     <div class="col-sm-12 col-md-12 mb-20">
-                                        <span class="label_style">备注信息：</span>
-                                        <span v-if="houseInfo.remarks_msg" class="value_style">
-                                            {{houseInfo.remarks_msg}}
+                                        <span class="label_style">备注：</span>
+                                        <span class="value_style">
+
                                         </span>
                                         <span v-else class="value_style">暂无</span>
                                     </div>
@@ -316,9 +292,8 @@
                 </div>
             </div>
         </div>
+
     </div>
-
-
 
     <script src="../public/js/jquery.js"></script>
     <script>window.$</script>
@@ -327,7 +302,7 @@
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/layui-src/dist/layui.js"></script>
     <script>
-        layui.use(['layer', 'form'], function () {
+        layui.use(['layer', 'form'], function(){
             let layer = layui.layer,
                 form = layui.form;
 
@@ -338,8 +313,8 @@
                     peopleInfoList:[],      //入住人员数组
                     baseURL:"http://localhost:43839", //全局网址
                     baseInfos:{  //门牌号基本信息
-                        alias_name:"",
-                        area_name:"",
+                        alias_name:"1-1-1001",
+                        area_name:"成都罗马春天",
                         check_date:"",
                         home_attr:"",
                         home_measure:"",
@@ -556,14 +531,15 @@
                         }
                     },
                     init(id){
-                        axios.get(this.baseURL+"/userdetail/"+id).then(res => {
+                        console.log(id);
+                        /*axios.get(this.baseURL+"/userdetail/"+id).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 this.houseInfo = obj.houseInfo;
                                 this.peopleInfoList = obj.peopleInfoList;
                                 console.log(this.peopleInfoList);
                             }
-                        });
+                        });*/
                     }
                 }
             })

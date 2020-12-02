@@ -9,6 +9,7 @@ module.exports = {
     OFFERPC_IP:"",
     receivedIp:"",
     localhostIp:"",
+    layerModel:null,    //layer页面弹框参数
     documentJq:null,   //jquery全局文档流对象
     LOCALHOST_IP:"localhost",
     SHAREDATA: new Map(),   //全局共享的数据

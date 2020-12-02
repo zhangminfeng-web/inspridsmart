@@ -11,15 +11,89 @@ const Router = express.Router();
 /*2.将全部路由都添加到容器中*/
 
 //展示首页数据
-Router.get("/",[middle.getTung,middle.getUnit,middle.getHouseNumber],function(req,res){
+Router.get("/",[middle.getTung,middle.getAreaInfo],function(req,res){
     res.json({
         code:0,
         data:{
             listTung:res.listTung,
-            listUnit:res.listUnit,
-            listHouse:res.listHouse
+            getAreaInfo:res.getAreaInfo,
         }
     })
+});
+
+//单独获取楼栋数组和楼栋下对应单元门数组
+Router.get("/getFloorAndUnitArr",[middle.getTung,middle.selectGetUnit],function(req,res){
+    res.json({
+        code:0,
+        listTung:res.listTung,
+        unitList:res.chengeUint
+    });
+});
+
+//提交小区基本信息
+Router.post("/submitAreaInfo",[middle.submitAreaInfo],function(req,res){
+    res.json({
+        code:0,
+        msg:"保存成功！",
+    })
+});
+
+//添加楼栋信息,并返回新添加的楼栋id
+Router.post("/addFloorInfo",[middle.addFloorNumber],function(req,res){
+   res.json({
+       code:0,
+       id:res.id
+   })
+});
+
+//添加楼栋下单元门的信息,并返回对应单元门的新增id
+Router.post("/addUnitName",[middle.addUnitNameInfo],function (req,res) {
+    res.json({
+        code:0,
+        id:res.id,
+        msg:"添加单元门成功！"
+    });
+});
+
+//添加单元门下门牌号的信息,并返回对应门牌号的新增id
+Router.post("/addHouseName",[middle.addHouseNameInfo],function(req,res){
+    res.json({
+        code:0,
+        id:res.id,
+        msg:"添加门牌号成功！"
+    });
+});
+
+//修改楼栋名称
+Router.post("/updateFloorName",[middle.updateFloorName],function(req,res){
+    res.json({
+        code:0,
+        msg:"修改楼栋名称成功！",
+    });
+});
+
+//修改单元门名称
+Router.post("/renameUnitOne",[middle.renameUnitOne],function(req,res){
+    res.json({
+        code:0,
+        msg:"修改单元门名称成功！",
+    });
+});
+
+//修改门牌号名称
+Router.post("/renameHouseOne",[middle.renameHouseOne],function(req,res){
+    res.json({
+        code:0,
+        msg:"修改门牌号名称成功！",
+    });
+});
+
+//删除门牌号 -> 门牌号详情 -> 门牌号对应人员信息
+Router.post("/deleteHouseNumber",[middle.deleteHouse,middle.deleteHouseDetail,middle.deleteHousePeople],function(req,res){
+    res.json({
+        code:0,
+        msg:"删除门牌号信息成功！",
+    });
 });
 
 //通过楼栋选择获取对应的单元门
@@ -40,12 +114,10 @@ Router.post("/searchHouse",[middle.getHouseOne],function(req,res){
 
 //查询楼栋->单元门->门牌号的数组集合
 Router.get("/getHouseAll",[middle.getHouseAll],function(req,res){
-    if(res.houseAllList.length != 0){
-        return res.json({
-            code:0,
-            houseAllList:res.houseAllList
-        })
-    }
+    res.json({
+        code:0,
+        houseAllList:res.houseAllList
+    })
 });
 
 //获取住户详细信息数据
