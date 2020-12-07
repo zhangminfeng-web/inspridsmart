@@ -58,9 +58,8 @@ module.exports = {
     //添加门牌号
     addHouseNameInfo:(req,res,next) => {
         let obj = req.body;
-        console.log(obj);
-        let sql = "INSERT INTO `house`(house_number,tung_id,unit_id) VALUES (?,?,?)";
-        DB.add(sql,[obj.house_number,obj.tung_id,obj.unit_id]).then(result => {
+        let sql = "INSERT INTO `house`(house_number,tung_id,unit_id,alias_name) VALUES (?,?,?,?)";
+        DB.add(sql,[obj.house_number,obj.tung_id,obj.unit_id,obj.alias_name]).then(result => {
             res.id = result.insertId;
             next();
         }).catch(err => {
@@ -106,8 +105,8 @@ module.exports = {
     //修改门牌号名称
     renameHouseOne:(req,res,next) => {
         let obj = req.body;
-        let sql = "UPDATE `house` SET house_number=? WHERE id=?";
-        DB.update(sql,[obj.house_number,obj.id]).then((result) =>{
+        let sql = "UPDATE `house` SET house_number=?,alias_name=? WHERE id=?";
+        DB.update(sql,[obj.house_number,obj.alias_name,obj.id]).then((result) =>{
             res.result = result;
             next();
         }).catch(err =>{
@@ -175,8 +174,8 @@ module.exports = {
     //搜索单个门牌号
     getHouseOne:(req,res,next) => {
         let obj = req.body;
-        let sql = "SELECT id,alias_name FROM `house` WHERE tung_id = ? AND unit_id = ? AND home_number = ?";
-        DB.query(sql,[obj.tung_id,obj.unit_id,obj.home_number]).then(result => {
+        let sql = "SELECT * FROM `house` WHERE tung_id = ? AND unit_id = ? AND alias_name = ?";
+        DB.query(sql,[obj.tung_id,obj.unit_id,obj.alias_name]).then(result => {
             res.houseList = result;
             next();
         }).catch(err => {
@@ -216,11 +215,33 @@ module.exports = {
             next(err);
         })
     },
+    //获取门牌号详情信息
+    getHouseInfo:(req,res,next) => {
+        let houseId = req.params.id;
+        let sql = "SELECT * FROM `house_info` WHERE house_id = ?";
+        DB.query(sql,houseId).then(result => {
+            res.houseInfoOne = result;
+            next();
+        }).catch(err => {
+            next(err);
+        })
+    },
+    //添加门牌号详情信息
+    addHouseDetailInfo:(req,res,next) => {
+        let obj = req.body;
+        let sql = "INSERT INTO `house_info`(house_id) VALUES (?)";
+        DB.query(sql,[obj.house_id]).then(result => {
+            res.houseInfoOne = result;
+            next();
+        }).catch(err => {
+            next(err);
+        })
+    },
     //更新住户详情的基本信息
     updateUserBaseInfo:(req,res,next) => {
         let obj = req.body;
-        let sql = "UPDATE `house` SET check_date=?,home_measure=?,remarks_msg=? WHERE id=?";
-        DB.update(sql,[obj.check_date,obj.home_measure,obj.remarks_msg,obj.id]).then((result) =>{
+        let sql = "UPDATE `house_info` SET check_date=?,house_number=?,home_measure=?,remarks_msg=? WHERE house_id=?";
+        DB.update(sql,[obj.check_date,obj.house_number,obj.home_measure,obj.remarks_msg,obj.house_id]).then((result) =>{
             res.result = result;
             next();
         }).catch(err =>{
@@ -230,8 +251,8 @@ module.exports = {
     //添加入住人员
     addUserPersonnel:(req,res,next) => {
         let obj = req.body;
-        let sql = "INSERT INTO `personnel`(house_id,username,gender,age,phone,role,id_number) VALUES (?,?,?,?,?,?,?)";
-        DB.add(sql,[obj.house_id,obj.username,obj.gender,obj.age,obj.phone,obj.role,obj.id_number,]).then(result => {
+        let sql = "INSERT INTO `personnel`(house_id,tung_id,unit_id,username,gender,age,phone,role,id_number) VALUES (?,?,?,?,?,?,?,?,?)";
+        DB.add(sql,[obj.house_id,obj.tung_id,obj.unit_id,obj.username,obj.gender,obj.age,obj.phone,obj.role,obj.id_number]).then(result => {
             result.id = result.insertId;
             res.result = result;
             next();

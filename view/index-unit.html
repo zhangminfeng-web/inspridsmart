@@ -200,22 +200,34 @@
                             layer.msg("请先选择单元门号,才能添加门牌号！",{icon:5,item:200,shift:6});
                         }else{
                             layer.prompt(
-                                {title:'添加门牌号信息',formType:3},
+                                {title:'添加(门牌号必须包含“-”字符)',formType:3},
                                 function(pass,index){
                                     let status = _that.houseArray.some((item)=>{
                                         return item.house_number == pass;
                                     });
                                     if(!status){
                                         let options = {tung_id:_that.floorId,unit_id:_that.unitId,house_number:pass};
-                                        axios.post(_that.baseURL+"/addHouseName",options).then(res => {
-                                            let obj = res.data;
-                                            if(obj.code == 0){
-                                                options.id = obj.id;
-                                                _that.houseArray.push(options);
-                                                layer.close(index);
-                                                layer.msg(obj.msg,{item:2000,icon:6});
-                                            }
-                                        });
+                                        if(options.house_number.indexOf("-") != -1){
+                                            let indexs = options.house_number.lastIndexOf("-");
+                                            options.alias_name = options.house_number.slice(indexs+1);
+                                            axios.post(_that.baseURL+"/addHouseName",options).then(res => {
+                                                let obj = res.data;
+                                                if(obj.code == 0){
+                                                    options.id = obj.id;
+                                                    _that.houseArray.push(options);
+                                                    layer.close(index);
+                                                    layer.msg(obj.msg,{item:2000,icon:6});
+                                                    axios.post(_that.baseURL+"/addHouseDetailInfo",{house_id:obj.id}).then(res => {
+                                                        let objs = res.data;
+                                                        if(objs.code == 0){
+                                                            console.log("详情表信息插入ok");
+                                                        }
+                                                    })
+                                                }
+                                            });
+                                        }else{
+                                            layer.msg("门牌号名称不符合规范,请重新输入！",{time:3000, icon: 5, shift:6});
+                                        }
 
                                     }else{
                                         layer.msg("门牌号名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
@@ -297,14 +309,21 @@
                             let index = _that.houseArray.findIndex((item) => {
                                 return item.id == _that.houseId;
                             });
-                            axios.post(_that.baseURL+"/renameHouseOne",options).then(res => {
-                                let obj = res.data;
-                                if(obj.code == 0){
-                                    _that.houseArray[index].house_number = _that.houseName;
-                                    $('#editHouseName').modal('hide');
-                                    layer.msg(obj.msg,{item:2000,icon:6});
-                                }
-                            });
+                            if(options.house_number.indexOf("-") != -1){
+                                let indexs = options.house_number.lastIndexOf("-");
+                                options.alias_name = options.house_number.slice(indexs+1);
+                                axios.post(_that.baseURL+"/renameHouseOne",options).then(res => {
+                                    let obj = res.data;
+                                    if(obj.code == 0){
+                                        _that.houseArray[index].house_number = _that.houseName;
+                                        $('#editHouseName').modal('hide');
+                                        layer.msg(obj.msg,{item:2000,icon:6});
+                                    }
+                                });
+                            }else{
+                                layer.msg("门牌号名称不合符规范,请重新输入！",{time:3000, icon: 5, shift:6});
+                            }
+
 
                         }else{
                             layer.msg("门牌号名称重复,请重新输入！",{time:3000, icon: 5, shift:6});

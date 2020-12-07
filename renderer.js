@@ -16,6 +16,7 @@ $(document).ready(function(){
     let removeSocket = null;  //远程socket对象
     let layerConfirm = null;    //layer询问弹框
     let layerOpen = null;  //layer等待应答弹框
+    let openDoorStatus = false;  //视频对讲中“开门”按钮的显示状态
 
 
     $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
@@ -456,9 +457,16 @@ $(document).ready(function(){
                 $(documentEl).find(".intercom_model_bg").show();
                 //显示服务端挂断按钮
                 $(documentEl).find("#remoteClose").show();
+                //判断设备名称是否是门口机或者是门铃机
+                if(options.deviceName.indexOf("门口机") != -1 || options.deviceName.indexOf("门铃机") != -1){
+                    openDoorStatus = true;
+                    $(documentEl).find("#openDoor").show();
+                }else{
+                    openDoorStatus = false;
+                    $(documentEl).find("#openDoor").hide();
+                }
                 //向客户端发送接收了可视对讲的指令  answer
                 websocketServer.sendMsgToClient("answer");
-
             },
             //点击拒绝可视对讲请求
             btn2:function(index){
@@ -503,6 +511,11 @@ $(document).ready(function(){
         }
     }
 
+    //视频对讲中，打开单元门
+    $(documentEl).on("openPlayTheDoor",function(e){
+        websocketServer.sendMsgToClient("openthedoor");
+    });
+
     //关闭弹框
     $(documentEl).on("closeServerConnection",function(e){
         let layerObj = global.getData(global.LAYER_OBJ);
@@ -529,6 +542,9 @@ $(document).ready(function(){
 
         //3.关闭本地按钮
         $(documentEl).find("#remoteClose").hide();
+
+        //隐藏门开按钮
+        $(documentEl).find("#openDoor").hide();
 
         //4.提示关闭弹框
         global.getData(global.LAYER_OBJ).msg("连接已断开...",{time:2000});

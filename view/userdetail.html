@@ -17,7 +17,7 @@
                 <div class="col-sm-12 col-md-12 main">
                     <div class="row headerBgColor">
                         <div class="col-sm-12">
-                            <span class="user_munber">门牌号：{{houseInfo.house_number}}</span>
+                            <span class="user_munber">门牌号：{{houseName}}</span>
                             <div class="layout_block_box">
                                 <div class="row home_info_block clearfix">
                                     <div class="clearfix title-base-info">
@@ -26,11 +26,11 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">房号：</span>
-                                        <span class="value_style">{{houseInfo.house_number}}</span>
+                                        <span class="value_style">{{houseName}}</span>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">小区名称：</span>
-                                        <span class="value_style">成都罗马春天--</span>
+                                        <span class="value_style">{{areaName}}</span>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">入住人数：</span>
@@ -38,20 +38,27 @@
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">入住日期：</span>
-                                        <span v-if="houseInfo.check_date" class="value_style">{{houseInfo.check_date}}</span>
+                                        <span v-if="baseInfos.check_date" class="value_style">{{baseInfos.check_date}}</span>
                                         <span v-else class="value_style">暂无</span>
                                     </div>
                                     <div class="col-sm-6 col-md-3 mb-20">
                                         <span class="label_style">房屋面积：</span>
-                                        <span v-if="houseInfo.home_measure" class="value_style">
-                                            {{houseInfo.home_measure}}㎡
+                                        <span v-if="baseInfos.home_measure" class="value_style">
+                                            {{baseInfos.home_measure}}㎡
+                                        </span>
+                                        <span v-else class="value_style">暂无</span>
+                                    </div>
+                                    <div class="col-sm-6 col-md-5 mb-20">
+                                        <span class="label_style">小区地址：</span>
+                                        <span v-if="areaAddress" class="value_style">
+                                            {{areaAddress}}
                                         </span>
                                         <span v-else class="value_style">暂无</span>
                                     </div>
                                     <div class="col-sm-12 col-md-12 mb-20">
                                         <span class="label_style">备注：</span>
-                                        <span class="value_style">
-
+                                        <span v-if="baseInfos.remarks_msg" class="value_style">
+                                            {{baseInfos.remarks_msg}}
                                         </span>
                                         <span v-else class="value_style">暂无</span>
                                     </div>
@@ -79,8 +86,8 @@
                                     <tbody class="user_list_body">
                                         <tr v-for="item in peopleInfoList" class="text-center">
                                             <td>{{item.username}}</td>
-                                            <td>{{item.role}}</td>
-                                            <td>{{item.gender}}</td>
+                                            <td>{{item.role | rolePeople}}</td>
+                                            <td>{{item.gender | genderPeople}}</td>
                                             <td>{{item.age}}</td>
                                             <td>{{item.phone}}</td>
                                             <td>{{item.id_number}}</td>
@@ -111,19 +118,19 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">房号</label>
                                 <div class="col-sm-10">
-                                    <input type="text" v-model="baseInfos.alias_name" name="home_number" class="form-control" disabled>
+                                    <input type="text" :value="houseName" name="home_number" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">小区名称</label>
                                 <div class="col-sm-10">
-                                    <input type="text" v-model="baseInfos.area_name" name="area_name" class="form-control" disabled>
+                                    <input type="text" :value="areaName" name="area_name" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">房屋属性</label>
+                                <label class="col-sm-2 control-label">小区地址</label>
                                 <div class="col-sm-10">
-                                    <input type="text" v-model="baseInfos.home_attr" name="home_attr" class="form-control" disabled>
+                                    <input type="text" :value="areaAddress" name="home_attr" class="form-control" disabled>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -309,20 +316,24 @@
             new Vue({
                 el:"#appDetail",
                 data:{
-                    houseInfo:{},           //门牌号基本信息
+                    houseInfo:{},           //门牌号信息(非详情信息)
                     peopleInfoList:[],      //入住人员数组
+                    houseName:"",   //门牌号名称
+                    houseId:null,   //门牌号id
+                    floorId:null,   //楼栋id
+                    unitId:null,    //单元门id
+                    areaName:"",    //小区名称
+                    areaAddress:"", //小区地址
                     baseURL:"http://localhost:43839", //全局网址
                     baseInfos:{  //门牌号基本信息
-                        alias_name:"1-1-1001",
-                        area_name:"成都罗马春天",
+                        house_number:"",
                         check_date:"",
-                        home_attr:"",
                         home_measure:"",
                         remarks_msg:"",
-                        id:"",
+                        house_id:null,
+                        id:null,
                     },
                     comeInPeopleInfos:{  //添加入住人员
-                        id:null,
                         username:"",
                         gender:"1",
                         age:"",
@@ -330,6 +341,7 @@
                         role:"",
                         id_number:"",
                         house_id:"",
+                        id:null
                     },
                     peopleEditInfo:{ //添加入住人员
                         id:null,
@@ -344,8 +356,41 @@
                     id:null,
                 },
                 created(){
-                    this.id = this.getQueryVariable("id");
-                    this.init(this.id);
+                    this.houseId = this.getQueryVariable("id");
+                    this.houseName = this.getQueryVariable("name");
+                    this.floorId = this.getQueryVariable("tung_id");
+                    this.unitId = this.getQueryVariable("unit_id");
+                    this.init(this.houseId);
+                },
+                filters:{
+                    rolePeople:function(value){
+                        if(value == 1){
+                            return "业主";
+                        }else if(value == 2){
+                            return "老婆";
+                        }else if(value == 3){
+                            return "儿子";
+                        }else if(value == 4){
+                            return "女儿";
+                        }else if(value == 5){
+                            return "爷爷";
+                        }else if(value == 6){
+                            return "奶奶";
+                        }else if(value == 7){
+                            return "其他";
+                        }else{
+                            return value;
+                        }
+                    },
+                    genderPeople:function(value){
+                        if(value == 1){
+                            return "男";
+                        }else if(value == 2){
+                            return "女";
+                        }else{
+                            return value;
+                        }
+                    }
                 },
                 methods:{
                     getQueryVariable(variable){
@@ -359,53 +404,48 @@
                     },
                     editHouseInfo(event){ //回显门牌号对应信息
                         let liEl = $(event.currentTarget);
-                        let id = liEl.attr("id");
+                        // let id = liEl.attr("id");
                         let elForm = $("#baseInfoForm");
                         liEl.attr("data-target","#userBaseInfo");
-                        axios.get(this.baseURL+"/getBaseInfoData?id="+id).then(res => {
+                        /*axios.get(this.baseURL+"/getBaseInfoData?id="+id).then(res => {
                             let obj = res.data.baseInfo;
                             this.baseInfos = obj;
-                        })
+                        })*/
                     },
                     baseFormSubmitInfo(){  //编辑基本信息的提交事件
-                        if(this.baseInfos.check_date == "" || this.baseInfos.home_measure == "" || this.baseInfos.remarks_msg == ""){
+                        let _that = this;
+                        if(_that.baseInfos.check_date == "" || _that.baseInfos.home_measure == "" || _that.baseInfos.remarks_msg == ""){
                             return layer.msg("请将住户基本信息填写完整!",{icon: 5, time: 2000, anim: 6});
                         }else{
+                            _that.baseInfos.house_number = _that.houseName;
                             axios.post(this.baseURL+"/updateBaseInfo",this.baseInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code ==0){
                                     layer.msg("编辑成功",{icon:6,time:2000});
                                     //1.关闭弹出框
                                     $("#userBaseInfo").modal('hide');
-                                    //2.改变页面显示
-                                    this.houseInfo = this.baseInfos;
-                                    //3.清空表单
-                                    this.baseInfos = {
-                                        alias_name:"",
-                                        area_name:"",
-                                        check_date:"",
-                                        home_attr:"",
-                                        home_measure:"",
-                                        remarks_msg:"",
-                                        id:"",
-                                    }
                                 }
                             })
                         }
                     },
                     addComeInPeople(){ //添加入住人员
-                        this.comeInPeopleInfos.house_id = this.houseInfo.id;
                         let _this = this;
+                        this.comeInPeopleInfos.house_id = _this.houseId;
+                        this.comeInPeopleInfos.tung_id = _this.floorId;
+                        this.comeInPeopleInfos.unit_id = _this.unitId;
+                        if(_this.comeInPeopleInfos.phone){
+                            if(!_this.testPhone(_this.comeInPeopleInfos.phone)){
+                                return layer.msg("请输入正确的手机号",{icon:5,time:2000,anim:6});
+                            }
+                        }
                         if(this.comeInPeopleInfos.username == "" || this.comeInPeopleInfos.age == ""){
                             return layer.msg("请填写住户名称和年龄",{icon:5,time:2000,anim:6});
                         }else if(this.comeInPeopleInfos.role == 0){
                             return layer.msg("请选择住户角色",{icon:5,time:2000,anim:6});
-                        }else if(!this.testPhone(this.comeInPeopleInfos.phone)){
-                            return layer.msg("请输入合法的手机号",{icon:5,time:2000,anim:6});
                         }else if(!this.testIdNumber(this.comeInPeopleInfos.id_number)){
                             return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
                         }else{
-                            axios.post(this.baseURL+"/addUserInfo",this.comeInPeopleInfos).then(res => {
+                            axios.post(_this.baseURL+"/addUserInfo",_this.comeInPeopleInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.msg("添加成功",{icon:6,time:2000});
@@ -424,7 +464,7 @@
                                         role:"",
                                         id_number:"",
                                         house_id:"",
-                                        id:null,
+                                        id:null
                                     }
                                 }else{
                                     layer.msg("添加失败",{icon:5,time:2000,anim:6});
@@ -470,12 +510,15 @@
                     },
                     editSubmitInfo(){  //编辑入住人员提交事件
                         let _this = this;
+                        if(_this.peopleEditInfo.phone){
+                            if(!_this.testPhone(_this.peopleEditInfo.phone)){
+                                return layer.msg("请输入正确的手机号",{icon:5,time:2000,anim:6});
+                            }
+                        }
                         if(_this.peopleEditInfo.username == "" || _this.peopleEditInfo.age == ""){
                             return layer.msg("请填写住户名称和年龄",{icon:5,time:2000,anim:6});
                         }else if(_this.peopleEditInfo.role == 0){
                             return layer.msg("请选择住户角色",{icon:5,time:2000,anim:6});
-                        }else if(!_this.testPhone(_this.peopleEditInfo.phone)){
-                            return layer.msg("请输入合法的手机号",{icon:5,time:2000,anim:6});
                         }else if(!_this.testIdNumber(_this.peopleEditInfo.id_number)){
                             return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
                         }else{
@@ -484,7 +527,7 @@
                                 if(obj.code == 0){
                                     layer.msg("编辑成功",{icon:6,time:2000});
                                     $("#editUserInfo").modal('hide');
-                                    _this.init(_this.id);
+                                    _this.init(_this.houseId);
                                 }else{
                                     layer.msg("编辑失败",{icon:5,time:2000,anim:6});
                                 }
@@ -531,15 +574,22 @@
                         }
                     },
                     init(id){
-                        console.log(id);
-                        /*axios.get(this.baseURL+"/userdetail/"+id).then(res => {
+                        let _that = this;
+                        axios.get(this.baseURL+"/userdetail/"+id).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
-                                this.houseInfo = obj.houseInfo;
+                                //获取门牌号信息
+                                _that.houseInfo = obj.houseInfo;
+                                //获取门牌号内部详情信息
+                                _that.baseInfos = obj.houseInfoOne[0]?obj.houseInfoOne[0]:_that.baseInfos;
+                                //获取门牌号下入住人员表
                                 this.peopleInfoList = obj.peopleInfoList;
-                                console.log(this.peopleInfoList);
+                                //获取小区名称
+                                _that.areaName = obj.getAreaInfo[0]?obj.getAreaInfo[0].area_name:"";
+                                //获取小区地址
+                                _that.areaAddress = obj.getAreaInfo[0]?obj.getAreaInfo[0].area_address:"";
                             }
-                        });*/
+                        });
                     }
                 }
             })

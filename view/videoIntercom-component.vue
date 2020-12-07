@@ -30,6 +30,7 @@
                     <div class="btn-group-box">
                         <button type="button" @click="localCloseVideo" class="btn btn-danger" id="localClose">挂断</button>
                         <button type="button" @click="remoteCloseVideo" class="btn btn-danger" id="remoteClose">挂断</button>
+                        <button type="button" @click="openTheDoorFun" class="btn btn-info" id="openDoor">开门</button>
                     </div>
                 </div>
             </div>
@@ -68,6 +69,17 @@
             },
             localCloseVideo(event){  //客户端挂断可视对讲
                 $(documentJq).trigger("clientPcCloseVideoStream");
+            },
+            openTheDoorFun(event){
+                let El = $(event.currentTarget);
+                El.attr({"disabled":"disabled"});
+                El.text("3秒后重启按钮...");
+                //打开单元门
+                $(documentJq).trigger("openPlayTheDoor");
+                setTimeout(function(){
+                    El.removeAttr("disabled");
+                    El.text("开门");
+                },3000);
             },
             init(){     //初始化获取设备信息
                 axios.get(this.baseURLS+"/videoIntercom").then(res => {
@@ -235,6 +247,7 @@
         float:left;
         border:1px solid #ddd;
         object-fit:fill;
+        transform: rotateY(180deg);
     }
 
     .model_mains>.video2{
@@ -243,5 +256,6 @@
         float:right;
         border:1px solid #ddd;
         object-fit: fill;
+        transform: rotateY(180deg);
     }
 </style>

@@ -51,7 +51,7 @@
                                             <span class="title_index">单元门</span>
                                         </div>
                                         <ul class="clearfix list_all_item" id="select_unit_all">
-                                            <li @click="showHouse" v-for="(item,index) in listSearchUnit" :id="item.id" :class="index==0?'active':''">{{item.name}}</li>
+                                            <li @click="showHouse" v-for="(item,index) in listSearchUnit" :id="item.id">{{item.name}}</li>
                                         </ul>
                                     </div>
                                     <!--门牌号-->
@@ -62,7 +62,7 @@
                                         </div>
                                         <ul class="clearfix list_all_item scroll_ul" id="house_list">
                                             <li v-for="(item,index) in listHouse">
-                                                <span @click="navigatorDetail(item.id)">
+                                                <span @click="navigatorDetail(item.id,item.house_number)">
                                                     {{item.house_number}}
                                                 </span>
                                             </li>
@@ -90,20 +90,12 @@
             new Vue({
                 el: "#appPeopleBox",
                 data: {
+                    baseURL:"http://localhost:43839", //全局网址
                     floorName:"",   //楼栋名称
                     floorId:null,   //楼栋id
-                    listSearchUnit:[   //单元门数组
-                        {id:1,tung_id:1,name:"1单元"},
-                        {id:2,tung_id:1,name:"2单元"},
-                        {id:3,tung_id:1,name:"3单元"},
-                        {id:4,tung_id:1,name:"4单元"}
-                    ],
-                    listHouse:[ //门牌号数组
-                        {id:1,tung_id:1,unit_id:1,house_number:"1-1-201"},
-                        {id:2,tung_id:1,unit_id:1,house_number:"1-1-202"},
-                        {id:3,tung_id:1,unit_id:1,house_number:"1-1-203"},
-                        {id:4,tung_id:1,unit_id:1,house_number:"1-1-204"},
-                    ],
+                    unitId:null,    //单元门id
+                    listSearchUnit:[],  //单元门数组
+                    listHouse:[],   //门牌号数组
                     searchObj:{
                         currentUnit:null,   //当前选中的单元
                         currentHouse:null,  //当前选中的门牌号
@@ -116,12 +108,29 @@
                 },
                 methods:{
                     init(){
-
+                        let _that = this;
+                        axios.get(_that.baseURL+"/selectGetUnit?tung_id="+_that.floorId).then(res => {
+                            let obj = res.data;
+                            if(obj.code == 0){
+                                _that.listSearchUnit = obj.unitList;
+                            }
+                        })
                     },
-                    showHouse(){    //展示单元门下的所有门牌号
-
+                    showHouse(event){    //展示单元门下的所有门牌号
+                        let _that = this;
+                        let liEl = $(event.currentTarget);
+                        liEl.parent().find(".active").removeClass('active');
+                        liEl.addClass('active');
+                        _that.unitId = liEl.parent().find(".active").attr("id");
+                        axios.get(_that.baseURL+"/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
+                            let obj = res.data;
+                            if(obj.code == 0){
+                                _that.listHouse = obj.houseAllList;
+                            }
+                        });
                     },
-                    navigatorDetail(id){  //打开住户详情弹框
+                    navigatorDetail(id,name){  //打开住户详情弹框
+                        let _that = this;
                         var index = layer.open({
                             title: '住户详情',
                             type: 2,
@@ -129,20 +138,23 @@
                             maxmin:true,
                             shadeClose: true,
                             area: ['90%', '90%'],
-                            content:"./userdetail.html?id="+id,
+                            content:"./userdetail.html?id="+id+"&name="+name+"&tung_id="+_that.floorId+"&unit_id="+_that.unitId,
                         });
                     },
                     searchResult(){  //搜索门牌号
                         let _that = this;
                         if(this.searchObj.currentHouse != null){
-                            let obj = {
+                            let objectAll = {
                                 unit_id:_that.searchObj.currentUnit,
-                                home_number:_that.searchObj.currentHouse
+                                alias_name:_that.searchObj.currentHouse,
+                                tung_id:_that.floorId
                             };
-
-                            //请求搜索门牌号
-                            console.log(obj);
-
+                            axios.post(_that.baseURL+"/searchHouse",objectAll).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0){
+                                    _that.listHouse = obj.houseList;
+                                }
+                            });
                         }else{
                             layer.msg("门牌号不能为空！", {icon: 5, time: 2000, anim: 6})
                         }

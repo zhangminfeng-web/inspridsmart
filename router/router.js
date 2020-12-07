@@ -64,6 +64,13 @@ Router.post("/addHouseName",[middle.addHouseNameInfo],function(req,res){
     });
 });
 
+//插入门牌号详情表数据
+Router.post("/addHouseDetailInfo",[middle.addHouseDetailInfo],function(req,res){
+    res.json({
+        code:0,
+    });
+});
+
 //修改楼栋名称
 Router.post("/updateFloorName",[middle.updateFloorName],function(req,res){
     res.json({
@@ -121,11 +128,13 @@ Router.get("/getHouseAll",[middle.getHouseAll],function(req,res){
 });
 
 //获取住户详细信息数据
-Router.get('/userdetail/:id',[middle.getUserDetail,middle.getPeopleInfo],function (req,res) {
+Router.get('/userdetail/:id',[middle.getUserDetail,middle.getPeopleInfo,middle.getAreaInfo,middle.getHouseInfo],function (req,res) {
     res.json({
         code:0,
         houseInfo:res.houseInfo[0],
-        peopleInfoList:res.peopleInfoList
+        peopleInfoList:res.peopleInfoList,
+        getAreaInfo:res.getAreaInfo,
+        houseInfoOne:res.houseInfoOne
     });
 });
 

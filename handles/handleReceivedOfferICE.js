@@ -13,7 +13,7 @@ module.exports.receivedOfferICE = async function(data,documentEl,offerPc){
         console.log(data);
         setTimeout(async function(){
             await offerPc.addIceCandidate(new RTCIceCandidate(data));
-        },600);
+        },700);
 
     }
 
