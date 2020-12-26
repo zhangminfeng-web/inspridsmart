@@ -130,7 +130,10 @@
     <script src="../node_modules/axios/dist/axios.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/layui-src/dist/layui.js"></script>
+    <script src="../network/request.js"></script>
     <script>
+        let requests = new Request();
+
         layui.use(['layer', 'form'],function(){
             let layer = layui.layer,
                 form = layui.form;
@@ -138,7 +141,6 @@
             new Vue({
                 el:"#appUnit",
                 data:{
-                    baseURL:"http://localhost:43839", //全局网址
                     floorValue:"",      //楼栋名称
                     floorId:null,       //楼栋id
                     unitName:"",        //当前选中单元门名称
@@ -161,7 +163,7 @@
                             return item.name == _that.floorValue;
                         });
                         if(!status){
-                            axios.post(this.baseURL+"/updateFloorName",{name:_that.floorValue,id:_that.floorId}).then(res => {
+                            requests.requestPost("/updateFloorName",{name:_that.floorValue,id:_that.floorId}).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.msg(obj.msg,{icon:6,item:2000});
@@ -180,7 +182,7 @@
                                     return item.name == pass;
                                 });
                                 if(!status){
-                                    axios.post(_that.baseURL+"/addUnitName",{tung_id:_that.floorId,name:pass}).then(res => {
+                                    requests.requestPost("/addUnitName",{tung_id:_that.floorId,name:pass}).then(res => {
                                         let obj = res.data;
                                         if(obj.code == 0){
                                             _that.unitArray.push({tung_id:_that.floorId,id:obj.id,name:pass});
@@ -210,14 +212,14 @@
                                         if(options.house_number.indexOf("-") != -1){
                                             let indexs = options.house_number.lastIndexOf("-");
                                             options.alias_name = options.house_number.slice(indexs+1);
-                                            axios.post(_that.baseURL+"/addHouseName",options).then(res => {
+                                            requests.requestPost("/addHouseName",options).then(res => {
                                                 let obj = res.data;
                                                 if(obj.code == 0){
                                                     options.id = obj.id;
                                                     _that.houseArray.push(options);
                                                     layer.close(index);
                                                     layer.msg(obj.msg,{item:2000,icon:6});
-                                                    axios.post(_that.baseURL+"/addHouseDetailInfo",{house_id:obj.id}).then(res => {
+                                                    requests.requestPost("/addHouseDetailInfo",{house_id:obj.id}).then(res => {
                                                         let objs = res.data;
                                                         if(objs.code == 0){
                                                             console.log("详情表信息插入ok");
@@ -244,7 +246,7 @@
                         liEl.addClass('active');
                         _that.unitName = liEl.parent().find(".active").attr("name");
                         _that.unitId = liEl.parent().find(".active").attr("id");
-                        axios.get(_that.baseURL+"/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
+                        requests.requestGet("/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 _that.houseArray = obj.houseAllList;
@@ -271,7 +273,7 @@
                         });
                         if(!status){
                             let objParam = {id:_that.unitId,name:_that.unitName};
-                            axios.post(_that.baseURL+"/renameUnitOne",objParam).then(res => {
+                            requests.requestPost("/renameUnitOne",objParam).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     let index = _that.unitArray.findIndex((item) => {
@@ -312,7 +314,7 @@
                             if(options.house_number.indexOf("-") != -1){
                                 let indexs = options.house_number.lastIndexOf("-");
                                 options.alias_name = options.house_number.slice(indexs+1);
-                                axios.post(_that.baseURL+"/renameHouseOne",options).then(res => {
+                                requests.requestPost("/renameHouseOne",options).then(res => {
                                     let obj = res.data;
                                     if(obj.code == 0){
                                         _that.houseArray[index].house_number = _that.houseName;
@@ -347,7 +349,7 @@
                             icon:3,
                         }, function(index){
                             let options = {id:id,tung_id:_that.floorId,unit_id:_that.unitId};
-                            axios.post(_that.baseURL+"/deleteHouseNumber",options).then(res => {
+                            requests.requestPost("/deleteHouseNumber",options).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.close(index);
@@ -370,7 +372,7 @@
                     init(id){
                         let _that = this;
                         //获取楼栋信息 和 获取楼栋下对应单元门信息
-                        axios.get(this.baseURL+"/getFloorAndUnitArr/?tung_id="+id).then(res => {
+                        requests.requestGet("/getFloorAndUnitArr?tung_id="+id).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 _that.floorArray = obj.listTung;

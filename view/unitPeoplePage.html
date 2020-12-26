@@ -82,7 +82,10 @@
     <script src="../node_modules/axios/dist/axios.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/layui-src/dist/layui.js"></script>
+    <script src="../network/request.js"></script>
     <script>
+        let requests = new Request();
+
         layui.use(['layer', 'form'],function() {
             let layer = layui.layer,
                 form = layui.form;
@@ -90,7 +93,6 @@
             new Vue({
                 el: "#appPeopleBox",
                 data: {
-                    baseURL:"http://localhost:43839", //全局网址
                     floorName:"",   //楼栋名称
                     floorId:null,   //楼栋id
                     unitId:null,    //单元门id
@@ -109,7 +111,7 @@
                 methods:{
                     init(){
                         let _that = this;
-                        axios.get(_that.baseURL+"/selectGetUnit?tung_id="+_that.floorId).then(res => {
+                        requests.requestGet("/selectGetUnit?tung_id="+_that.floorId).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 _that.listSearchUnit = obj.unitList;
@@ -122,7 +124,7 @@
                         liEl.parent().find(".active").removeClass('active');
                         liEl.addClass('active');
                         _that.unitId = liEl.parent().find(".active").attr("id");
-                        axios.get(_that.baseURL+"/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
+                        requests.requestGet("/getHouseAll?tung_id="+_that.floorId+"&unit_id="+_that.unitId).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 _that.listHouse = obj.houseAllList;
@@ -149,7 +151,7 @@
                                 alias_name:_that.searchObj.currentHouse,
                                 tung_id:_that.floorId
                             };
-                            axios.post(_that.baseURL+"/searchHouse",objectAll).then(res => {
+                            requests.requestPost("/searchHouse",objectAll).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     _that.listHouse = obj.houseList;

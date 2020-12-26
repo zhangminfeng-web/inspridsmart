@@ -20,16 +20,34 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/">
+                    <a class="navbar-brand">
                         <img src="./public/img/logo.png" width="150" height="24" alt="">
                     </a>
                     <span class="header_title">&emsp;|&emsp;可视对讲机系统</span>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right"></ul>
+                    <ul class="nav navbar-nav navbar-right ul_right_style">
+                        <li class="parent_li">
+                            <div v-if="idShowName">
+                                <span class="span_name_style">
+                                    欢迎您：
+                                    <b class="username_style">{{loginQueryInfo.username}}</b>
+                                </span>
+                                <ul class="downUlList">
+                                    <li @click="signOut">退出</li>
+                                </ul>
+                            </div>
+                            <div v-else>
+                                <span class="span_name_style">
+                                    暂未登录
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
@@ -49,7 +67,6 @@
                     <call-police-component v-show="showComponentValue==4"></call-police-component>
                     <all-online-component v-show="showComponentValue==5"></all-online-component>
                     <appointment-access v-show="showComponentValue==6"></appointment-access>
-
                 </div>
             </div>
         </div>
@@ -61,7 +78,7 @@
         </audio>
 
         <!--login弹框-->
-        <!--<div class="Intercom_box_bg">
+        <div class="Intercom_box_bg" v-show="!idShowName">
             <div class="Intercom_box_main">
                 <div class="Intercom_big_title">
                     思悦可视对讲管理系统
@@ -73,7 +90,7 @@
                             <div class="form-group">
                                 <label class="col-sm-offset-1 col-sm-2 control-label">账号</label>
                                 <div class="col-sm-6">
-                                    <input type="text" v-model="loginInfo.admin" name="admin" class="form-control">
+                                    <input type="text" v-model="loginInfo.username" name="admin" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group marginTop_Intercom">
@@ -83,13 +100,13 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-success self_btn">登录</button>
+                                <button type="button" @click="submitInfo" class="btn btn-success self_btn">登录</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>-->
+        </div>
     </div>
 
     <script>window.$ = window.jQuery = require('./public/js/jquery.js');</script>
@@ -106,7 +123,10 @@
     <script src="./node_modules/axios/dist/axios.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="./node_modules/layui-src/dist/layui.js"></script>
+    <script src="./network/request.js"></script>
     <script>
+        let requests = new Request();
+
         layui.use(['layer', 'form'],function(){
             let layer = layui.layer;
 
@@ -124,8 +144,9 @@
                 },
                 data:{
                     showComponentValue:1,
+                    loginQueryInfo:{},  //登录返回信息
                     loginInfo:{
-                        admin:"",
+                        username:"",
                         password:"",
                     }
                 },
@@ -133,7 +154,16 @@
                     //传递给sendMediaStream函数
                     this.sendMediaStream();
                 },
+                computed:{
+                    idShowName(){
+                        let name = this.loginQueryInfo.username;
+                        return name?true:false;
+                    }
+                },
                 methods:{
+                    signOut(){ //退出登录
+                        this.loginQueryInfo = {};
+                    },
                     toggleComponent(event){
                         let El = $(event.currentTarget);
                         this.showComponentValue = El.attr("value");
@@ -141,6 +171,46 @@
                     sendMediaStream(localStream,remoteStream){
                         //将媒体流对象发送给客户端
                         $(documentJq).trigger("sendMediaStreamObj",[this,layer]);
+                    },
+                    submitInfo(){
+                        let _that = this;
+                        if(!_that.adminVal(_that.loginInfo.username)){
+                            layer.msg("用户名只能由字母数字下划线组成",{icon:5,time:2000,shift:6});
+                        }else if(!_that.pasVal(_that.loginInfo.password)){
+                            layer.msg("密码只能输入6-20个字母、数字、下划线",{icon:5,time:2000,shift:6});
+                        }else{
+                            requests.requestPost("/loginOperation",_that.loginInfo).then(res => {
+                                let obj = res.data;
+                                if(obj.code == 0 && obj.loginInfo.length != 0){
+                                    let loadIndex = layer.load(2);
+                                    sessionStorage.setItem("loginInfo",JSON.stringify(obj.loginInfo[0]));
+                                    setTimeout(function(){
+                                        layer.close(loadIndex);
+                                        _that.loginQueryInfo = obj.loginInfo[0];
+                                        $(".Intercom_box_bg").hide(600);
+                                        _that.loginInfo = {username:"",password:"",}
+                                    },3000);
+                                }else{
+                                    layer.msg("用户名或者密码错误！",{icon:5,time:2000,shift:6});
+                                }
+                            });
+                        }
+                    },
+                    adminVal(value){
+                        let adminReg = /^[a-zA-Z0-9_]{1,}$/;
+                        if(!adminReg.test(value)){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    },
+                    pasVal(value){
+                        let passwordReg = /^(\w){6,20}$/;
+                        if(!passwordReg.test(value)){
+                            return false;
+                        }else{
+                            return true;
+                        }
                     }
                 }
             })

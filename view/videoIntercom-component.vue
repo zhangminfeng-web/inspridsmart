@@ -25,8 +25,8 @@
                     <span class="model_close"></span>
                 </div>
                 <div class="model_mains">
-                    <video controls id="local" class="video1" autoplay></video>
-                    <video controls id="remote" class="video2" autoplay></video>
+                    <video id="local" class="video1" autoplay></video>
+                    <video id="remote" class="video2" autoplay></video>
                     <div class="btn-group-box">
                         <button type="button" @click="localCloseVideo" class="btn btn-danger" id="localClose">挂断</button>
                         <button type="button" @click="remoteCloseVideo" class="btn btn-danger" id="remoteClose">挂断</button>

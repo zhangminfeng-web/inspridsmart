@@ -10,6 +10,20 @@ const Router = express.Router();
 
 /*2.将全部路由都添加到容器中*/
 
+//登录操作
+Router.post("/loginOperation",[middle.postLogin],function(req,res){
+    if(res.loginInfo.length < 1){
+        res.json({
+            code:1
+        });
+    }else{
+        res.json({
+            code:0,
+            loginInfo:res.loginInfo
+        });
+    }
+});
+
 //展示首页数据
 Router.get("/",[middle.getTung,middle.getAreaInfo],function(req,res){
     res.json({
@@ -19,6 +33,14 @@ Router.get("/",[middle.getTung,middle.getAreaInfo],function(req,res){
             getAreaInfo:res.getAreaInfo,
         }
     })
+});
+
+//获取楼栋信息数组
+Router.get("/getFloorArrayInfo",[middle.getTung],function(req,res){
+    res.json({
+        code:0,
+        listTung:res.listTung
+    });
 });
 
 //单独获取楼栋数组和楼栋下对应单元门数组

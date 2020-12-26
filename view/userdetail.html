@@ -308,7 +308,10 @@
     <script src="../node_modules/axios/dist/axios.js"></script>
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script src="../node_modules/layui-src/dist/layui.js"></script>
+    <script src="../network/request.js"></script>
     <script>
+        let requests = new Request();
+
         layui.use(['layer', 'form'], function(){
             let layer = layui.layer,
                 form = layui.form;
@@ -324,7 +327,6 @@
                     unitId:null,    //单元门id
                     areaName:"",    //小区名称
                     areaAddress:"", //小区地址
-                    baseURL:"http://localhost:43839", //全局网址
                     baseInfos:{  //门牌号基本信息
                         house_number:"",
                         check_date:"",
@@ -418,7 +420,7 @@
                             return layer.msg("请将住户基本信息填写完整!",{icon: 5, time: 2000, anim: 6});
                         }else{
                             _that.baseInfos.house_number = _that.houseName;
-                            axios.post(this.baseURL+"/updateBaseInfo",this.baseInfos).then(res => {
+                            requests.requestPost("/updateBaseInfo",this.baseInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code ==0){
                                     layer.msg("编辑成功",{icon:6,time:2000});
@@ -445,7 +447,7 @@
                         }else if(!this.testIdNumber(this.comeInPeopleInfos.id_number)){
                             return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
                         }else{
-                            axios.post(_this.baseURL+"/addUserInfo",_this.comeInPeopleInfos).then(res => {
+                            requests.requestPost("/addUserInfo",_this.comeInPeopleInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.msg("添加成功",{icon:6,time:2000});
@@ -481,7 +483,7 @@
                             {title:"删除住户",icon:3},
                             function(index){
                                 layer.close(index);
-                                axios.get(_this.baseURL+"/deleteUserInfo?id="+id).then(res => {
+                                requests.requestGet("/deleteUserInfo?id="+id).then(res => {
                                     let obj = res.data;
                                     if(obj.code == 0){
                                         layer.msg("删除成功",{icon:6,time:2000});
@@ -499,7 +501,7 @@
                         let id = El.attr('id');
                         let _this = this;
                         El.attr("data-target","#editUserInfo");
-                        axios.get(this.baseURL+"/showUserInfo?id="+id).then(res => {
+                        requests.requestGet("/showUserInfo?id="+id).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 obj.userInfo.gender = _this.transformationSex(obj.userInfo.gender);
@@ -522,7 +524,7 @@
                         }else if(!_this.testIdNumber(_this.peopleEditInfo.id_number)){
                             return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
                         }else{
-                            axios.post(_this.baseURL+"/editUserPeopleInfo",_this.peopleEditInfo).then(res => {
+                            requests.requestPost("/editUserPeopleInfo",_this.peopleEditInfo).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.msg("编辑成功",{icon:6,time:2000});
@@ -575,7 +577,7 @@
                     },
                     init(id){
                         let _that = this;
-                        axios.get(this.baseURL+"/userdetail/"+id).then(res => {
+                        requests.requestGet("/userdetail/"+id).then(res => {
                             let obj = res.data;
                             if(obj.code == 0){
                                 //获取门牌号信息

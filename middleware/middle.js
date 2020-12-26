@@ -2,6 +2,17 @@ const db = require("../model/db");
 const DB = new db();
 
 module.exports = {
+    //登录
+    postLogin:(req,res,next) => {
+        let obj = req.body;
+        let sql = "SELECT * FROM `user` WHERE username=? AND password=?";
+        DB.query(sql,[obj.username,obj.password]).then(result => {
+            res.loginInfo = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
     //获取小区基本信息
     getAreaInfo:(req,res,next) => {
         let sql = "SELECT * FROM `area_info`";

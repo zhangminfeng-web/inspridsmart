@@ -61,6 +61,18 @@ CREATE TABLE IF NOT EXISTS `personnel`(
     PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+# 用户表
+CREATE TABLE IF NOT EXISTS `user`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `username` varchar(30) NOT NULL,
+    `password` varchar(18) NOT NULL,
+    `isSuper` enum('0','1') NOT NULL,
+    PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `user`(username,password,isSuper) VALUES
+("adminlove",'123456','1');
+
 #向楼栋表插入数据
 INSERT INTO `tung`(name) VALUES
 ("1栋"),("2栋"),("3栋"),("4栋"),("5栋"),("6栋"),("7栋"),("8栋"),("9栋"),

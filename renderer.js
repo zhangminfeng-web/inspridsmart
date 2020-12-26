@@ -12,8 +12,8 @@ $(document).ready(function(){
     //将jquery全局对象，保存为全局共享数据
     global.documentJq = documentEl;
     let vueObj = null;
-    let localSocket = null;    //本地socket对象
-    let removeSocket = null;  //远程socket对象
+    let localSocket = null;     //本地socket对象
+    let removeSocket = null;    //远程socket对象
     let layerConfirm = null;    //layer询问弹框
     let layerOpen = null;  //layer等待应答弹框
     let openDoorStatus = false;  //视频对讲中“开门”按钮的显示状态
@@ -24,7 +24,7 @@ $(document).ready(function(){
 
         //获取本地媒体流对象
         let localStream = await navigator.mediaDevices.getUserMedia({
-            video:true,
+            video:false,
             audio:true
         });
 

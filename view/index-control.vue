@@ -134,14 +134,13 @@
     module.exports = {
         data:function() {
             return {
-                baseURL:"http://localhost:43839", //全局网址
                 areaInfo:{
                     area_name:"",
                     green_area:"",
                     total_area:"",
                     area_address:"",
                     area_introduction:"",
-                    id:null
+                    id:1
                 },
                 floorArray:[]
             }
@@ -149,19 +148,28 @@
         mounted(){
             let _that = this;
             _that.init();
+            _that.getFloorArray();
             setInterval(function(){
-                _that.init();
+                _that.getFloorArray();
             },10000);
         },
         methods:{
             init(){
                 let _that = this;
                 //获取小区基本信息
-                axios.get(this.baseURL+"/").then(res => {
+                requests.requestGet("/").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
-                        _that.areaInfo = obj.data.getAreaInfo[0];
-                        _that.floorArray = obj.data.listTung;
+                        _that.areaInfo = obj.data.getAreaInfo[0] || _that.areaInfo;
+                    }
+                });
+            },
+            getFloorArray(){  //获取楼栋信息
+                let _that = this;
+                requests.requestGet("/getFloorArrayInfo").then(res => {
+                    let obj = res.data;
+                    if(obj.code == 0){
+                        _that.floorArray = obj.listTung;
                     }
                 });
             },
@@ -169,7 +177,8 @@
                 let _that = this;
                 let obj = _that.areaInfo;
                 if(_that.areaInfo.area_name != "" && _that.areaInfo.area_name != null){
-                    axios.post(_that.baseURL+"/submitAreaInfo",obj).then(res => {
+                    requests.requestPost("/submitAreaInfo",obj).then(res => {
+                        console.log(res);
                         let obj = res.data;
                         if(obj.code == 0){
                             layer.msg(obj.msg,{icon:6,time:2000});
@@ -189,7 +198,7 @@
                             return item.name == pass;
                         });
                         if(!status){
-                            axios.post(_that.baseURL+'/addFloorInfo',{name:pass}).then(res => {
+                            requests.requestPost('/addFloorInfo',{name:pass}).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.close(index);

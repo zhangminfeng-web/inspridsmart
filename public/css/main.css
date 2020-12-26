@@ -146,10 +146,55 @@ ul,li,ol{
     height:100%;
     background:url("../img/bg-01.jpg") no-repeat;
     background-size:cover;
-    display:block;
     z-index:1000000;
     top:0;
     left:0;
+}
+
+.span_name_style{
+    font-size:20px;
+}
+
+.ul_right_style>.parent_li:hover>div>.downUlList{
+    box-sizing: border-box;
+    display:block;
+    cursor: pointer;
+}
+
+.ul_right_style{
+    height:50px;
+    margin-right:50px;
+}
+
+.parent_li{
+    height:50px;
+    line-height:50px;
+    color:#fff;
+    position:relative;
+}
+
+.downUlList{
+    width:150px;
+    height:auto;
+    background:#fff;
+    border:1px solid #ddd;
+    display:none;
+    position:absolute;
+    top:50px;
+    left:0;
+}
+
+.downUlList>li{
+    height:40px;
+    line-height:40px;
+    text-align: center;
+    color:#666;
+    transition:all .3s linear;
+}
+
+.downUlList>li:hover{
+    opacity:.8;
+    color:#D63E3B;
 }
 
 .Intercom_box_main{
