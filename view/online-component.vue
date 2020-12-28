@@ -22,7 +22,6 @@
         data:function(){
             return {
                 allOnlineList:[],    //所有在线设备
-                baseURLS:"http://localhost:43839",    ////全局网址
             }
         },
         mounted(){
@@ -33,7 +32,7 @@
         },
         methods:{
             init(){
-                axios.get(this.baseURLS+"/allOnlineEquipment").then(res => {
+                requests.requestGet("/allOnlineEquipment").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         this.allOnlineList = obj.onlineList;

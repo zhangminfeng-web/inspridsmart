@@ -43,7 +43,6 @@
         data:function(){
             return {
                 indoorList:[],   //可视对讲设备数组集合
-                baseURLS:"http://localhost:43839", //全局网址
                 intercomTitle:"",    //弹框标题
             }
         },
@@ -82,7 +81,7 @@
                 },3000);
             },
             init(){     //初始化获取设备信息
-                axios.get(this.baseURLS+"/videoIntercom").then(res => {
+                requests.requestGet("/videoIntercom").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         this.indoorList = obj.indoorList;

@@ -2,7 +2,6 @@
     <div>
         <div class="row placeholders">
             <div class="col-xs-12 col-sm-12 placeholder">
-                <!--在线室内设备-->
                 <div class="title_row_style clearfix">
                     <div class="floor_title margin_police">
                         <i class="iconfont icon-fl-jia"></i>
@@ -37,7 +36,6 @@
         data:function(){
             return {
                 policeList:[],
-                baseURLS:"http://localhost:43839", //全局网址
             }
         },
         mounted(){
@@ -50,7 +48,7 @@
             init(){
                 let _this = this;
                 //获取报警信息数据
-                axios.get(this.baseURLS+"/getCallPoliceData").then(res => {
+                requests.requestGet("/getCallPoliceData").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         _this.policeList = obj.callPoliceList;

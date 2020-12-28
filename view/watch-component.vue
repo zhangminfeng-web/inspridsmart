@@ -44,7 +44,6 @@
     module.exports = {
         data: function(){
             return {
-                baseURLS:"http://localhost:43839", //全局网址
                 doorwayList:[],     //门口机数组
                 doorbellList:[],    //门铃机数组
                 type:11,  //发送的视频控制状态码：11打开  17关闭
@@ -91,7 +90,7 @@
             },
             getDataImg(ip,type){
                 let _this = this;
-                axios.get(this.baseURLS+"/receiveInfo?ip="+ip+"&type="+type).then(res => {
+                requests.requestGet("/receiveInfo?ip="+ip+"&type="+type).then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         let bytes = new Uint8Array(obj.imgData.data);
@@ -111,13 +110,13 @@
                 $(".model_bg").hide();
                 _this.type = _this.type?_this.type:11;
                 $("#videoImg").attr("src","./public/img/timg.gif");
-                axios.get(this.baseURLS+"/closeConnection?ip="+_this.ip+"&type="+17).then(res => {
+                requests.requestGet("/closeConnection?ip="+_this.ip+"&type="+17).then(res => {
                     //location.reload();
                 });
             },
             init(){  //初始化网页数据
                 let _this = this;
-                axios.get(_this.baseURLS+"/videoWatch").then(res => {
+                requests.requestGet("/videoWatch").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         _this.doorwayList = obj.doorwayList;

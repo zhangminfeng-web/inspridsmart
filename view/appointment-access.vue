@@ -71,7 +71,6 @@
                 sixNumberPassword:"",  //门禁密码
                 imgDateAppointment:'',  //图片数据
                 allEquipmentlist:[],   //所有设备信息数组
-                baseURLS:"http://localhost:43839",    //全局网址
             }
         },
         mounted(){
@@ -82,7 +81,7 @@
         },
         methods:{
             initData(){
-                axios.get(this.baseURLS+"/videoWatch").then(res => {
+                requests.requestGet("/videoWatch").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
                         this.allEquipmentlist = obj.doorwayList;
