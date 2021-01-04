@@ -9,7 +9,7 @@
                         <span class="title_index">在线室内设备</span>
                     </div>
                     <ul class="clearfix list_all_item" id="house_list_intercom">
-                        <li @click="endAnswerInfo" v-for="item in indoorList" port="58888" :ip="item.ip">{{item.senderName}}</li>
+                        <li @click="endAnswerInfo" v-for="item in indoorList" data-port="58888" :data-ip="item.ip">{{item.senderName}}</li>
                         <!--<li @click="endAnswerInfo" port="58888" ip="192.168.1.104">测试1</li>
                         <li @click="endAnswerInfo" port="58888" ip="192.168.1.105">测试2</li>-->
                     </ul>
@@ -55,7 +55,7 @@
         methods:{
             endAnswerInfo(event){  //发送offer
                 let El = $(event.currentTarget);
-                let ip = El.attr("ip");
+                let ip = event.target.getAttribute('data-ip');
 
                 //设置服务器地址
                 let socket = new WebSocket('ws://'+ip+':58888');

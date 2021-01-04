@@ -417,13 +417,13 @@
                     baseFormSubmitInfo(){  //编辑基本信息的提交事件
                         let _that = this;
                         if(_that.baseInfos.check_date == "" || _that.baseInfos.home_measure == "" || _that.baseInfos.remarks_msg == ""){
-                            return layer.msg("请将住户基本信息填写完整!",{icon: 5, time: 2000, anim: 6});
+                            return requests.failMsgInfo(layer,"请将住户基本信息填写完整!");
                         }else{
                             _that.baseInfos.house_number = _that.houseName;
                             requests.requestPost("/updateBaseInfo",this.baseInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code ==0){
-                                    layer.msg("编辑成功",{icon:6,time:2000});
+                                    requests.successMsgInfo(layer,"编辑成功");
                                     //1.关闭弹出框
                                     $("#userBaseInfo").modal('hide');
                                 }
@@ -437,20 +437,20 @@
                         this.comeInPeopleInfos.unit_id = _this.unitId;
                         if(_this.comeInPeopleInfos.phone){
                             if(!_this.testPhone(_this.comeInPeopleInfos.phone)){
-                                return layer.msg("请输入正确的手机号",{icon:5,time:2000,anim:6});
+                                return  requests.failMsgInfo(layer,"请输入正确的手机号");
                             }
                         }
                         if(this.comeInPeopleInfos.username == "" || this.comeInPeopleInfos.age == ""){
-                            return layer.msg("请填写住户名称和年龄",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请填写住户名称和年龄");
                         }else if(this.comeInPeopleInfos.role == 0){
-                            return layer.msg("请选择住户角色",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请选择住户角色");
                         }else if(!this.testIdNumber(this.comeInPeopleInfos.id_number)){
-                            return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请输入合法的身份证号");
                         }else{
                             requests.requestPost("/addUserInfo",_this.comeInPeopleInfos).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
-                                    layer.msg("添加成功",{icon:6,time:2000});
+                                    requests.successMsgInfo(layer,"添加成功");
                                     //1.关闭弹出框
                                     $("#addUserInfo").modal('hide');
                                     //添加id
@@ -469,7 +469,7 @@
                                         id:null
                                     }
                                 }else{
-                                    layer.msg("添加失败",{icon:5,time:2000,anim:6});
+                                    requests.failMsgInfo(layer,"添加失败");
                                 }
                             })
 
@@ -486,7 +486,7 @@
                                 requests.requestGet("/deleteUserInfo?id="+id).then(res => {
                                     let obj = res.data;
                                     if(obj.code == 0){
-                                        layer.msg("删除成功",{icon:6,time:2000});
+                                        requests.successMsgInfo(layer,"删除成功");
                                         let i = _this.peopleInfoList.findIndex((item) => {
                                             return item.id == id;
                                         });
@@ -514,24 +514,24 @@
                         let _this = this;
                         if(_this.peopleEditInfo.phone){
                             if(!_this.testPhone(_this.peopleEditInfo.phone)){
-                                return layer.msg("请输入正确的手机号",{icon:5,time:2000,anim:6});
+                                return requests.failMsgInfo(layer,"请输入正确的手机号");
                             }
                         }
                         if(_this.peopleEditInfo.username == "" || _this.peopleEditInfo.age == ""){
-                            return layer.msg("请填写住户名称和年龄",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请填写住户名称和年龄");
                         }else if(_this.peopleEditInfo.role == 0){
-                            return layer.msg("请选择住户角色",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请选择住户角色");
                         }else if(!_this.testIdNumber(_this.peopleEditInfo.id_number)){
-                            return layer.msg("请输入合法的身份证号",{icon:5,time:2000,anim:6});
+                            return requests.failMsgInfo(layer,"请输入合法的身份证号");
                         }else{
                             requests.requestPost("/editUserPeopleInfo",_this.peopleEditInfo).then(res => {
                                 let obj = res.data;
                                 if(obj.code == 0){
-                                    layer.msg("编辑成功",{icon:6,time:2000});
+                                    requests.successMsgInfo(layer,"编辑成功");
                                     $("#editUserInfo").modal('hide');
                                     _this.init(_this.houseId);
                                 }else{
-                                    layer.msg("编辑失败",{icon:5,time:2000,anim:6});
+                                    requests.failMsgInfo(layer,"编辑失败");
                                 }
                             });
                         }

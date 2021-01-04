@@ -126,7 +126,6 @@
                     };
                     axios.post(this.baseURLS+"/searchHouse?",obj).then(res => {
                         let obj = res.data;
-                        console.log(obj);
                         if(obj.code == 0){
                             this.listHouse = obj.houseList;
                         }

@@ -124,11 +124,7 @@
                         $(document).trigger("sendQRcodeNumber",["qrcode="+that.QRCODE,that.QRCODE,ip]);
                     });
                 }else{
-                    layer.msg("请先选择对应设备,再发送二维码！",{
-                        time:3000,
-                        icon: 5,
-                        shift:6
-                    });
+                    requests.failMsgInfo(layer,"请先选择对应设备,再发送二维码！");
                 }
             },
             open_Face_img(){  //人脸识别预约门禁
@@ -139,11 +135,7 @@
                     model.show("slow");
                     this._initVideo();
                 }else{
-                    layer.msg("请先选择对应设备,再点击人脸预约门禁按钮！",{
-                        time:3000,
-                        icon: 5,
-                        shift:6
-                    });
+                    requests.failMsgInfo(layer,"请先选择对应设备,再点击人脸预约门禁按钮！");
                 }
             },
             open_password_str(){  //密码预约门禁
@@ -165,11 +157,7 @@
                         $(document).trigger("sendPasswordNumber",["password="+that.sixNumberPassword,that.sixNumberPassword,ip]);
                     });
                 }else{
-                    layer.msg("请先选择对应设备,再发送门禁密码！",{
-                        time:3000,
-                        icon: 5,
-                        shift:6
-                    });
+                    requests.failMsgInfo(layer,"请先选择对应设备,再发送门禁密码！");
                 }
 
             },
@@ -193,14 +181,10 @@
                         //发送人脸识别数据arrayBuffer
                         $(document).trigger("sendPeopleFaceData",[arrBuffer,ip]);
                     }else{
-                        layer.msg("请先拍照！");
+                        requests.failMsgInfo(layer,"请先拍照,才能发送对应人脸图片！");
                     }
                 }else{
-                    layer.msg("请先选择对应设备,再发送人脸图片信息！",{
-                        time:3000,
-                        icon: 5,
-                        shift:6
-                    });
+                    requests.failMsgInfo(layer,"请先选择对应设备,再发送人脸图片信息！");
                 }
 
             },

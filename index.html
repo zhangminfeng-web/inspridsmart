@@ -57,7 +57,7 @@
                         <li :class="showComponentValue==3?'active':''" @click="toggleComponent" value="3"><a><i class="iconfont icon-duijiangjiankong"></i>可视对讲</a></li>
                         <li :class="showComponentValue==4?'active':''" @click="toggleComponent" value="4"><a><i class="iconfont icon-baojing"></i>报警查询</a></li>
                         <li :class="showComponentValue==5?'active':''" @click="toggleComponent" value="5"><a><i class="iconfont icon-shebei"></i>在线设备</a></li>
-                        <li :class="showComponentValue==6?'active':''" @click="toggleComponent" value="6"><a><i class="iconfont icon-loumian"></i>预约门禁</a></li>
+                        <!--<li :class="showComponentValue==6?'active':''" @click="toggleComponent" value="6"><a><i class="iconfont icon-loumian"></i>预约门禁</a></li>-->
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -66,7 +66,7 @@
                     <intercom-component v-show="showComponentValue==3"></intercom-component>
                     <call-police-component v-show="showComponentValue==4"></call-police-component>
                     <all-online-component v-show="showComponentValue==5"></all-online-component>
-                    <appointment-access v-show="showComponentValue==6"></appointment-access>
+                    <!--<appointment-access v-show="showComponentValue==6"></appointment-access>-->
                 </div>
             </div>
         </div>
@@ -78,7 +78,8 @@
         </audio>
 
         <!--login弹框-->
-        <div class="Intercom_box_bg" v-show="!idShowName">
+        <!--<div class="Intercom_box_bg" v-show="!idShowName">-->
+        <div class="Intercom_box_bg" v-show="idShowName">
             <div class="Intercom_box_main">
                 <div class="Intercom_big_title">
                     思悦可视对讲管理系统
@@ -140,7 +141,7 @@
                     'intercom-component':'url:./view/videoIntercom-component.vue',
                     'call-police-component':'url:./view/call-police-component.vue',
                     'all-online-component':'url:./view/online-component.vue',
-                    'appointment-access':'url:./view/appointment-access.vue',
+                    /*'appointment-access':'url:./view/appointment-access.vue',*/
                 },
                 data:{
                     showComponentValue:1,
@@ -175,9 +176,9 @@
                     submitInfo(){
                         let _that = this;
                         if(!_that.adminVal(_that.loginInfo.username)){
-                            layer.msg("用户名只能由字母数字下划线组成",{icon:5,time:2000,shift:6});
+                            return requests.failMsgInfo(layer,"用户名只能由字母数字下划线组成");
                         }else if(!_that.pasVal(_that.loginInfo.password)){
-                            layer.msg("密码只能输入6-20个字母、数字、下划线",{icon:5,time:2000,shift:6});
+                            return requests.failMsgInfo(layer,"密码只能输入6-20个字母、数字、下划线");
                         }else{
                             requests.requestPost("/loginOperation",_that.loginInfo).then(res => {
                                 let obj = res.data;
@@ -188,10 +189,10 @@
                                         layer.close(loadIndex);
                                         _that.loginQueryInfo = obj.loginInfo[0];
                                         $(".Intercom_box_bg").hide(600);
-                                        _that.loginInfo = {username:"",password:"",}
+                                        _that.loginInfo = {username:"",password:""};
                                     },3000);
                                 }else{
-                                    layer.msg("用户名或者密码错误！",{icon:5,time:2000,shift:6});
+                                    requests.failMsgInfo(layer,"用户名或者密码错误！");
                                 }
                             });
                         }

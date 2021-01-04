@@ -158,7 +158,7 @@
                                 }
                             });
                         }else{
-                            layer.msg("门牌号不能为空！", {icon: 5, time: 2000, anim: 6})
+                            requests.failMsgInfo(layer,"门牌号不能为空！");
                         }
                     },
                     getQueryVariable(variable){

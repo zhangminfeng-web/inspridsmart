@@ -169,16 +169,62 @@
                 requests.requestGet("/getFloorArrayInfo").then(res => {
                     let obj = res.data;
                     if(obj.code == 0){
-                        _that.floorArray = obj.listTung;
+                        return obj.listTung;
                     }
-                });
+                }).then((arr) => {
+                    this.fileFloorSliceClass(arr);
+                })
+            },
+            fileFloorSliceClass(arr){
+                let specialArray = [];  //特殊楼栋数组
+                let munberArray = [];   //数字楼栋数组
+                //1.判断特殊字符楼栋名称和数字字符楼栋名称，并分类归纳
+                for(item of arr){
+                    if(!isNaN(parseInt(item.name))){
+                        munberArray.push(item);
+                    }else{
+                        specialArray.push(item);
+                    }
+                }
+                munberArray = munberArray.sort(this.compareDesc('name')).reverse();
+                specialArray = specialArray.sort(this.compare('name')).reverse();
+                this.floorArray = [...munberArray,...specialArray];
+            },
+            compareDesc(prop){  //按照name的数字属性排序
+                return function (obj1, obj2) {
+                    var val1 = parseInt(obj1[prop]);
+                    var val2 = parseInt(obj2[prop]);
+                    if (!isNaN(Number(val1)) && !isNaN(Number(val2))) {
+                        val1 = Number(val1);
+                        val2 = Number(val2);
+                    }
+                    if (val1 > val2) {
+                        return -1;
+                    } else if (val1 < val2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+            },
+            compare(prop){  //按照name的字母属性排序
+                return function (b, a) {
+                    var x1 = a[prop].toUpperCase();
+                    var x2 = b[prop].toUpperCase();
+                    if (x1 < x2) {
+                        return -1;
+                    }
+                    if (x1 > x2) {
+                        return 1;
+                    }
+                    return 0;
+                }
             },
             submitAreaInfo(){  //提交小区总体信息
                 let _that = this;
                 let obj = _that.areaInfo;
                 if(_that.areaInfo.area_name != "" && _that.areaInfo.area_name != null){
                     requests.requestPost("/submitAreaInfo",obj).then(res => {
-                        console.log(res);
                         let obj = res.data;
                         if(obj.code == 0){
                             layer.msg(obj.msg,{icon:6,time:2000});
@@ -186,7 +232,7 @@
                         }
                     });
                 }else{
-                    layer.msg("请输入小区名称！",{icon:5,time:2000,anim:6});
+                    requests.failMsgInfo(layer,"请输入小区名称！");
                 }
             },
             addFloorInfo(){   //添加楼栋信息
@@ -202,12 +248,12 @@
                                 let obj = res.data;
                                 if(obj.code == 0){
                                     layer.close(index);
-                                    _that.floorArray.push({id:obj.id,name:pass});
-                                    layer.msg("添加成功！",{time:2000,icon:6,});
+                                    requests.successMsgInfo(layer,"添加成功！");
+                                    _that.getFloorArray();
                                 }
-                            });
+                            })
                         }else{
-                            layer.msg("楼栋名称重复,请重新输入！",{time:3000, icon: 5, shift:6});
+                            requests.failMsgInfo(layer,"楼栋名称重复,请重新输入！");
                         }
                     }
                 );
@@ -228,7 +274,7 @@
                         content:"./view/index-unit.html?id="+id+"&name="+name,
                     });
                 }else{
-                    layer.msg("请先选择楼栋",{time:3000, icon: 5, shift:6});
+                    requests.failMsgInfo(layer,"请先选择楼栋");
                 }
             },
             peopleEditInfo(event){  //编辑人员信息模块
@@ -248,7 +294,7 @@
                         content:"./view/unitPeoplePage.html?id="+id+"&name="+name,
                     });
                 }else{
-                    layer.msg("请先选择人员信息模块下的楼栋号！",{time:3000, icon: 5, shift:6});
+                    requests.failMsgInfo(layer,"请先选择人员信息模块下的楼栋号！");
                 }
             },
             toggleFloorStatus(event){  //切换楼栋信息
