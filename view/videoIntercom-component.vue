@@ -25,8 +25,8 @@
                     <span class="model_close"></span>
                 </div>
                 <div class="model_mains">
-                    <video id="local" class="video1" autoplay></video>
-                    <video id="remote" class="video2" autoplay></video>
+                    <video id="local" controls class="video1" autoplay></video>
+                    <video id="remote" controls class="video2" autoplay></video>
                     <div class="btn-group-box">
                         <button type="button" @click="localCloseVideo" class="btn btn-danger" id="localClose">挂断</button>
                         <button type="button" @click="remoteCloseVideo" class="btn btn-danger" id="remoteClose">挂断</button>
@@ -246,7 +246,7 @@
         float:left;
         border:1px solid #ddd;
         object-fit:fill;
-        transform: rotateY(180deg);
+        /*transform: rotateY(180deg);*/
     }
 
     .model_mains>.video2{
@@ -255,6 +255,6 @@
         float:right;
         border:1px solid #ddd;
         object-fit: fill;
-        transform: rotateY(180deg);
+        /*transform: rotateY(180deg);*/
     }
 </style>

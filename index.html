@@ -171,7 +171,7 @@
                     },
                     sendMediaStream(localStream,remoteStream){
                         //将媒体流对象发送给客户端
-                        $(documentJq).trigger("sendMediaStreamObj",[this,layer]);
+                        $(documentJq).trigger("getVueLayerObj",[this,layer]);
                     },
                     submitInfo(){
                         let _that = this;

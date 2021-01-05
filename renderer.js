@@ -17,20 +17,29 @@ $(document).ready(function(){
     let layerConfirm = null;    //layer询问弹框
     let layerOpen = null;  //layer等待应答弹框
     let openDoorStatus = false;  //视频对讲中“开门”按钮的显示状态
+    let mediaVideoStreamTrack;   //视频媒体流对象
+    let mediaAudioStreamTrack;   //音频媒体流对象
 
 
-    $(documentEl).on("sendMediaStreamObj",async function (e,vueApp,layer) {
+    $(documentEl).on("getVueLayerObj",function(e,vueApp,layer){
+        //将vue实例保存为全局变量
+        vueObj = vueApp;
+
+        //将layer实例，保存为全局共享数据
+        global.setData(global.LAYER_OBJ,layer);
+    });
+
+    async function sendMediaStreamObj(callback){
         console.log("媒体流被添加了");
 
         //获取本地媒体流对象
         let localStream = await navigator.mediaDevices.getUserMedia({
-            video:false,
+            video:true,
             audio:true
         });
 
-        //获取远程媒体流对象
-        let remoteStream = new MediaStream();
-
+        mediaVideoStreamTrack = typeof localStream.stop === 'function' ? localStream : localStream.getTracks()[0];
+        mediaAudioStreamTrack = typeof localStream.stop === 'function' ? localStream : localStream.getTracks()[1];
 
         //在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
@@ -38,17 +47,14 @@ $(document).ready(function(){
         //保存本地媒体流
         global.setData(global.KEY_LOCAL_MEDIA_STREAM,localStream);
 
+        //获取远程媒体流对象
+        let remoteStream = new MediaStream();
+
         //将远程媒体流对象(localStream)，在本地预览
         document.getElementById('remote').srcObject = remoteStream;
 
         //保存远程媒体流
         global.setData(global.KEY_REMOTE_MEDIA_STREAM,remoteStream);
-
-        //将vue实例保存为全局变量
-        vueObj = vueApp;
-
-        //将layer实例，保存为全局共享数据
-        global.setData(global.LAYER_OBJ,layer);
 
         //1.返回一个新建的 RTCPeerConnection实例，它代表了本地机器与远端机器的一条连接。
         let peerConnection = new RTCPeerConnection();
@@ -67,7 +73,9 @@ $(document).ready(function(){
         //将dataChannel设置为全局共享数据
         global.setData(global.KEY_DATACHANNEL,dataChannel);
 
-    });
+        callback && callback();
+    }
+
 
     //服务器端向客户端发送offer信息
     $(documentEl).on("sendAnswer",async function(e){
@@ -177,6 +185,8 @@ $(document).ready(function(){
                 }
                 //关闭本地视频弹框
                 $(documentEl).find(".intercom_model_bg").hide();
+                //隐藏客户端挂断按钮
+                $(documentEl).find("#localClose").hide();
                 //关闭连接
                 localSocket.close();
                 //弹框提示客户端，当前设备正在通话中。
@@ -185,6 +195,7 @@ $(document).ready(function(){
                     anim:6,
                     time:2000
                 });
+
                 //1.获取本地连接对象
                 let answerPc = global.KEY_ANSWER_PEER_CONNECTION;
 
@@ -201,11 +212,9 @@ $(document).ready(function(){
                     //9.关闭监听添加媒体流函数
                     answerPc.onaddstream = null;
 
-                    //10.重置初始化方法
-                    $(documentEl).trigger("sendMediaStreamObj",[
-                        vueObj,
-                        global.getData(global.LAYER_OBJ)
-                    ]);
+                    //10.关闭摄像头和麦克风
+                    mediaVideoStreamTrack && mediaVideoStreamTrack.stop();
+                    mediaAudioStreamTrack && mediaAudioStreamTrack.stop();
 
                 }
 
@@ -235,12 +244,15 @@ $(document).ready(function(){
                 if(layerOpen != null){
                     layerObj.close(layerOpen);
                 }
-                //开打视频通话弹框
-                $(documentEl).find(".intercom_model_bg").show();
-                //显示客户端挂断按钮
-                $(documentEl).find("#localClose").show();
-                //向服务端发现设备准备就绪指令 clientok
-                sendStringText("clientok");
+
+                sendMediaStreamObj(function(){
+                    //开打视频通话弹框
+                    $(documentEl).find(".intercom_model_bg").show();
+                    //显示客户端挂断按钮
+                    $(documentEl).find("#localClose").show();
+                    //向服务端发现设备准备就绪指令 clientok
+                    sendStringText("clientok");
+                });
 
                 return false;
             }
@@ -261,7 +273,9 @@ $(document).ready(function(){
             }
 
             //调用接收服务器消息的公共函数
-            receiveServerMsg(JSON.parse(event.data));
+            if(event.data.indexOf("press") === -1){
+                receiveServerMsg(JSON.parse(event.data));
+            }
 
         });
 
@@ -442,6 +456,7 @@ $(document).ready(function(){
         let audioEl = document.getElementById("audio-player");
         audioEl.play();
 
+
         //3.询问是否接收可视对讲请求
         layerConfirm = layerObj.confirm(options.deviceName+'正在请求与您对讲...',{
             btn: ['接收','拒绝'], //按钮
@@ -465,8 +480,12 @@ $(document).ready(function(){
                     openDoorStatus = false;
                     $(documentEl).find("#openDoor").hide();
                 }
-                //向客户端发送接收了可视对讲的指令  answer
-                websocketServer.sendMsgToClient("answer");
+
+                //获取远程本地媒体流对象实例
+                sendMediaStreamObj(function(){
+                    //向客户端发送接收了可视对讲的指令  answer
+                    websocketServer.sendMsgToClient("answer");
+                });
             },
             //点击拒绝可视对讲请求
             btn2:function(index){
@@ -564,15 +583,11 @@ $(document).ready(function(){
         //9.关闭监听添加媒体流函数
         offerPc.onaddstream = null;
 
-        //10.重置初始化方法
-        $(documentEl).trigger("sendMediaStreamObj",[
-            vueObj,
-            global.getData(global.LAYER_OBJ)
-        ])
-        
+        //10.关闭摄像头和麦克风
+        mediaVideoStreamTrack && mediaVideoStreamTrack.stop();
+        mediaAudioStreamTrack && mediaAudioStreamTrack.stop();
 
     });
-
 
     //客户端挂断可视对讲时触发
     $(documentEl).on("clientPcCloseVideoStream",function(e){
@@ -606,11 +621,9 @@ $(document).ready(function(){
         //10.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
 
-        //11.重置初始化方法
-        $(documentEl).trigger("sendMediaStreamObj",[
-            vueObj,
-            global.getData(global.LAYER_OBJ)
-        ]);
+        //10.关闭摄像头和麦克风
+        mediaVideoStreamTrack && mediaVideoStreamTrack.stop();
+        mediaAudioStreamTrack && mediaAudioStreamTrack.stop();
 
     });
 
