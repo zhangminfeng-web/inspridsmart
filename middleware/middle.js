@@ -304,4 +304,37 @@ module.exports = {
            next(err);
         });
     },
+    //获取报警信息
+    getPoliceList(req,res,next){
+        let sql = "SELECT * FROM `police_info` ORDER BY `create_time` desc";
+        DB.delete(sql).then(result => {
+            res.policeList = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //添加报警信息
+    addPolicetInfo(req,res,next){
+        let obj = req.body;
+        let sql = "INSERT INTO `police_info`(alias_name,police_msg,now_time,create_time) VALUES (?,?,?,?)";
+        DB.delete(sql,[obj.alias_name,obj.police_msg,obj.now_time,obj.create_time]).then(result => {
+            res.result = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    },
+    //删除报警信息
+    delPoliceInfo(req,res,next){
+        let id = req.query.id;
+        console.log(id);
+        let sql = "DELETE FROM `police_info` WHERE id=?";
+        DB.delete(sql,id).then(result => {
+            res.result = result;
+            next();
+        }).catch(err => {
+            next(err);
+        });
+    }
 }

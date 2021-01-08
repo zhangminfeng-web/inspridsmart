@@ -61,6 +61,22 @@ CREATE TABLE IF NOT EXISTS `personnel`(
     PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+#报警信息表
+CREATE TABLE IF NOT EXISTS `police_info`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `alias_name` varchar(30) NOT NULL,
+    `police_msg` varchar(100) NOT NULL,
+    `now_time` varchar(40) NOT NULL,
+    `create_time` varchar(30) NOT NULL,
+    PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `police_info`(alias_name,police_msg,now_time,create_time) VALUES
+("1-1-1001","燃气1","2020/10/22 11:22","1610084478000"),
+("1-1-1002","燃气2","2020/10/22 12:22","1610084589000"),
+("1-1-1003","燃气3","2020/10/22 10:22","1610083589000"),
+("1-1-1004","燃气4","2020/10/22 09:22","1610083489000");
+
 # 用户表
 CREATE TABLE IF NOT EXISTS `user`(
     `id` INT UNSIGNED AUTO_INCREMENT,

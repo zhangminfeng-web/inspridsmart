@@ -14,6 +14,7 @@
                                 <th>设备名称</th>
                                 <th>报警信息</th>
                                 <th>时间</th>
+                                <th>操作</th>
                             </tr>
                         </thead>
                         <tbody class="police-tbody">
@@ -22,6 +23,13 @@
                                 <td>{{item.alias_name}}</td>
                                 <td>{{item.police_msg}}</td>
                                 <td>{{item.now_time}}</td>
+                                <td>
+                                    <button
+                                        class="btn btn-danger btn-sm"
+                                        @click="delPoliceInfo(item.id)">
+                                        删除
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -39,10 +47,7 @@
             }
         },
         mounted(){
-            let _this = this;
-            setInterval(function(){
-                _this.init();
-            },5000);
+            this.init();
         },
         methods:{
             init(){
@@ -54,7 +59,30 @@
                         _this.policeList = obj.callPoliceList;
                     }
                 });
-
+            },
+            addPoliceInfo(obj={}){
+                requests.requestPost("/addCallPoliceData",obj).then(res => {
+                    let obj = res.data;
+                    if(obj.code == 0){
+                        this.init();
+                    }
+                });
+            },
+            delPoliceInfo(id){
+                let _that = this;
+                layer.confirm("是否删除该条报警信息？",
+                    {title:"删除报警信息",icon:3},
+                    function(index){
+                        layer.close(index);
+                        requests.requestGet("/delCallPoliceData?id="+id).then(res => {
+                            let obj = res.data;
+                            if(obj.code == 0){
+                                requests.successMsgInfo(layer,obj.msg);
+                                _that.init();
+                            }
+                        });
+                    }
+                )
             }
         }
     }

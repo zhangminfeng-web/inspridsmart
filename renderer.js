@@ -12,10 +12,10 @@ $(document).ready(function(){
     //将jquery全局对象，保存为全局共享数据
     global.documentJq = documentEl;
     let vueObj = null;
-    let localSocket = null;     //本地socket对象
-    let removeSocket = null;    //远程socket对象
-    let layerConfirm = null;    //layer询问弹框
-    let layerOpen = null;  //layer等待应答弹框
+    let localSocket = null;      //本地socket对象
+    let removeSocket = null;     //远程socket对象
+    let layerConfirm = null;     //layer询问弹框
+    let layerOpen = null;        //layer等待应答弹框
     let openDoorStatus = false;  //视频对讲中“开门”按钮的显示状态
     let mediaVideoStreamTrack;   //视频媒体流对象
     let mediaAudioStreamTrack;   //音频媒体流对象
@@ -126,8 +126,6 @@ $(document).ready(function(){
                 $(documentEl).trigger("offer_ice",[e.candidate]);
             }
         };
-
-
     });
 
     //客户端socket信息的发送和接收事件
@@ -293,12 +291,14 @@ $(document).ready(function(){
     $(documentEl).on("policeServerMsg",function(e,obj){
         //获取layer实例
         let layerObj = global.getData(global.LAYER_OBJ);
-        //将报警信息添加到全局报警数组中
-        global.CALL_POLICE_LIST.push(obj);
         //展示报警弹框
         layerObj.alert("门牌号: "+obj.alias_name+"</br>"+
                        "报警内容："+obj.police_msg+"</br>"+
                        "报警时间："+obj.now_time);
+        //添加时间戳属性
+        obj.create_time = Date.parse(new Date());
+        //添加报警信息
+        console.log(vueObj.$refs.policeCom.addPoliceInfo(obj));
         //打开报警音乐
         let audioEl = document.getElementById("police-player");
         audioEl.play();

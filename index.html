@@ -64,7 +64,7 @@
                     <index-control v-show="showComponentValue==1"></index-control>
                     <watch-component v-show="showComponentValue==2"></watch-component>
                     <intercom-component v-show="showComponentValue==3"></intercom-component>
-                    <call-police-component v-show="showComponentValue==4"></call-police-component>
+                    <call-police-component ref="policeCom" v-show="showComponentValue==4"></call-police-component>
                     <all-online-component v-show="showComponentValue==5"></all-online-component>
                     <!--<appointment-access v-show="showComponentValue==6"></appointment-access>-->
                 </div>

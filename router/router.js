@@ -251,10 +251,25 @@ Router.get("/allOnlineEquipment",function (req,res){
 });
 
 //获取报警信息数据
-Router.get("/getCallPoliceData",function(req,res){
+Router.get("/getCallPoliceData",[middle.getPoliceList],function(req,res){
     res.json({
         code:0,
-        callPoliceList:global.CALL_POLICE_LIST
+        callPoliceList:res.policeList
+    })
+});
+
+//添加报警信息
+Router.post("/addCallPoliceData",[middle.addPolicetInfo],function(req,res){
+    res.json({
+        code:0
+    })
+});
+
+//删除报警信息
+Router.get("/delCallPoliceData",[middle.delPoliceInfo],function(req,res){
+    res.json({
+        code:0,
+        msg:"删除成功！"
     })
 })
 
