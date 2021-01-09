@@ -298,7 +298,7 @@ $(document).ready(function(){
         //添加时间戳属性
         obj.create_time = Date.parse(new Date());
         //添加报警信息
-        console.log(vueObj.$refs.policeCom.addPoliceInfo(obj));
+        vueObj.$refs.policeCom.addPoliceInfo(obj);
         //打开报警音乐
         let audioEl = document.getElementById("police-player");
         audioEl.play();
@@ -653,5 +653,24 @@ $(document).ready(function(){
             layerObj.msg("通知设备接收人脸数据成功！",{time:3000, icon:6, shift:5});
         });
     });
+
+    //重新获取所有在线设备
+    $(documentEl).on("UpdateOnlineDevices",function(e,that){
+        //清空当前所有在线设备
+        global.VIDEO_EQUIPMENT_DOORWAY_LIST,
+        global.VIDEO_EQUIPMENT_DOORBELL_LIST,
+        global.VIDEO_EQUIPMENT_INDOOR_LIST =[];
+
+        //向所有在线设备广播发送可视对讲系统上线信息
+        //当在线设备接收到可视对讲系统上线信息之后，反馈自身设备信息回来
+        localhostUdpServer.localhostUdpServer(function(){
+            //及时调用各个组件的初始化数据方法，来获取当前在线设备，用来展示在页面中
+            setTimeout(() => {
+                that.$refs.watchCom.init();   //watchCom  视频监控
+                that.$refs.intercomCom.init();  //intercomCom  可视对讲
+                that.$refs.onlineCom.init();   //onlineCom 在线设备
+            },1000);
+        })
+    })
 
 });

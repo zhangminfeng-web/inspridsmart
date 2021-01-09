@@ -27,6 +27,9 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right ul_right_style">
+                        <li class="refreshButton parent_li">
+                            <button @click="getAllOnlineDevices" class="btn btn-default btn-sm">断电刷新</button>
+                        </li>
                         <li class="parent_li">
                             <div v-if="idShowName">
                                 <span class="span_name_style">
@@ -62,10 +65,10 @@
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <index-control v-show="showComponentValue==1"></index-control>
-                    <watch-component v-show="showComponentValue==2"></watch-component>
-                    <intercom-component v-show="showComponentValue==3"></intercom-component>
+                    <watch-component ref="watchCom" v-show="showComponentValue==2"></watch-component>
+                    <intercom-component ref="intercomCom" v-show="showComponentValue==3"></intercom-component>
                     <call-police-component ref="policeCom" v-show="showComponentValue==4"></call-police-component>
-                    <all-online-component v-show="showComponentValue==5"></all-online-component>
+                    <all-online-component ref="onlineCom" v-show="showComponentValue==5"></all-online-component>
                     <!--<appointment-access v-show="showComponentValue==6"></appointment-access>-->
                 </div>
             </div>
@@ -212,6 +215,9 @@
                         }else{
                             return true;
                         }
+                    },
+                    getAllOnlineDevices(){
+                        $(documentJq).trigger("UpdateOnlineDevices",[this]);
                     }
                 }
             })

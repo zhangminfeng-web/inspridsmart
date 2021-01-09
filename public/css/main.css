@@ -173,6 +173,23 @@ ul,li,ol{
     position:relative;
 }
 
+.refreshButton{
+    height:50px;
+    line-height:50px;
+    color:#fff;
+    position:relative;
+    margin-right:10px;
+}
+
+.refreshButton>button{
+    font-size:16px;
+}
+
+.refreshButton>button:active,
+.refreshButton>button:focus{
+    outline:none !important;
+}
+
 .downUlList{
     width:150px;
     height:auto;
