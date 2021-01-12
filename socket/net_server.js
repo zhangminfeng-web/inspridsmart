@@ -39,7 +39,6 @@ const tcp = net.createServer(socket => {
 
 //向端口写入数据到达服务端
 exports.sendInfo = async function(ip,type,callback){
-    let flag = true;
     //通过udp协议打开视频端口
     await Udp.sendOpenVideo(ip,type);
     //监听数据发生改变时，触发的回调事件
@@ -48,17 +47,15 @@ exports.sendInfo = async function(ip,type,callback){
             callback(value);
         },
         set:(value) => {
-            if(flag){
-                flag =false;
-                callback(value);
-            }
+            callback(value);
         }
     })
 };
 
 /*关闭客户端与服务端的链接*/
-exports.close = async function(ip,type){
+exports.close = async function(ip,type,callback){
     //通过udp协议关闭视频端口
     await Udp.sendCloseVideo(ip,type);
     socket_server.destroy();
+    callback && callback();
 };

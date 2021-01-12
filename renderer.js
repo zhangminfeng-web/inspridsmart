@@ -5,6 +5,7 @@ let HandlerReceivedAnswerICE = require("./handles/HandlerReceivedAnswerICE");
 let websocketServer = require('./socket/websocketServer');
 let localhostUdpServer = require('./udp/localhostUdpServer');
 let sendPeopleFaceImg = require('./socket/sendPeopleFaceImg');
+let net_server = require("./socket/net_server");
 let global = require("./global/globalFile");
 
 $(document).ready(function(){
@@ -38,8 +39,19 @@ $(document).ready(function(){
             audio:true
         });
 
+        var audioCtx = new AudioContext();
+        var source = audioCtx.createMediaStreamSource(localStream);
+        var biquadFilter = audioCtx.createBiquadFilter();
+        biquadFilter.type = "lowshelf";
+        biquadFilter.frequency.value = 1000;
+        biquadFilter.gain.value = 26;
+        source.connect(biquadFilter);
+        biquadFilter.connect(audioCtx.destination);
+
         mediaVideoStreamTrack = typeof localStream.stop === 'function' ? localStream : localStream.getTracks()[0];
         mediaAudioStreamTrack = typeof localStream.stop === 'function' ? localStream : localStream.getTracks()[1];
+
+
 
         //在本地预览本地媒体流对象(localStream)
         document.getElementById('local').srcObject = localStream;
@@ -634,7 +646,7 @@ $(document).ready(function(){
             let layerObj = global.getData(global.LAYER_OBJ);
             layerObj.msg("通知设备接收二维码成功！",{time:2000, icon:6, shift:5});
         });
-    })
+    });
 
     //发送密码，预约门禁
     $(documentEl).on("sendPasswordNumber",function(e,senderName,code,ip){
@@ -670,7 +682,21 @@ $(document).ready(function(){
                 that.$refs.intercomCom.init();  //intercomCom  可视对讲
                 that.$refs.onlineCom.init();   //onlineCom 在线设备
             },1000);
-        })
-    })
+        });
+    });
+
+    //发送打开视频监控指令
+    $(documentEl).on("openWatchVideo",function (e,ip) {
+        net_server.sendInfo(ip,11,function(data){
+            vueObj.$refs.watchCom.getDataImg(data);
+        });
+    });
+
+    //发送关闭视频监控指令
+    $(documentEl).on("closeWatchVideo",function(e,ip){
+        net_server.close(ip,17,function(){
+            vueObj.$refs.watchCom.closeDataImg();
+        });
+    });
 
 });

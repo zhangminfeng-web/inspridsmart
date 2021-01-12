@@ -2,7 +2,7 @@ const express = require('express');
 const middle = require("../middleware/middle");
 const global = require("../global/globalFile");
 //加载net客户端模块
-let net_server = require("../socket/net_server");
+/*let net_server = require("../socket/net_server");*/
 /*let intercom_server = require("../socket/intercom_server");*/
 
 /*1.创建路由容器*/
@@ -215,7 +215,7 @@ Router.get("/videoWatch",function(req,res){
 });
 
 //发送ip数据，接收视频图片数据
-Router.get("/receiveInfo",function(req,res){
+/*Router.get("/receiveInfo",function(req,res){
     //console.log("收到客户端发送的请求！");
     //向服务端发送消息
     net_server.sendInfo(req.query.ip,req.query.type,function(data){
@@ -224,15 +224,15 @@ Router.get("/receiveInfo",function(req,res){
             imgData:data
         });
     });
-});
+});*/
 
 //关闭socket连接
-Router.get("/closeConnection",function(req,res){
+/*Router.get("/closeConnection",function(req,res){
     net_server.close(req.query.ip,req.query.type);
     res.json({
         code:0
     });
-})
+})*/
 
 //展示可视对讲主页面
 Router.get("/videoIntercom",function(req,res){

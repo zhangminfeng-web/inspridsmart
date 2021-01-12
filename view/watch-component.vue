@@ -25,14 +25,14 @@
         </div>
 
         <!--弹框-->
-        <div class="model_bg" style="display:none;">
+        <div class="model_bg" v-show="watchImgFlag">
             <div class="model_content">
                 <div class="model_header">
-                    <span class="model_title" id="model_title"></span>
+                    <span class="model_title" id="model_title">{{poperTitle}}</span>
                     <span class="model_close" @click="closeWatchVideo">&times;</span>
                 </div>
                 <div class="model_main">
-                    <img src="./public/img/timg.gif" alt="" id="videoImg">
+                    <img :src="imgData" alt="" id="videoImg">
                 </div>
             </div>
         </div>
@@ -49,8 +49,9 @@
                 type:11,  //发送的视频控制状态码：11打开  17关闭
                 ip:null,    //当前操作设备的ip地址
                 poperTitle:"",      //弹框标题
-                //imgStr:"./public/img/timg.gif",     //视频数据
-                timer:null,     //定时器参数
+                imgData:"",       //传入过来的图片展示数据
+                imgStr:"./public/img/timg.gif",     //视频数据
+                watchImgFlag:false
             }
         },
         mounted(){
@@ -81,38 +82,34 @@
                 let El = $(event.currentTarget);
                 _this.ip = El.attr('ip');
                 _this.poperTitle = El.text();
-                $(".model_bg").show();
-                _this.timer = window.setInterval(()=>{
-                    _this.getDataImg(_this.ip,_this.type);
-                    _this.type = null;
-                },100);
-
+                _this.imgData = _this.imgStr;
+                //显示监控弹框
+                _this.watchImgFlag = !_this.watchImgFlag;
+                //发送开打视频指令
+                $(documentJq).trigger("openWatchVideo",[_this.ip]);
             },
-            getDataImg(ip,type){
+            getDataImg(data){
                 let _this = this;
-                requests.requestGet("/receiveInfo?ip="+ip+"&type="+type).then(res => {
-                    let obj = res.data;
-                    if(obj.code == 0){
-                        let bytes = new Uint8Array(obj.imgData.data);
-                        let storeData = "";
-                        let len = bytes.byteLength;
-                        for (let i = 0; i < len; i++) {
-                            storeData += String.fromCharCode(bytes[i]);
-                        }
-                        let imgStr  = "data:image/png;base64," + window.btoa(storeData);
-                        $("#videoImg").attr("src",imgStr);
-                    }
-                });
+                let bytes = new Uint8Array(data);
+                let storeData = "";
+                let len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    storeData += String.fromCharCode(bytes[i]);
+                }
+                let imgStr  = "data:image/png;base64," + window.btoa(storeData);
+                _this.imgData = imgStr;
             },
             closeWatchVideo(){  //关闭弹框
                 let _this = this;
-                window.clearInterval(_this.timer);
-                $(".model_bg").hide();
-                _this.type = _this.type?_this.type:11;
-                $("#videoImg").attr("src","./public/img/timg.gif");
-                requests.requestGet("/closeConnection?ip="+_this.ip+"&type="+17).then(res => {
-                    //location.reload();
-                });
+                _this.poperTitle = "";
+                _this.imgData = "";
+                //关闭视频监控弹框
+                _this.watchImgFlag = !_this.watchImgFlag;
+                //发送关闭视频指令
+                $(documentJq).trigger("closeWatchVideo",[_this.ip]);
+            },
+            closeDataImg(){
+                requests.successMsgInfo(layer,"已关闭视频监控通道！");
             },
             init(){  //初始化网页数据
                 let _this = this;
