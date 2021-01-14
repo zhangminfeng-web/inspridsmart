@@ -64,7 +64,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <index-control v-show="showComponentValue==1"></index-control>
+                    <index-control :is-show="loginQueryInfo.isSuper" v-show="showComponentValue==1"></index-control>
                     <watch-component ref="watchCom" v-show="showComponentValue==2"></watch-component>
                     <intercom-component ref="intercomCom" v-show="showComponentValue==3"></intercom-component>
                     <call-police-component ref="policeCom" v-show="showComponentValue==4"></call-police-component>
@@ -81,8 +81,7 @@
         </audio>
 
         <!--login弹框-->
-        <!--<div class="Intercom_box_bg" v-show="!idShowName">-->
-        <div class="Intercom_box_bg" v-show="idShowName">
+        <div class="Intercom_box_bg" v-show="!idShowName">
             <div class="Intercom_box_main">
                 <div class="Intercom_big_title">
                     思悦可视对讲管理系统

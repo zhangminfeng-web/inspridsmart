@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="residential_main">
+        <div v-if="isShow == 0" class="residential_main">
             <div class="container-fluid" style="padding:0;">
                 <div class="row">
                     <div class="col-sm-12 col-md-12" style="padding:0;">
@@ -76,6 +76,9 @@
                 </div>
             </div>
         </div>
+        <div v-else class="residential_main">
+            <div class="warning_info">只有超级管理员才能操作住户管理模块！</div>
+        </div>
 
         <!--编辑小区信息弹框-->
         <div class="modal fade" id="editAreaInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -143,6 +146,11 @@
                     id:1
                 },
                 floorArray:[]
+            }
+        },
+        props:{
+            isShow:{
+                default:1
             }
         },
         mounted(){
@@ -427,5 +435,11 @@
     .modal-title{
         font-weight:600;
         font-size:20px;
+    }
+
+    .warning_info{
+        font-weight: 600;
+        font-size: 18px;
+        color:#D63E3B;
     }
 </style>
