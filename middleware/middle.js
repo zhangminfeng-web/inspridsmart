@@ -328,7 +328,6 @@ module.exports = {
     //删除报警信息
     delPoliceInfo(req,res,next){
         let id = req.query.id;
-        console.log(id);
         let sql = "DELETE FROM `police_info` WHERE id=?";
         DB.delete(sql,id).then(result => {
             res.result = result;

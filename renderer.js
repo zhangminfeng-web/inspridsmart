@@ -633,7 +633,7 @@ $(document).ready(function(){
         //10.关闭监听添加媒体流函数
         answerPc.onaddstream = null;
 
-        //10.关闭摄像头和麦克风
+        //11.关闭摄像头和麦克风
         mediaVideoStreamTrack && mediaVideoStreamTrack.stop();
         mediaAudioStreamTrack && mediaAudioStreamTrack.stop();
 
@@ -669,9 +669,9 @@ $(document).ready(function(){
     //重新获取所有在线设备
     $(documentEl).on("UpdateOnlineDevices",function(e,that){
         //清空当前所有在线设备
-        global.VIDEO_EQUIPMENT_DOORWAY_LIST,
-        global.VIDEO_EQUIPMENT_DOORBELL_LIST,
-        global.VIDEO_EQUIPMENT_INDOOR_LIST =[];
+        global.VIDEO_EQUIPMENT_DOORWAY_LIST = [];
+        global.VIDEO_EQUIPMENT_DOORBELL_LIST = [];
+        global.VIDEO_EQUIPMENT_INDOOR_LIST = [];
 
         //向所有在线设备广播发送可视对讲系统上线信息
         //当在线设备接收到可视对讲系统上线信息之后，反馈自身设备信息回来

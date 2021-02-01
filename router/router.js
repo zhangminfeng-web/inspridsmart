@@ -205,6 +205,14 @@ Router.get("/deleteUserInfo",[middle.deleteUserInfo],function(req,res){
     })
 });
 
+//展示可视对讲主页面
+Router.get("/videoIntercom",function(req,res){
+    res.json({
+        code:0,
+        indoorList:global.VIDEO_EQUIPMENT_INDOOR_LIST
+    });
+});
+
 //展示视频监控页面
 Router.get("/videoWatch",function(req,res){
     res.json({
@@ -212,34 +220,6 @@ Router.get("/videoWatch",function(req,res){
         doorwayList:global.VIDEO_EQUIPMENT_DOORWAY_LIST,
         doorbellList:global.VIDEO_EQUIPMENT_DOORBELL_LIST
     })
-});
-
-//发送ip数据，接收视频图片数据
-/*Router.get("/receiveInfo",function(req,res){
-    //console.log("收到客户端发送的请求！");
-    //向服务端发送消息
-    net_server.sendInfo(req.query.ip,req.query.type,function(data){
-        res.json({
-            code:0,
-            imgData:data
-        });
-    });
-});*/
-
-//关闭socket连接
-/*Router.get("/closeConnection",function(req,res){
-    net_server.close(req.query.ip,req.query.type);
-    res.json({
-        code:0
-    });
-})*/
-
-//展示可视对讲主页面
-Router.get("/videoIntercom",function(req,res){
-    res.json({
-        code:0,
-        indoorList:global.VIDEO_EQUIPMENT_INDOOR_LIST
-    });
 });
 
 //所有在线设备的展示
@@ -271,7 +251,7 @@ Router.get("/delCallPoliceData",[middle.delPoliceInfo],function(req,res){
         code:0,
         msg:"删除成功！"
     })
-})
+});
 
 /*3.将路由容器导出*/
 module.exports = Router;

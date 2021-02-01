@@ -96,7 +96,12 @@
     cursor: pointer;
 }
 
-.list_all_item>li.active,
+.list_all_item>li.active{
+    border:1px solid #E41612;
+    background:rgba(252,231,231,.6);
+    color:#E41612;
+}
+
 .list_all_item>li:hover{
     border:1px solid #E41612;
     background:rgba(252,231,231,.6);

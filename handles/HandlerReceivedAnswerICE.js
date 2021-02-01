@@ -26,8 +26,6 @@ module.exports.receivedAnswerICE = async function(data,documentEl){
         catch (err) {
             
         }
-           
-        
     }
     console.log("客户端交换ice信息完成了");
 };

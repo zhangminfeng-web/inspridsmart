@@ -19,6 +19,13 @@
     opacity: .8;
 }
 
+.title_index{
+    font-size: 20px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: #000000;
+}
+
 .title_row_style{
     margin-bottom:30px;
 }
@@ -30,13 +37,6 @@
 .floor_title>i{
     font-size:24px;
     color:#000;
-}
-
-.title_index{
-    font-size: 20px;
-    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
-    font-weight: bold;
-    color: #000000;
 }
 
 .list_all_item>li{
